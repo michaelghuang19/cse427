@@ -1,3 +1,14 @@
+If you have issues on Windows, first ensure that your configured python is python 3.7, or alternatively we can simply use
+
+  alias python=python3
+
+In addition, we want to ensure that we have the following python packages, which we can verify by entering
+  pip install pandas
+  pip install numpy
+  pip install csv
+  pip install biopython
+
+
 build
 
 makefile
