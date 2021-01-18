@@ -1,26 +1,25 @@
 import pandas as pd
 import numpy as np
 import csv
-import urllib
-
+import urllib as ul
 # import Bio
 
 import fasta
-
-name_set = {"MYOD1_HUMAN", "TAL1_HUMAN", "MYOD1_MOUSE", "MYOD1_CHICK", 
-"MYODA_XENLA", "MYOD1_DANRE", "Q8IU24_BRABE", "MYOD_DROME", "LIN32_CAEEL", 
-"SYFM_HUMAN"}
-
-accession_set = {"P15172", "P17542", "P10085", "P16075", "P13904", "Q90477", 
-"Q8IU24", "P22816", "Q10574", "O95363"}
+import constants
 
 def process_fasta(fasta):
   print(fasta)
 
 def get_fasta():
-  uniprot_url = "www.uniprot.org/uniprot/"
-  for item in accession_set:
-    print(uniprot_url + item + ".fasta");
+  for item in constants.accession_set:
+    url = constants.uniprot_url + item + "." + constants.fasta_const
+    f = ul.request.urlopen(url)
+    fasta = f.read()
+    
+    output = open(constants.fasta_const + "/" + item + "." +
+    constants.fasta_const, 'wb')
+    output.write(fasta)
+    output.close()
 
 def main():
   print ("hello world!")

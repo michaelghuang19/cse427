@@ -6,7 +6,7 @@ In addition, we want to ensure that we have the following python packages, which
   pip install pandas
   pip install numpy
   pip install csv
-  pip install biopython
+  pip install urllib
 
 
 build
