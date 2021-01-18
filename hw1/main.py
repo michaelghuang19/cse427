@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import csv
+import biopython
+
 import fasta
 
 name_set = {MYOD1_HUMAN, TAL1_HUMAN, MYOD1_MOUSE, MYOD1_CHICK, MYODA_XENLA,
@@ -15,6 +17,6 @@ def main():
 if __name__ == "__main__":
   main()
 
-def process_fasta():
-
+def process_fasta(fasta):
+  print(fasta)
 
