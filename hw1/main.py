@@ -7,11 +7,18 @@ import urllib as ul
 import fasta
 import constants
 
-# Perform the fasta comparison between lists of fasta structures
-def compare_seqs(flist1, flist2):
-  for f1 in flist1:
-    for f2 in flist2:
-      print("Comparing " + f1.accession + " and " + f2.accession)
+# extra credit j: automated fasta retrieval + write into fasta folder
+def get_fasta():
+  for item in constants.accession_set:
+    url = constants.uniprot_url + item + constants.fasta_exten
+    f = ul.request.urlopen(url)
+    fasta = f.read()
+
+    output = open(constants.fasta_folder + item + constants.fasta_exten, "wb")
+    output.write(fasta)
+    output.close()
+
+    print("Successfully retrieved the fasta file for " + item)
 
 # convert fasta data to a list of formatted data structures
 def process_fasta(filename):
@@ -29,7 +36,7 @@ def process_fasta(filename):
     seq = seq_list[i]
 
     info = seq.split("\n")
-    species,accession,description = info[0].split("|")
+    species, accession, description = info[0].split("|")
     sequence = ""
     for j in range(1, len(info)):
       sequence += info[j]
@@ -41,18 +48,39 @@ def process_fasta(filename):
 
   return fasta_array
 
-# extra credit j: automated fasta retrieval + write into fasta folder
-def get_fasta():
-  for item in constants.accession_set:
-    url = constants.uniprot_url + item + constants.fasta_exten
-    f = ul.request.urlopen(url)
-    fasta = f.read()
-    
-    output = open(constants.fasta_folder + item + constants.fasta_exten, "wb")
-    output.write(fasta)
-    output.close()
+# Perform the comparison between lists of fasta structures
+def compare_seqs(flist1, flist2, num_permutations):
+  for f1 in flist1:
+    for f2 in flist2:
+      print("Comparing " + f1.accession + " and " + f2.accession)
+      
+      # Create matrix of 0's
+      len1 = len(f1.sequence)
+      len2 = len(f2.sequence)
+      matrix = np.zeros((len1, len2), dtype = int)
+      print(matrix)
 
-    print("Successfully retrieved the fasta file for " + item)
+      # Fill out the matrix
+      optimal_loc = local_align(f1.sequence, f2.sequence, matrix)
+
+      # print optimal score
+      print(matrix[optimal_loc[0]][optimal_loc[1]])
+
+      # print optimal alignment
+      # start from last location, and backtrack
+
+
+# helper function for performing the local alignment between 2 sequences
+def local_align(seq1, seq2, matrix):
+  best = 0;
+  bestx = 0;
+  besty = 0;
+  len1 = len(seq1)
+  len2 = len(seq2)
+
+  # dp here
+
+  return (bestx, besty)
 
 # Helper function for generating permutations, as detailed in lecture
 def generate_permutations(sequence):
@@ -94,10 +122,16 @@ def main():
   k = len(fasta_list)
   for i in range(0, k):
     for j in range(i + 1, k):
-      compare_seqs(fasta_list[i], fasta_list[j])
+      compare_seqs(fasta_list[i], fasta_list[j], constants.num_epochs)
 
-  for i in range(0, constants.num_epochs):
-    print(generate_permutations("abcd"))
+  # . Generate random permutations for sequences, and then compare them to the
+  # original sequence to determine the p-value.
+  # for i in range(0, constants.num_epochs):
+  #   random_seq = generate_permutations("abcd")
+  #   compare_seqs(sequence, random_seq)
+  #   if compare_seqs > og_val:
+  #     p_count = p_count + 1
+  # empirical_p = ((float) p_count) / ((float) constants.num_epochs)
 
 if __name__ == "__main__":
   main()
