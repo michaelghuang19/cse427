@@ -35,3 +35,5 @@ accession_set = ["P15172", "P17542", "P10085", "P16075", "P13904", "Q90477",
 uniprot_url = "http://www.uniprot.org/uniprot/"
 fasta_exten = ".fasta"
 fasta_folder = "fasta/"
+
+num_epochs = 100

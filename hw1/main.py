@@ -54,6 +54,18 @@ def get_fasta():
 
     print("Successfully retrieved the fasta file for " + item)
 
+# Helper function for generating permutations, as detailed in lecture
+def generate_permutations(sequence):
+  seq_letters = list(sequence)
+
+  for i in range(len(seq_letters) - 1, 0, -1):
+    j = np.random.randint(i)
+    first = seq_letters[i]
+    seq_letters[i] = seq_letters[j]
+    seq_letters[j] = first
+
+  return ''.join(seq_letters)
+
 def main():
   # 0. Ensure our print is working
   print("hello world!")
@@ -83,6 +95,9 @@ def main():
   for i in range(0, k):
     for j in range(i + 1, k):
       compare_seqs(fasta_list[i], fasta_list[j])
+
+  for i in range(0, constants.num_epochs):
+    print(generate_permutations("abcd"))
 
 if __name__ == "__main__":
   main()
