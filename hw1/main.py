@@ -8,9 +8,10 @@ import fasta
 import constants
 
 # remember to re-set these constants
-map = constants.test_map
-matrix = constants.test_matrix
+element_map = constants.test_map
+score_matrix = constants.test_matrix
 num_epochs = 100
+gap_score = -2;
 
 # extra credit j: automated fasta retrieval + write into fasta folder
 def get_fasta():
@@ -64,30 +65,46 @@ def compare_seqs(flist1, flist2, num_permutations):
       # Create matrix of 0's
       len1 = len(f1.sequence)
       len2 = len(f2.sequence)
-      matrix = np.zeros((len1, len2), dtype = int)
-      print(matrix)
+      matrix = np.zeros((len1 + 1, len2 + 1), dtype = int)
 
       # Fill out the matrix
-      optimal_loc = local_align(f1.sequence, f2.sequence, matrix)
+      align_info = local_align(list(f1.sequence), list(f2.sequence), matrix)
+      print(matrix)
 
       # print optimal score
-      print(matrix[optimal_loc[0]][optimal_loc[1]])
-
+      print(align_info[0])
+      
       # print optimal alignment
       # start from last location, and backtrack
-      
+      print(align_info[1], align_info[2], sep=",")
 
 # helper function for performing the local alignment between 2 sequences
 def local_align(seq1, seq2, matrix):
   best = 0;
   bestx = 0;
   besty = 0;
-  len1 = len(seq1)
-  len2 = len(seq2)
+  len1 = len(seq1) + 1
+  len2 = len(seq2) + 1
 
   # TODO: dp here
+  for i in range(0, len1):
+    for j in range(0, len2):
+      if (i == 0 or j == 0):
+        continue
 
-  return (bestx, besty)
+      cur_score = score_matrix[element_map[seq1[i-1]]][element_map[seq2[j-1]]]
+
+      matrix[i][j] = max(matrix[i-1][j-1] + cur_score,
+                        matrix[i-1][j] + gap_score,
+                        matrix[i][j-1] + gap_score,
+                        0)
+
+      if (matrix[i][j] > best):
+        best = matrix[i][j]
+        bestx = i
+        besty = j
+  
+  return (best, bestx, besty)
 
 # Helper function for generating permutations, as detailed in lecture
 def generate_permutations(sequence):
