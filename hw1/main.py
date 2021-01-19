@@ -7,6 +7,11 @@ import urllib as ul
 import fasta
 import constants
 
+# remember to re-set these constants
+map = constants.test_map
+matrix = constants.test_matrix
+num_epochs = 100
+
 # extra credit j: automated fasta retrieval + write into fasta folder
 def get_fasta():
   for item in constants.accession_set:
@@ -52,6 +57,8 @@ def process_fasta(filename):
 def compare_seqs(flist1, flist2, num_permutations):
   for f1 in flist1:
     for f2 in flist2:
+      # TODO: open file for printing
+
       print("Comparing " + f1.accession + " and " + f2.accession)
       
       # Create matrix of 0's
@@ -68,7 +75,7 @@ def compare_seqs(flist1, flist2, num_permutations):
 
       # print optimal alignment
       # start from last location, and backtrack
-
+      
 
 # helper function for performing the local alignment between 2 sequences
 def local_align(seq1, seq2, matrix):
@@ -78,7 +85,7 @@ def local_align(seq1, seq2, matrix):
   len1 = len(seq1)
   len2 = len(seq2)
 
-  # dp here
+  # TODO: dp here
 
   return (bestx, besty)
 
@@ -95,7 +102,7 @@ def generate_permutations(sequence):
   return ''.join(seq_letters)
 
 def main():
-  # 0. Ensure our print is working
+  # 0. Ensure our print is working, and set our constants at top of file
   print("hello world!")
 
   # 1. Get our desired fasta files. Uncomment as necessary
@@ -104,9 +111,9 @@ def main():
   # 2. Process fasta into individual lists. This results in a list of lists,
   # where each list contains corresponding fasta data structures for each
   # individual accession file, should a file contain multiple sequences.
-  fasta_list = []
-  for accession in constants.accession_set:
-    fasta_list.append(process_fasta(accession))
+  # fasta_list = []
+  # for accession in constants.accession_set:
+  #   fasta_list.append(process_fasta(accession))
   
   # 2a. Uncomment to see what sequences we have processed, grouped by file
   # for file in fasta_list:
@@ -118,20 +125,23 @@ def main():
   #     print(seq.sequence)
   
   # 3. Perform analysis using the Smith-Waterman sequence alignment algorithm
-  
-  k = len(fasta_list)
-  for i in range(0, k):
-    for j in range(i + 1, k):
-      compare_seqs(fasta_list[i], fasta_list[j], constants.num_epochs)
+  # k = len(fasta_list)
+  # for i in range(0, k):
+  #   for j in range(i + 1, k):
+  #     compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
+
+  # example: xxxcde and abcxdex
+  compare_seqs([fasta.fasta_info("", "abc", "", "abcxdex")],
+  [fasta.fasta_info("", "xxx", "", "xxxcde")], 0)
 
   # . Generate random permutations for sequences, and then compare them to the
   # original sequence to determine the p-value.
-  # for i in range(0, constants.num_epochs):
+  # for i in range(0, num_epochs):
   #   random_seq = generate_permutations("abcd")
   #   compare_seqs(sequence, random_seq)
   #   if compare_seqs > og_val:
   #     p_count = p_count + 1
-  # empirical_p = ((float) p_count) / ((float) constants.num_epochs)
+  # empirical_p = ((float) p_count) / ((float) num_epochs)
 
 if __name__ == "__main__":
   main()
