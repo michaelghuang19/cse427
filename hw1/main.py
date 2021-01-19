@@ -8,14 +8,11 @@ import fasta
 import constants
 
 # 0. remember to set these constants
-# element_map = constants.blosum_map
-# score_matrix = constants.blosum_matrix
-element_map = constants.test_map
-score_matrix = constants.test_matrix
+element_map = constants.blosum_map
+score_matrix = constants.blosum_matrix
 # num_epochs = 1000
 num_epochs = 50
-# gap_score = -4
-gap_score = -1
+gap_score = -4
 
 # extra credit j: automated fasta retrieval + write into fasta folder
 def get_fasta():
@@ -49,7 +46,7 @@ def process_fasta(filename):
     species, accession, description = info[0].split("|")
     sequence = ""
     for j in range(1, len(info)):
-      sequence += info[j]
+      sequence += info[j].upper()
 
     fasta_struct = fasta.fasta_info(species, accession, description, sequence)
     fasta_array.append(fasta_struct)
@@ -87,8 +84,12 @@ def compare_seqs(flist1, flist2, num_permutations):
       # print optimal alignment
       # start from last location, and backtrack
       output.write("\n[" + str(best_align.best_coord1) + ", "
-                    + str(best_align.best_coord2) + "]")
-      alignment = backtrack(matrix, best_align)
+                    + str(best_align.best_coord2) + "]\n\n")
+      print(matrix)
+      alignment = backtrack(matrix.tolist(), best_align, list(f1.sequence), list(f2.sequence))
+      output.write(alignment[0])
+      output.write("\n")
+      output.write(alignment[1])
 
       # Do p-value things
       # 4. Generate random permutations for sequences, and then compare them to the
@@ -110,13 +111,12 @@ def local_align(seq1, seq2, matrix):
   len1 = len(seq1) + 1
   len2 = len(seq2) + 1
 
-  # TODO: dp here
   for i in range(0, len1):
     for j in range(0, len2):
       if (i == 0 or j == 0):
         continue
 
-      cur_score = score_matrix[element_map[seq1[i-1]]][element_map[seq2[j-1]]]
+      cur_score = score_matrix[element_map.index(seq1[i-1])][element_map.index(seq2[j-1])]
 
       matrix[i][j] = max(matrix[i-1][j-1] + cur_score,
                         matrix[i-1][j] + gap_score,
@@ -131,15 +131,52 @@ def local_align(seq1, seq2, matrix):
   return fasta.align_info(best, bestx, besty)
 
 # Helper function for backtracking through a matrix from best location
-def backtrack(matrix, best_align):
+def backtrack(matrix, best_align, seq1, seq2):
   alignment1 = []
   alignment2 = []
   curx = best_align.best_coord1
   cury = best_align.best_coord2
+  xchange = True
+  ychange = True
 
-  # while:
+  while curx > 0 and cury > 0 and matrix[curx][cury] > 0:
+    print(str(curx) + ", " + str(cury) + ": " + str(matrix[curx][cury]))
 
-  return (alignment1, alignment2)
+    if xchange:
+      alignment1.append(seq1[curx-1])
+    else:
+      alignment1.append("-")
+
+    if ychange:
+      alignment2.append(seq2[cury-1])
+    else:
+      alignment2.append("-")
+    
+    oldScore = score_matrix[element_map.index(seq1[curx-1])][element_map.index(seq2[cury-1])]
+
+    maxVal = max(matrix[curx-1][cury-1] + oldScore,
+            matrix[curx-1][cury] + gap_score,
+            matrix[curx][cury-1] + gap_score)
+    print(maxVal)
+
+    if (matrix[curx-1][cury-1] + oldScore == maxVal):
+      curx = curx - 1
+      cury = cury - 1
+      changex = True
+      changey = True
+      continue
+    elif (matrix[curx][cury - 1] + gap_score == maxVal):
+      cury = cury - 1
+      changex = False
+      changey = True
+      continue
+    elif (matrix[curx-1][cury] + gap_score == maxVal):
+      curx = curx - 1
+      changex = True
+      changey = False
+      continue
+
+  return (''.join(alignment1)[::-1], ''.join(alignment2)[::-1])
 
 # Helper function for printing out a matrix, since numpy is being annoying
 def print_matrix(matrix, output):
@@ -192,11 +229,9 @@ def main():
   #   for j in range(i + 1, k):
   #     compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
 
-  # 3a. class example: xxxcde and abcxdex
-  # You'll need to change the element_map to constants.test_map, 
-  # score_matrix to constants.test_matrix, and gap_score to -1 respectively.
-  compare_seqs([fasta.fasta_info("", "abc", "", "abcxdex")],
-  [fasta.fasta_info("", "xxx", "", "xxxcde")], num_epochs)
+  # 3a. example test seqs
+  compare_seqs([fasta.fasta_info("", "seqid001", "", "KEVLAR")],
+  [fasta.fasta_info("", "seqid002", "", "KNIEVIL")], num_epochs)
 
 if __name__ == "__main__":
   main()
