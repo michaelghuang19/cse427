@@ -67,39 +67,45 @@ def compare_seqs(flist1, flist2, num_permutations):
                     + "_"
                     + f2.accession 
                     + constants.text_exten, "wt")
-      output.write(str(f1.accession) + " to " + str(f2.accession) + "\n\n")
+      output.write(str(f1.accession) + " to " + str(f2.accession) + "\n")
       
       # Create matrix of 0's
       len1 = len(f1.sequence)
       len2 = len(f2.sequence)
       matrix = np.zeros((len1 + 1, len2 + 1), dtype = int)
 
-      # Fill out and print the matrix
+      # Fill out the matrix
       best_align = local_align(list(f1.sequence), list(f2.sequence), matrix)
-      print_matrix(matrix, output)
 
       # print optimal score
-      output.write("\n" + str(best_align.best_score) + "\n")
+      output.write("\n" + str(best_align.best_score) + "\n\n")
       
-      # print optimal alignment
-      # start from last location, and backtrack
-      output.write("\n[" + str(best_align.best_coord1) + ", "
-                    + str(best_align.best_coord2) + "]\n\n")
-      print(matrix)
+      # print optimal alignment information
       alignment = backtrack(matrix.tolist(), best_align, list(f1.sequence), list(f2.sequence))
       output.write(alignment[0])
       output.write("\n")
       output.write(alignment[1])
+      output.write("\n\n")
 
-      # Do p-value things
-      # 4. Generate random permutations for sequences, and then compare them to the
+      # Print the matrix as necessary
+      if (len(alignment[0]) < 15 and len(alignment[1]) < 15):
+        print_matrix(matrix, output)
+        output.write("\n")
+
+      # Generate random permutations for sequences, and then compare them to the
       # original sequence to determine the p-value.
-      # for i in range(0, num_epochs):
-      #   random_seq = generate_permutations("abcd")
-      #   compare_seqs(sequence, random_seq)
-      #   if compare_seqs > og_val:
-      #     p_count = p_count + 1
-      # empirical_p = ((float) p_count) / ((float) num_epochs)
+      p_count = 0
+      for i in range(0, num_epochs):
+        random_matrix = np.zeros((len1 + 1, len2 + 1), dtype=int)
+        random_seq = generate_permutations(f2.sequence)
+
+        random_score = local_align(f1.sequence, random_seq, random_matrix).best_score
+        
+        if (random_score > best_align.best_score):
+          p_count = p_count + 1
+      
+      empirical_p = (p_count + 1) / (num_epochs + 1)
+      output.write(str(empirical_p))
 
       output.close()
 
