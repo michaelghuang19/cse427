@@ -46,3 +46,5 @@ blosum_matrix = np.array(
 uniprot_url = "http://www.uniprot.org/uniprot/"
 fasta_exten = ".fasta"
 fasta_folder = "fasta/"
+results_folder = "results/"
+text_exten = ".txt"

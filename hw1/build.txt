@@ -1,15 +1,19 @@
 If you have issues on Windows, first ensure that your configured python is python 3.7, or alternatively we can simply use
-
   alias python=python3
 
 In addition, we want to ensure that we have the following python packages, which we can verify by entering
   pip install pandas
   pip install numpy
-  pip install csv
   pip install urllib
 
 Make sure to modify the constants.py file as necessary. Specifically, if we need to use different accession numbers, then we can modify the accession_set list to include more/less fasta files to be scraped and analyzed from the UniProt database.
 
-build
+In addition, ensure that our global constants at the top of main.py are properly set, as necessary for whichever case of matrix/scoring we are doing.
 
-makefile
+Give the main function in main.py a look--there are numbered steps explaining what we need to do.
+Comment or uncomment these as desired.
+
+Next, with all the settings and code sections we need to run set up, we can simply run the script by entering
+  python main.py
+
+Our individual results will then be printed to the results/ folder, but for the purpose of the specified test cases as deemed necessary in the spec, we have also combined some specific results into output.txt in the top-layer of the environment.

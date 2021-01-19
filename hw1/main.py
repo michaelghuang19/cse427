@@ -1,17 +1,21 @@
 import pandas as pd
 import numpy as np
-import csv
 import urllib as ul
-# import Bio
+# biopython is being finicky
+# import Bio 
 
 import fasta
 import constants
 
-# remember to re-set these constants
+# 0. remember to set these constants
+# element_map = constants.blosum_map
+# score_matrix = constants.blosum_matrix
 element_map = constants.test_map
 score_matrix = constants.test_matrix
-num_epochs = 100
-gap_score = -1;
+# num_epochs = 1000
+num_epochs = 50
+# gap_score = -4
+gap_score = -1
 
 # extra credit j: automated fasta retrieval + write into fasta folder
 def get_fasta():
@@ -58,27 +62,39 @@ def process_fasta(filename):
 def compare_seqs(flist1, flist2, num_permutations):
   for f1 in flist1:
     for f2 in flist2:
-      # TODO: open file for printing
-
       print("Comparing " + f1.accession + " and " + f2.accession)
+
+      # Open the output file and print the respect identifiers
+      output = open(constants.results_folder
+                    + f1.accession
+                    + "_"
+                    + f2.accession 
+                    + constants.text_exten, "wt")
+      output.write(str(f1.accession) + " to " + str(f2.accession) + "\n\n")
       
       # Create matrix of 0's
       len1 = len(f1.sequence)
       len2 = len(f2.sequence)
       matrix = np.zeros((len1 + 1, len2 + 1), dtype = int)
 
-      # Fill out the matrix
-      align_info = local_align(list(f1.sequence), list(f2.sequence), matrix)
-      print(matrix)
+      # Fill out and print the matrix
+      best_align = local_align(list(f1.sequence), list(f2.sequence), matrix)
+      print_matrix(matrix, output)
 
       # print optimal score
-      print(align_info[0])
+      output.write("\n" + str(best_align.best_score) + "\n")
       
       # print optimal alignment
       # start from last location, and backtrack
-      print(align_info[1], align_info[2], sep=",")
+      output.write("\n[" + str(best_align.best_coord1) + ", "
+                    + str(best_align.best_coord2) + "]")
+      alignment = backtrack(matrix, best_align)
 
-# helper function for performing the local alignment between 2 sequences
+      output.close()
+
+      # Do p-value things
+
+# Helper function for performing the local alignment between 2 sequences
 def local_align(seq1, seq2, matrix):
   best = 0;
   bestx = 0;
@@ -104,7 +120,29 @@ def local_align(seq1, seq2, matrix):
         bestx = i
         besty = j
   
-  return (best, bestx, besty)
+  return fasta.align_info(best, bestx, besty)
+
+# Helper function for backtracking through a matrix from best location
+def backtrack(matrix, best_align):
+  alignment1 = []
+  alignment2 = []
+  curx = best_align.best_coord1
+  cury = best_align.best_coord2
+
+  # while:
+
+  return (alignment1, alignment2)
+
+# Helper function for printing out a matrix, since numpy is being annoying
+def print_matrix(matrix, output):
+  if (matrix.shape[0] > 0 and matrix.shape[1] > 0):
+    for line in matrix:
+      output.write("[")
+      output.write(str(line[0]))
+      for i in range(1, len(line)):
+        output.write(" " + str(line[i]))
+      output.write("]")
+      output.write("\n")
 
 # Helper function for generating permutations, as detailed in lecture
 def generate_permutations(sequence):
@@ -119,21 +157,19 @@ def generate_permutations(sequence):
   return ''.join(seq_letters)
 
 def main():
-  # 0. Ensure our print is working, and set our constants at top of file
-  print("hello world!")
-
-  # 1. Get our desired fasta files. Uncomment as necessary
+  # 1. Get our desired fasta files. Comment if you don't need to.
   # get_fasta()
 
   # 2. Process fasta into individual lists. This results in a list of lists,
   # where each list contains corresponding fasta data structures for each
   # individual accession file, should a file contain multiple sequences.
+  # You shouldn't really be uncommenting this in normal cases.
   # fasta_list = []
   # for accession in constants.accession_set:
   #   fasta_list.append(process_fasta(accession))
   
-  # 2a. Uncomment to see what sequences we have processed, grouped by file
-  # for file in fasta_list:
+  # 2a. Uncomment to see what sequences we have processed in console,
+  # grouped by file in fasta_list. This won't work unless 2. is uncommented.
   #   print("\n")
   #   for seq in file:
   #     print(seq.species)
@@ -142,16 +178,19 @@ def main():
   #     print(seq.sequence)
   
   # 3. Perform analysis using the Smith-Waterman sequence alignment algorithm
+  # This is the actual analysis work, so it shouldn't be commented.
   # k = len(fasta_list)
   # for i in range(0, k):
   #   for j in range(i + 1, k):
   #     compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
 
-  # example: xxxcde and abcxdex
+  # 3a. class example: xxxcde and abcxdex
+  # You'll need to change the element_map to constants.test_map, 
+  # score_matrix to constants.test_matrix, and gap_score to -1 respectively.
   compare_seqs([fasta.fasta_info("", "abc", "", "abcxdex")],
-  [fasta.fasta_info("", "xxx", "", "xxxcde")], 0)
+  [fasta.fasta_info("", "xxx", "", "xxxcde")], num_epochs)
 
-  # . Generate random permutations for sequences, and then compare them to the
+  # 4. Generate random permutations for sequences, and then compare them to the
   # original sequence to determine the p-value.
   # for i in range(0, num_epochs):
   #   random_seq = generate_permutations("abcd")
