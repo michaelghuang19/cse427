@@ -7,11 +7,14 @@ import urllib as ul
 import fasta
 import constants
 
-def process_fasta(fasta):
-  print("we process a fasta")
+# Perform the fasta comparison between lists of fasta structures
+def compare_seqs(flist1, flist2):
+  for f1 in flist1:
+    for f2 in flist2:
+      print("Comparing " + f1.accession + " and " + f2.accession)
 
-# convert fasta data to data structure format
-def create_fasta(filename):
+# convert fasta data to a list of formatted data structures
+def process_fasta(filename):
   fasta_array = []
 
   file = open(constants.fasta_folder + filename + constants.fasta_exten, "r")
@@ -34,6 +37,8 @@ def create_fasta(filename):
     fasta_struct = fasta.fasta_info(species, accession, description, sequence)
     fasta_array.append(fasta_struct)
 
+  print("Successfully processed fasta for " + filename)
+
   return fasta_array
 
 # extra credit j: automated fasta retrieval + write into fasta folder
@@ -47,20 +52,37 @@ def get_fasta():
     output.write(fasta)
     output.close()
 
+    print("Successfully retrieved the fasta file for " + item)
+
 def main():
+  # 0. Ensure our print is working
   print("hello world!")
+
+  # 1. Get our desired fasta files. Uncomment as necessary
   # get_fasta()
 
+  # 2. Process fasta into individual lists. This results in a list of lists,
+  # where each list contains corresponding fasta data structures for each
+  # individual accession file, should a file contain multiple sequences.
   fasta_list = []
   for accession in constants.accession_set:
-    fasta_list.append(create_fasta(accession))
+    fasta_list.append(process_fasta(accession))
   
-  for file in fasta_list:
-    for seq in file:
-      print(seq.species)
-      print(seq.accession)
-      print(seq.description)
-      print(seq.sequence)
+  # 2a. Uncomment to see what sequences we have processed, grouped by file
+  # for file in fasta_list:
+  #   print("\n")
+  #   for seq in file:
+  #     print(seq.species)
+  #     print(seq.accession)
+  #     print(seq.description)
+  #     print(seq.sequence)
+  
+  # 3. Perform analysis using the Smith-Waterman sequence alignment algorithm
+  
+  k = len(fasta_list)
+  for i in range(0, k):
+    for j in range(i + 1, k):
+      compare_seqs(fasta_list[i], fasta_list[j])
 
 if __name__ == "__main__":
   main()

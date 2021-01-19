@@ -8,6 +8,7 @@ In addition, we want to ensure that we have the following python packages, which
   pip install csv
   pip install urllib
 
+Make sure to modify the constants.py file as necessary. Specifically, if we need to use different accession numbers, then we can modify the accession_set list to include more/less fasta files to be scraped and analyzed from the UniProt database.
 
 build
 

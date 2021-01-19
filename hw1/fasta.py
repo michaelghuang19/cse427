@@ -1,3 +1,4 @@
+# describes the fasta info data structure
 class fasta_info:
   def __init__(self, species, accession, description, sequence):
     self.species = species
