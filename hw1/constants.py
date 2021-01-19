@@ -4,7 +4,6 @@ blosum_map = {"A":0, "R":1, "N":2, "D":3, "C":4, "Q":5, "E":6, "G":7, "H":8, "I"
 
 blosum_matrix = np.array(
 [[4,-1,-2,-2,0,-1,-1,0,-2,-1,-1,-1,-1,-2,-1,1,0,-3,-2,0],
-[4,-1,-2,-2,0,-1,-1,0,-2,-1,-1,-1,-1,-2,-1,1,0,-3,-2,0],
 [-1,5,0,-2,-3,1,0,-2,0,-3,-2,2,-1,-3,-2,-1,-1,-3,-2,-3],
 [-2,0,6,1,-3,0,0,0,1,-3,-3,0,-2,-3,-2,1,0,-4,-2,-3],
 [-2,-2,1,6,-3,0,2,-1,-1,-3,-4,-1,-3,-3,-1,0,-1,-4,-3,-3],
@@ -26,12 +25,13 @@ blosum_matrix = np.array(
 [0,-3,-3,-3,-1,-2,-2,-3,-3,3,1,-2,1,-1,-2,-2,0,-3,-1,4]]
 )
 
-name_set = {"MYOD1_HUMAN", "TAL1_HUMAN", "MYOD1_MOUSE", "MYOD1_CHICK", 
+name_set = ["MYOD1_HUMAN", "TAL1_HUMAN", "MYOD1_MOUSE", "MYOD1_CHICK", 
 "MYODA_XENLA", "MYOD1_DANRE", "Q8IU24_BRABE", "MYOD_DROME", "LIN32_CAEEL", 
-"SYFM_HUMAN"}
+"SYFM_HUMAN"]
 
-accession_set = {"P15172", "P17542", "P10085", "P16075", "P13904", "Q90477", 
-"Q8IU24", "P22816", "Q10574", "O95363"}
+accession_set = ["P15172", "P17542", "P10085", "P16075", "P13904", "Q90477", 
+"Q8IU24", "P22816", "Q10574", "O95363"]
 
 uniprot_url = "http://www.uniprot.org/uniprot/"
-fasta_const = "fasta"
+fasta_exten = ".fasta"
+fasta_folder = "fasta/"
