@@ -90,9 +90,17 @@ def compare_seqs(flist1, flist2, num_permutations):
                     + str(best_align.best_coord2) + "]")
       alignment = backtrack(matrix, best_align)
 
-      output.close()
-
       # Do p-value things
+      # 4. Generate random permutations for sequences, and then compare them to the
+      # original sequence to determine the p-value.
+      # for i in range(0, num_epochs):
+      #   random_seq = generate_permutations("abcd")
+      #   compare_seqs(sequence, random_seq)
+      #   if compare_seqs > og_val:
+      #     p_count = p_count + 1
+      # empirical_p = ((float) p_count) / ((float) num_epochs)
+
+      output.close()
 
 # Helper function for performing the local alignment between 2 sequences
 def local_align(seq1, seq2, matrix):
@@ -189,15 +197,6 @@ def main():
   # score_matrix to constants.test_matrix, and gap_score to -1 respectively.
   compare_seqs([fasta.fasta_info("", "abc", "", "abcxdex")],
   [fasta.fasta_info("", "xxx", "", "xxxcde")], num_epochs)
-
-  # 4. Generate random permutations for sequences, and then compare them to the
-  # original sequence to determine the p-value.
-  # for i in range(0, num_epochs):
-  #   random_seq = generate_permutations("abcd")
-  #   compare_seqs(sequence, random_seq)
-  #   if compare_seqs > og_val:
-  #     p_count = p_count + 1
-  # empirical_p = ((float) p_count) / ((float) num_epochs)
 
 if __name__ == "__main__":
   main()
