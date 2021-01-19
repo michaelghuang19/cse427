@@ -11,7 +11,7 @@ import constants
 element_map = constants.test_map
 score_matrix = constants.test_matrix
 num_epochs = 100
-gap_score = -2;
+gap_score = -1;
 
 # extra credit j: automated fasta retrieval + write into fasta folder
 def get_fasta():
