@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
 import urllib as ul
-# biopython is being finicky
-# import Bio 
 
 import fasta
 import constants
@@ -168,18 +166,18 @@ def backtrack(matrix, best_align, seq1, seq2):
     if (matrix[curx-1][cury-1] + oldScore == maxVal):
       curx = curx - 1
       cury = cury - 1
-      changex = True
-      changey = True
+      xchange = True
+      ychange = True
       continue
     elif (matrix[curx][cury - 1] + gap_score == maxVal):
       cury = cury - 1
-      changex = False
-      changey = True
+      xchange = False
+      ychange = True
       continue
     elif (matrix[curx-1][cury] + gap_score == maxVal):
       curx = curx - 1
-      changex = True
-      changey = False
+      xchange = True
+      ychange = False
       continue
 
   return (''.join(alignment1)[::-1], ''.join(alignment2)[::-1])
@@ -214,7 +212,7 @@ def main():
   # 2. Process fasta into individual lists. This results in a list of lists,
   # where each list contains corresponding fasta data structures for each
   # individual accession file, should a file contain multiple sequences.
-  # You shouldn't really be uncommenting this in normal cases.
+  # You shouldn't really be commenting this in normal cases.
   # fasta_list = []
   # for accession in constants.accession_set:
   #   fasta_list.append(process_fasta(accession))
@@ -235,9 +233,13 @@ def main():
   #   for j in range(i + 1, k):
   #     compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
 
-  # 3a. example test seqs
+  # 3a. Uncomment for a example test seqs, that will be output as separate files.
   compare_seqs([fasta.fasta_info("", "seqid001", "", "KEVLAR")],
-  [fasta.fasta_info("", "seqid002", "", "KNIEVIL")], num_epochs)
+               [fasta.fasta_info("", "seqid002", "", "KNIEVIL")],
+               num_epochs)
+  compare_seqs([fasta.fasta_info("", "seqid003", "", "MELLSLCSWFAAATTYDADFYDDP")],
+               [fasta.fasta_info("", "seqid004", "", "MSNWTATSSDSTS")],
+               num_epochs)
 
 if __name__ == "__main__":
   main()
