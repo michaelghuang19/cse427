@@ -76,16 +76,15 @@ def compare_seqs(flist1, flist2, num_permutations):
       best_align = local_align(list(f1.sequence), list(f2.sequence), matrix)
 
       # print optimal score
-      output.write("\n" + str(best_align.best_score) + "\n\n")
+      output.write("\nscore: " + str(best_align.best_score) + "\n\n")
       
       # print optimal alignment information
       alignment = backtrack(matrix.tolist(), best_align, list(f1.sequence), list(f2.sequence))
-      output.write(alignment[0])
-      output.write("\n")
-      output.write(alignment[1])
-      output.write("\n\n")
 
-      # Print the matrix as necessary
+      # Line up our final strings for printing
+      print_alignment(str(f1.accession), str(f2.accession), alignment, output)
+
+      # Print the matrix if it's short enough
       if (len(alignment[0]) < 15 and len(alignment[1]) < 15):
         print_matrix(matrix, output)
         output.write("\n")
@@ -103,7 +102,7 @@ def compare_seqs(flist1, flist2, num_permutations):
           p_count = p_count + 1
       
       empirical_p = (p_count + 1) / (num_epochs + 1)
-      output.write(str(empirical_p))
+      output.write("p-value: " + str(empirical_p))
 
       output.close()
 
@@ -135,9 +134,11 @@ def local_align(seq1, seq2, matrix):
   return fasta.align_info(best, bestx, besty)
 
 # Helper function for backtracking through a matrix from best location
+# Extra credit: Processes and later prints the similarities in between strings
 def backtrack(matrix, best_align, seq1, seq2):
   alignment1 = []
   alignment2 = []
+  similarities = []
   curx = best_align.best_coord1
   cury = best_align.best_coord2
   xchange = True
@@ -155,6 +156,17 @@ def backtrack(matrix, best_align, seq1, seq2):
       alignment2.append(seq2[cury-1])
     else:
       alignment2.append("-")
+
+    last1 = alignment1[len(alignment1) - 1]
+    last2 = alignment2[len(alignment2) - 1]
+    if (last1 == "-" or last2 == "-"):
+      similarities.append(" ")
+    elif (last1 == last2):
+      similarities.append(last1)
+    elif (score_matrix[element_map.index(last1)][element_map.index(last2)] > 0):
+      similarities.append("+")
+    else:
+      similarities.append(" ")
     
     oldScore = score_matrix[element_map.index(seq1[curx-1])][element_map.index(seq2[cury-1])]
 
@@ -180,7 +192,49 @@ def backtrack(matrix, best_align, seq1, seq2):
       ychange = False
       continue
 
-  return (''.join(alignment1)[::-1], ''.join(alignment2)[::-1])
+  return (''.join(alignment1)[::-1], ''.join(alignment2)[::-1], curx, cury, ''.join(similarities)[::-1])
+
+# Helper function for printing out alignment
+def print_alignment(f1_id, f2_id, alignment, output):
+  cur = 0
+  end = 0
+  length = len(alignment[0])
+
+  seq1 = alignment[0]
+  seq2 = alignment[1]
+
+  index1 = alignment[2]
+  index2 = alignment[3]
+
+  similarities = alignment[4]
+
+  seq1_section = ""
+  seq2_section = ""
+
+  while cur < length:
+    if (length - cur < 60):
+      end = length
+    else:
+      end = cur + 60
+
+    seq1_section = seq1[cur:end]
+    seq2_section = seq2[cur:end]
+
+    seq1_info = f1_id + ":  " + str(index1 + 1) + "  "
+    seq2_info = f2_id + ":  " + str(index2 + 1) + "  "
+    while (len(seq1_info) < len(seq2_info)):
+      seq1_info = seq1_info + " "
+    while (len(seq2_info) < len(seq1_info)):
+      seq2_info = seq2_info + " "
+
+    output.write(seq1_info + seq1_section + "\n")
+    output.write((" " * len(seq1_info)) + similarities[cur:end] + "\n")
+    output.write(seq2_info + seq2_section + "\n")
+    output.write("\n")
+
+    index1 = index1 + 60 - seq1_section.count("-")
+    index2 = index2 + 60 - seq2_section.count("-")
+    cur = length + 60
 
 # Helper function for printing out a matrix, since numpy is being annoying
 def print_matrix(matrix, output):

@@ -1,9 +1,10 @@
 seqid003 to seqid004
 
-20
+score: 20
 
-LCSWFAAATTYDA
-MSN--WTATSSDS
+seqid003:  5  LCSWFAAATTYDA
+              + +    AT+ D+
+seqid004:  0  MSN--WTATSSDS
 
 [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 [0 5 1 0 0 0 0 0 0 0 0 0 0 0]
@@ -31,4 +32,4 @@ MSN--WTATSSDS
 [0 0 0 1 0 0 0 0 0 0 6 7 5 7]
 [0 0 0 0 0 0 0 0 0 0 2 5 6 4]
 
-0.19607843137254902
+p-value: 0.11764705882352941
