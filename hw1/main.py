@@ -10,7 +10,7 @@ import tests
 element_map = constants.blosum_map
 score_matrix = constants.blosum_matrix
 final_matrix = []
-num_epochs = 10
+num_epochs = 1
 gap_score = -4
 
 # extra credit j: automated fasta retrieval + write into fasta folder
@@ -65,7 +65,7 @@ def compare_seqs(flist1, flist2, num_permutations):
       # Open the output file and print the respect identifiers
       output = open(constants.results_folder
                     + f1.accession
-                    + "_"
+                    + "-"
                     + f2.accession 
                     + constants.text_exten, "wt")
       output.write(str(f1.accession) + " to " + str(f2.accession) + "\n")
@@ -292,11 +292,12 @@ def main():
     for j in range(i + 1, k):
       if ((fasta_list[i][0].accession == "P15172" and fasta_list[j][0].accession == "Q10574")
           or (fasta_list[i][0].accession == "P15172" and fasta_list[j][0].accession == "O95363")):
-        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], 999)
+        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], 1)
       else:
         final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
   
-  np.savetxt("final_matrix.txt", final_matrix, fmt="i")
+  np.savetxt("final_matrix.txt", final_matrix.astype(int), fmt="%i", delimiter = ",")
+  print(final_matrix.astype(int))
 
 
 if __name__ == "__main__":
