@@ -3,8 +3,8 @@ seqid003 to seqid004
 score: 20
 
 seqid003:  6  LCSWFAAATTYDA
-              + + +  AT+ D+
-seqid004:  1  MSN-WT-ATSSDS
+              + +W   AT+ D+
+seqid004:  1  MSNW--TATSSDS
 
 [0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 [0 5 1 0 0 0 0 0 0 0 0 0 0 0]
@@ -32,4 +32,4 @@ seqid004:  1  MSN-WT-ATSSDS
 [0 0 0 1 0 0 0 0 0 0 6 7 5 7]
 [0 0 0 0 0 0 0 0 0 0 2 5 6 4]
 
-p-value: 1.176471e-01
+p-value: 9.803922e-02

@@ -137,26 +137,42 @@ def local_align(seq1, seq2, matrix):
 # Helper function for backtracking through a matrix from best location
 # Extra credit: Processes and later prints the similarities in between strings
 def backtrack(matrix, best_align, seq1, seq2):
+  coords = []
   alignment1 = []
   alignment2 = []
   similarities = []
   curx = best_align.best_coord1
   cury = best_align.best_coord2
-  xchange = True
-  ychange = True
 
   while curx > 0 and cury > 0 and matrix[curx][cury] > 0:
-    print(str(curx) + ", " + str(cury) + ": " + str(matrix[curx][cury]))
+    coords.insert(0, (curx, cury))
+    
+    oldScore = score_matrix[element_map.index(seq1[curx-1])][element_map.index(seq2[cury-1])]
 
-    if xchange:
-      alignment1.append(seq1[curx-1])
-    else:
+    maxVal = max(matrix[curx-1][cury-1] + oldScore,
+            matrix[curx-1][cury] + gap_score,
+            matrix[curx][cury-1] + gap_score)
+
+    if (matrix[curx-1][cury-1] + oldScore == maxVal):
+      curx = curx - 1
+      cury = cury - 1
+    elif (matrix[curx][cury - 1] + gap_score == maxVal):
+      cury = cury - 1
+    elif (matrix[curx-1][cury] + gap_score == maxVal):
+      curx = curx - 1
+
+  # for loop here to complete the sequence
+  for i in range(len(coords)):
+
+    if (i != 0 and coords[i-1][0] == coords[i][0]):
       alignment1.append("-")
-
-    if ychange:
-      alignment2.append(seq2[cury-1])
     else:
+      alignment1.append(seq1[coords[i][0]-1])
+
+    if (i != 0 and coords[i-1][1] == coords[i][1]):
       alignment2.append("-")
+    else:
+      alignment2.append(seq2[coords[i][1]-1])
 
     last1 = alignment1[len(alignment1) - 1]
     last2 = alignment2[len(alignment2) - 1]
@@ -168,32 +184,8 @@ def backtrack(matrix, best_align, seq1, seq2):
       similarities.append("+")
     else:
       similarities.append(" ")
-    
-    oldScore = score_matrix[element_map.index(seq1[curx-1])][element_map.index(seq2[cury-1])]
 
-    maxVal = max(matrix[curx-1][cury-1] + oldScore,
-            matrix[curx-1][cury] + gap_score,
-            matrix[curx][cury-1] + gap_score)
-    print(maxVal)
-
-    if (matrix[curx-1][cury-1] + oldScore == maxVal):
-      curx = curx - 1
-      cury = cury - 1
-      xchange = True
-      ychange = True
-      continue
-    elif (matrix[curx][cury - 1] + gap_score == maxVal):
-      cury = cury - 1
-      xchange = False
-      ychange = True
-      continue
-    elif (matrix[curx-1][cury] + gap_score == maxVal):
-      curx = curx - 1
-      xchange = True
-      ychange = False
-      continue
-
-  return (''.join(alignment1)[::-1], ''.join(alignment2)[::-1], curx, cury, ''.join(similarities)[::-1])
+  return (''.join(alignment1), ''.join(alignment2), curx, cury, ''.join(similarities))
 
 # Helper function for printing out alignment
 def print_alignment(f1_id, f2_id, alignment, output):
