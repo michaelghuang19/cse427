@@ -4,6 +4,7 @@ import urllib as ul
 
 import fasta
 import constants
+import tests
 
 # 0. remember to set these constants
 element_map = constants.blosum_map
@@ -92,7 +93,7 @@ def compare_seqs(flist1, flist2, num_permutations):
       # Generate random permutations for sequences, and then compare them to the
       # original sequence to determine the p-value.
       p_count = 0
-      for i in range(0, num_epochs):
+      for i in range(0, num_permutations):
         random_matrix = np.zeros((len1 + 1, len2 + 1), dtype=int)
         random_seq = generate_permutations(f2.sequence)
 
@@ -101,8 +102,8 @@ def compare_seqs(flist1, flist2, num_permutations):
         if (random_score > best_align.best_score):
           p_count = p_count + 1
       
-      empirical_p = (p_count + 1) / (num_epochs + 1)
-      output.write("p-value: " + str(empirical_p))
+      empirical_p = (p_count + 1) / (num_permutations + 1)
+      output.write("p-value: " + "{:e}".format(empirical_p))
 
       output.close()
 
@@ -288,12 +289,10 @@ def main():
   #     compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
 
   # 3a. Uncomment for a example test seqs, that will be output as separate files.
-  compare_seqs([fasta.fasta_info("", "seqid001", "", "KEVLAR")],
-               [fasta.fasta_info("", "seqid002", "", "KNIEVIL")],
-               num_epochs)
-  compare_seqs([fasta.fasta_info("", "seqid003", "", "MELLSLCSWFAAATTYDADFYDDP")],
-               [fasta.fasta_info("", "seqid004", "", "MSNWTATSSDSTS")],
-               num_epochs)
+  tests.site_tests()
+
+  # 4. Perform test suite as defined in the assignment spec
+  tests.test1()
 
 if __name__ == "__main__":
   main()
