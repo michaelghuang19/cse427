@@ -9,8 +9,8 @@ import tests
 # 0. remember to set these constants
 element_map = constants.blosum_map
 score_matrix = constants.blosum_matrix
-# num_epochs = 1000
-num_epochs = 50
+final_matrix = []
+num_epochs = 10
 gap_score = -4
 
 # extra credit j: automated fasta retrieval + write into fasta folder
@@ -56,6 +56,8 @@ def process_fasta(filename):
 
 # Perform the comparison between lists of fasta structures
 def compare_seqs(flist1, flist2, num_permutations):
+  best_score = 0
+
   for f1 in flist1:
     for f2 in flist2:
       print("Comparing " + f1.accession + " and " + f2.accession)
@@ -77,7 +79,8 @@ def compare_seqs(flist1, flist2, num_permutations):
       best_align = local_align(list(f1.sequence), list(f2.sequence), matrix)
 
       # print optimal score
-      output.write("\nscore: " + str(best_align.best_score) + "\n\n")
+      best_score = best_align.best_score
+      output.write("\nscore: " + str(best_score) + "\n\n")
       
       # print optimal alignment information
       alignment = backtrack(matrix.tolist(), best_align, list(f1.sequence), list(f2.sequence))
@@ -106,6 +109,8 @@ def compare_seqs(flist1, flist2, num_permutations):
       output.write("p-value: " + "{:e}".format(empirical_p))
 
       output.close()
+  
+  return best_score
 
 # Helper function for performing the local alignment between 2 sequences
 def local_align(seq1, seq2, matrix):
@@ -254,15 +259,17 @@ def generate_permutations(sequence):
 
 def main():
   # 1. Get our desired fasta files. Comment if you don't need to.
-  # get_fasta()
+  get_fasta()
 
   # 2. Process fasta into individual lists. This results in a list of lists,
   # where each list contains corresponding fasta data structures for each
   # individual accession file, should a file contain multiple sequences.
   # You shouldn't really be commenting this in normal cases.
-  # fasta_list = []
-  # for accession in constants.accession_set:
-  #   fasta_list.append(process_fasta(accession))
+  fasta_list = []
+  for accession in constants.accession_set:
+    fasta_list.append(process_fasta(accession))
+  
+  final_matrix = np.zeros((len(fasta_list), len(fasta_list)), dtype=int)
   
   # 2a. Uncomment to see what sequences we have processed in console,
   # grouped by file in fasta_list. This won't work unless 2. is uncommented.
@@ -275,16 +282,22 @@ def main():
   
   # 3. Perform analysis using the Smith-Waterman sequence alignment algorithm
   # This is the actual analysis work, so it shouldn't be commented.
-  # k = len(fasta_list)
-  # for i in range(0, k):
-  #   for j in range(i + 1, k):
-  #     compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
 
-  # 3a. Uncomment for a example test seqs, that will be output as separate files.
-  tests.site_tests()
-
-  # 4. Perform test suite as defined in the assignment spec
+  # Test 1.
   tests.test1()
+
+  # Tests 2. and 3.
+  k = len(fasta_list)
+  for i in range(0, k):
+    for j in range(i + 1, k):
+      if ((fasta_list[i][0].accession == "P15172" and fasta_list[j][0].accession == "Q10574")
+          or (fasta_list[i][0].accession == "P15172" and fasta_list[j][0].accession == "O95363")):
+        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], 999)
+      else:
+        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
+  
+  np.savetxt("final_matrix.txt", final_matrix, fmt="i")
+
 
 if __name__ == "__main__":
   main()

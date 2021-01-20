@@ -11,12 +11,6 @@ def test1():
                     [fasta.fasta_info("", "s2", "", "DDGEARLYK")],
                     999)
 
-def test2():
-  print("")
-
-def test3():
-  print("")
-
 def site_tests():
   main.compare_seqs([fasta.fasta_info("", "seqid001", "", "KEVLAR")],
                [fasta.fasta_info("", "seqid002", "", "KNIEVIL")],
