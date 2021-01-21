@@ -5,6 +5,7 @@ In addition, we want to ensure that we have the following python packages, which
   pip install pandas
   pip install numpy
   pip install urllib
+  pip install tabulate
 
 Make sure to modify the constants.py file as necessary. Specifically, if we need to use different accession numbers, then we can modify the accession_set list to include more/less fasta files to be scraped and analyzed from the UniProt database.
 
@@ -16,4 +17,4 @@ Comment or uncomment these as desired.
 Next, with all the settings and code sections we need to run set up, we can simply run the script by entering
   python main.py
 
-Our individual results will then be printed to the results/ folder, but for the purpose of the specified test cases as deemed necessary in the spec, we have also combined some specific results into output.txt in the top-layer of the environment.
+Our individual results would normally then be printed to the results/ folder, but for the purpose of the specified test cases as deemed necessary in the spec, we have combined some specific results into output.txt in the top-layer of the environment.

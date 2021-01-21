@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import urllib as ul
+import tabulate
 
 import fasta
 import constants
@@ -232,7 +233,7 @@ def print_alignment(f1_id, f2_id, alignment, output):
 def print_matrix(matrix, output, columns, rows, replace_zeros):
   if (matrix.shape[0] > 0 and matrix.shape[1] > 0):
     # print header
-    output.write(" \t ")
+    output.write(" ")
 
     output.write(str(columns[0]))
     for i in range(1, len(columns)):
@@ -256,10 +257,10 @@ def print_matrix(matrix, output, columns, rows, replace_zeros):
       
       for i in range(1, len(line)):
         if (replace_zeros):
-          if (str(line[0]) == "0"):
-            output.write(" ")
+          if (str(line[i]) == "0"):
+            output.write("\t" + " ")
           else:
-            output.write(str(line[0]))
+            output.write("\t" + str(line[i]))
         else:
           output.write("\t" + str(line[i]))
       
@@ -279,7 +280,7 @@ def print_pvalue(f1, f2, best_align, num_permutations, output):
       p_count = p_count + 1
 
   empirical_p = (p_count + 1) / (num_permutations + 1)
-  output.write("p-value: " + "{:e}".format(empirical_p) + "\n")
+  output.write("p-value: " + "{:e}".format(empirical_p) + "\n\n")
 
 # Helper function for generating permutations, as detailed in lecture
 def generate_permutations(sequence):
