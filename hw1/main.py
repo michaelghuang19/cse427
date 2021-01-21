@@ -10,7 +10,7 @@ import tests
 element_map = constants.blosum_map
 score_matrix = constants.blosum_matrix
 final_matrix = []
-num_epochs = 1
+num_epochs = 10
 gap_score = -4
 
 # extra credit j: automated fasta retrieval + write into fasta folder
@@ -55,19 +55,22 @@ def process_fasta(filename):
   return fasta_array
 
 # Perform the comparison between lists of fasta structures
-def compare_seqs(flist1, flist2, num_permutations):
+def compare_seqs(flist1, flist2, num_permutations, output):
   best_score = 0
 
   for f1 in flist1:
     for f2 in flist2:
       print("Comparing " + f1.accession + " and " + f2.accession)
 
-      # Open the output file and print the respect identifiers
-      output = open(constants.results_folder
-                    + f1.accession
-                    + "-"
-                    + f2.accession 
-                    + constants.text_exten, "wt")
+      # Open the output file and print the respect identifiers.
+      # Uncomment this and the lower .close() out if you want to print to individual files
+
+      # output.close()
+      # output = open(constants.results_folder
+      #               + f1.accession
+      #               + "-"
+      #               + f2.accession 
+      #               + constants.text_exten, "wt")
       output.write(str(f1.accession) + " to " + str(f2.accession) + "\n")
       
       # Create matrix of 0's
@@ -89,26 +92,17 @@ def compare_seqs(flist1, flist2, num_permutations):
       print_alignment(str(f1.accession), str(f2.accession), alignment, output)
 
       # Print the matrix if it's short enough
-      if (len(alignment[0]) < 15 and len(alignment[1]) < 15):
-        print_matrix(matrix, output)
+      if (len(f1.sequence) < 15 and len(f2.sequence) < 15):
+        print_matrix(matrix, output, list(" " + f2.sequence), list(" " + f1.sequence), False)
         output.write("\n")
 
       # Generate random permutations for sequences, and then compare them to the
       # original sequence to determine the p-value.
-      p_count = 0
-      for i in range(0, num_permutations):
-        random_matrix = np.zeros((len1 + 1, len2 + 1), dtype=int)
-        random_seq = generate_permutations(f2.sequence)
+      if (num_permutations > 0):
+        print_pvalue(f1, f2, best_align, num_permutations, output)
 
-        random_score = local_align(f1.sequence, random_seq, random_matrix).best_score
-        
-        if (random_score > best_align.best_score):
-          p_count = p_count + 1
-      
-      empirical_p = (p_count + 1) / (num_permutations + 1)
-      output.write("p-value: " + "{:e}".format(empirical_p))
-
-      output.close()
+      # Uncomment this if you uncommented the block above to print to individual files.
+      # output.close()
   
   return best_score
 
@@ -232,18 +226,60 @@ def print_alignment(f1_id, f2_id, alignment, output):
 
     index1 = index1 + 60 - seq1_section.count("-")
     index2 = index2 + 60 - seq2_section.count("-")
-    cur = length + 60
+    cur = cur + 60
 
 # Helper function for printing out a matrix, since numpy is being annoying
-def print_matrix(matrix, output):
+def print_matrix(matrix, output, columns, rows, replace_zeros):
   if (matrix.shape[0] > 0 and matrix.shape[1] > 0):
-    for line in matrix:
+    # print header
+    output.write(" \t ")
+
+    output.write(str(columns[0]))
+    for i in range(1, len(columns)):
+      output.write("\t" + str(columns[i]))
+    output.write("\n")
+
+    # print actual data
+    for i in range(len(matrix)):
+      line = matrix[i]
+      output.write(str(rows[i]))
+      
       output.write("[")
-      output.write(str(line[0]))
+
+      if (replace_zeros):
+        if (str(line[0]) == "0"):
+          output.write(" ")
+        else:
+          output.write(str(line[0]))
+      else:
+        output.write(str(line[0]))
+      
       for i in range(1, len(line)):
-        output.write(" " + str(line[i]))
+        if (replace_zeros):
+          if (str(line[0]) == "0"):
+            output.write(" ")
+          else:
+            output.write(str(line[0]))
+        else:
+          output.write("\t" + str(line[i]))
+      
       output.write("]")
       output.write("\n")
+
+# Helper function for printing out the p-value
+def print_pvalue(f1, f2, best_align, num_permutations, output):
+  p_count = 0
+  for i in range(0, num_permutations):
+    random_matrix = np.zeros((len(f1.sequence) + 1, len(f2.sequence) + 1), dtype=int)
+    random_seq = generate_permutations(f2.sequence)
+
+    random_score = local_align(f1.sequence, random_seq, random_matrix).best_score
+    
+    if (random_score > best_align.best_score):
+      p_count = p_count + 1
+
+  empirical_p = (p_count + 1) / (num_permutations + 1)
+  output.write("p-value: " + "{:e}".format(empirical_p) + "\n")
 
 # Helper function for generating permutations, as detailed in lecture
 def generate_permutations(sequence):
@@ -283,8 +319,10 @@ def main():
   # 3. Perform analysis using the Smith-Waterman sequence alignment algorithm
   # This is the actual analysis work, so it shouldn't be commented.
 
+  output = open("output.txt", "wt")
+
   # Test 1.
-  tests.test1()
+  tests.test1(output)
 
   # Tests 2. and 3.
   k = len(fasta_list)
@@ -292,12 +330,17 @@ def main():
     for j in range(i + 1, k):
       if ((fasta_list[i][0].accession == "P15172" and fasta_list[j][0].accession == "Q10574")
           or (fasta_list[i][0].accession == "P15172" and fasta_list[j][0].accession == "O95363")):
-        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], 1)
+        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], 9, output)
       else:
-        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], num_epochs)
+        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], num_epochs, output)
+      
+      output.write("\n")
+
+  # 4. Write the final matrix as well before closing output
+  seqnum_list = [*range(1, len(final_matrix) + 1)]
+  print_matrix(final_matrix, output, seqnum_list, seqnum_list, True)
   
-  np.savetxt("final_matrix.txt", final_matrix.astype(int), fmt="%i", delimiter = ",")
-  print(final_matrix.astype(int))
+  output.close()
 
 
 if __name__ == "__main__":
