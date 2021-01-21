@@ -317,9 +317,8 @@ def main():
 
   # 4. Write the final matrix as well before closing output
   seqnum_list = [*range(1, len(final_matrix) + 1)]
-  print_matrix(final_matrix, output, seqnum_list, seqnum_list)
-  print(tabulate(final_matrix))
-  # output.write(tabulate(final_matrix))
+  columns = seqnum_list.insert(0, " ")
+  print_matrix(final_matrix, output, columns, seqnum_list)
 
   output.close()
 

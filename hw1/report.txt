@@ -1,0 +1,53 @@
+III (1) Test case output:
+s1 to s2
+
+score: 20
+
+s1:  1  D-EADLY
+        D EA LY
+s2:  2  DGEARLY
+
+-  -  -  -  -  --  --  -  --  --  --
+      D  D  G  E   A   R  L   Y   K
+-  -  -  -  -  -   -   -  -   -   -
+   0  0  0  0  0   0   0  0   0   0
+D  0  6  6  2  2   0   0  0   0   0
+E  0  2  8  4  7   3   0  0   0   1
+A  0  0  4  8  4   11  7  3   0   0
+D  0  6  6  4  10  7   9  5   1   0
+L  0  2  2  2  6   9   5  13  9   5
+Y  0  0  0  0  2   5   7  9   20  16
+-  -  -  -  -  --  --  -  --  --  --
+
+p-value: 2.800000e-02
+
+[[   0  143 1500 1020  978  893  428  368  118   56]
+ [   0    0  128  129  128  112  144  123  156   66]
+ [   0    0    0 1043 1002  925  440  367  118   52]
+ [   0    0    0    0 1147 1093  448  414  120   61]
+ [   0    0    0    0    0 1104  450  410  120   72]
+ [   0    0    0    0    0    0  449  410  117   62]
+ [   0    0    0    0    0    0    0  446  125   45]
+ [   0    0    0    0    0    0    0    0  124   74]
+ [   0    0    0    0    0    0    0    0    0   67]
+ [   0    0    0    0    0    0    0    0    0    0]]
+ 
+III(3)
+p-value for P15172 and Q10574: 1.000000e-03
+p-value for P15172 and O95363: 5.180000e-01
+I did 999 trials for each.
+
+II (b) One sentence summary of the protein's (known) function. Based on that, write whether you expect each protein to be similar to the others or not.
+1.	MYOD_HUMAN: An activator gene that promotes transcription of muscle-specific genes and helps with muscle differentiation. Since some other genes are from humans and muscle or myoblast-related as well, I expect this protein to be similar to the others.
+2.	TAL1_HUMAN: Associated with hemopoietic—or blood cellular—malignancies, including leukemia. It is expected to be related to blood cell differentiation as well. Other genes seem to be more muscle cell-related, which leads me to expect this protein to be less similar to the others.
+3.	MYOD1_MOUSE: An activator gene that promotes transcription of muscle-specific genes and helps with muscle differentiation. This gene’s description is near-identical to that of MYOD1_HUMAN, which makes me believe that this gene will end up being similar to others. 
+4.	MYOD1_CHICK: In the chicken, acts as a activator gene that promotes transcription of muscle-specific genes and plays a role in muscle differentiation. Again, this is similar to other genes on the list who are both MyoD and muscle development-related genes, which makes me expect this gene to be similar to the others. 
+5.	MYODA_XENLA: In the African clawed frog, may act as a transcriptional activator that promotes transcription of muscle-specific target genes and plays a role in muscle differentiation. This is very similar to other organisms with a MyoD- or muscle-related functions, so I do expect this gene to be similar to the others.
+6.	MYOD1_DANRE: In zebrafish, may act as a transcriptional activator that promotes transcription of muscle-specific target genes and plays a role in muscle differentiation. In the same way as MYODA_XENLA, I would expect this gene to be similar to the others since there seems to be a common function, and zebrafish are also a terrific model organism.
+7.	Q8IU24_BRABE: No known function, but is expected to be associated with MyoD and muscle organ development. Since this organism may be key to the evolution of vertebrates, I expect this gene to be somewhat similar to the others, but maybe not as much.  
+8.	MYOD_DROME: Is expected to be important to muscle development in the fruit fly. This seems pretty similar to other genes’ association with muscle development and MyoD, so I expect this gene to be pretty similar to the others.
+9.	LIN32_CAEEL: This gene in C. elegans is expected to be involved in the development and differentiation of neurons. Since this gene deals with nerve-related functions rather than muscles, I don’t expect this gene to be similar to the others.
+10.	SYFM_HUMAN: Linked to dealing with tRNA in mitochondrial translation and other tRNA functions, such as delivering tRNA to the ribosome and incorporating damaged amino acid into proteins. This doesn’t seem as explicitly MyoD- or muscle-related as the other genes, although it is in humans, so I don’t expect this gene to be as similar to the others.
+
+After seeing the scores, my predicted similarities have changed very slightly, but generally have stayed the same, with MyoD-related genes being quite similar to each other, while other genes were not as similar to the others.
+
