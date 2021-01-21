@@ -6,16 +6,19 @@ s1:  1  D-EADLY
         D EA LY
 s2:  2  DGEARLY
 
-  	D	D	G	E	A	R	L	Y	K
- [0	0	0	0	0	0	0	0	0	0]
-D[0	6	6	2	2	0	0	0	0	0]
-E[0	2	8	4	7	3	0	0	0	1]
-A[0	0	4	8	4	11	7	3	0	0]
-D[0	6	6	4	10	7	9	5	1	0]
-L[0	2	2	2	6	9	5	13	9	5]
-Y[0	0	0	0	2	5	7	9	20	16]
+-  -  -  -  -  --  --  -  --  --  --
+      D  D  G  E   A   R  L   Y   K
+-  -  -  -  -  -   -   -  -   -   -
+   0  0  0  0  0   0   0  0   0   0
+D  0  6  6  2  2   0   0  0   0   0
+E  0  2  8  4  7   3   0  0   0   1
+A  0  0  4  8  4   11  7  3   0   0
+D  0  6  6  4  10  7   9  5   1   0
+L  0  2  2  2  6   9   5  13  9   5
+Y  0  0  0  0  2   5   7  9   20  16
+-  -  -  -  -  --  --  -  --  --  --
 
-p-value: 1.800000e-02
+p-value: 2.100000e-02
 
 P15172 to P17542
 
@@ -578,7 +581,7 @@ P10085:  133  KRCTS-S--NPNQR-LPKVEI-LRNAIRYIE-GL-QALLR
               K   S      + R   K E     A++ +E  L Q L R
 O95363:  210  KDGESLQLFEQSSRSAHKQETHTMEAVKLVEFDLKQTLTR
 
-p-value: 6.363636e-01
+p-value: 8.181818e-01
 
 
 P16075 to P13904
@@ -716,7 +719,7 @@ P16075:  128  STNP-NQ--R-LPKVEI-LRNAIRYIE-SL-QALLR
               S     Q  R   K E     A++ +E  L Q L R
 O95363:  214  SLQLFEQSSRSAHKQETHTMEAVKLVEFDLKQTLTR
 
-p-value: 3.636364e-01
+p-value: 7.272727e-01
 
 
 P13904 to Q90477
@@ -835,7 +838,7 @@ P13904:  228  ERISTQSPSCPVPTAVDSGSEGSPCSPLQGET-LSERVITI
               +++  Q P    P  ++  S   P S    E    + V TI
 O95363:  350  QKVKFQ-PLSKYPAVINDISFWLP-SENYAENDFYDLVRTI
 
-p-value: 9.090909e-02
+p-value: 1.818182e-01
 
 
 Q90477 to Q8IU24
@@ -911,7 +914,7 @@ Q90477:  55   HV-RAPS----GH-HQA
               H+ R  S     H HQA
 O95363:  420  HMERTLSQREVRHIHQA
 
-p-value: 6.363636e-01
+p-value: 3.636364e-01
 
 
 Q8IU24 to P22816
@@ -1018,7 +1021,7 @@ P22816:  299  NKATPSA-SDTQS-PPS
               +K  P+  +D     PS
 O95363:  358  SK-YPAVINDISFWLPS
 
-p-value: 3.636364e-01
+p-value: 2.727273e-01
 
 
 Q10574 to O95363
@@ -1040,14 +1043,17 @@ O95363:  205  L-FAGIKDGESL-QLFEQSSRSAH-KQET
 p-value: 9.090909e-02
 
 
- 1	2	3	4	5	6	7	8	9	10
-1[ 	143	1500	1020	978	893	428	368	118	56]
-2[ 	 	128	129	128	112	144	123	156	66]
-3[ 	 	 	1043	1002	925	440	367	118	52]
-4[ 	 	 	 	1147	1093	448	414	120	61]
-5[ 	 	 	 	 	1104	450	410	120	72]
-6[ 	 	 	 	 	 	449	410	117	62]
-7[ 	 	 	 	 	 	 	446	125	45]
-8[ 	 	 	 	 	 	 	 	124	74]
-9[ 	 	 	 	 	 	 	 	 	67]
-10[ 	 	 	 	 	 	 	 	 	 ]
+--  -  ---  ----  ----  ----  ----  ---  ---  ---  --
+1   2  3    4     5     6     7     8    9    10
+-   -  -    -     -     -     -     -    -    -
+1   0  143  1500  1020  978   893   428  368  118  56
+2   0  0    128   129   128   112   144  123  156  66
+3   0  0    0     1043  1002  925   440  367  118  52
+4   0  0    0     0     1147  1093  448  414  120  61
+5   0  0    0     0     0     1104  450  410  120  72
+6   0  0    0     0     0     0     449  410  117  62
+7   0  0    0     0     0     0     0    446  125  45
+8   0  0    0     0     0     0     0    0    124  74
+9   0  0    0     0     0     0     0    0    0    67
+10  0  0    0     0     0     0     0    0    0     0
+--  -  ---  ----  ----  ----  ----  ---  ---  ---  --

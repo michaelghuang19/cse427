@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import urllib as ul
-import tabulate
+from tabulate import tabulate
 
 import fasta
 import constants
@@ -11,7 +11,7 @@ import tests
 element_map = constants.blosum_map
 score_matrix = constants.blosum_matrix
 final_matrix = []
-num_epochs = 10
+num_epochs = 0
 gap_score = -4
 
 # extra credit j: automated fasta retrieval + write into fasta folder
@@ -94,7 +94,7 @@ def compare_seqs(flist1, flist2, num_permutations, output):
 
       # Print the matrix if it's short enough
       if (len(f1.sequence) < 15 and len(f2.sequence) < 15):
-        print_matrix(matrix, output, list(" " + f2.sequence), list(" " + f1.sequence), False)
+        print_matrix(matrix, output, list("  " + f2.sequence), list(" " + f1.sequence))
         output.write("\n")
 
       # Generate random permutations for sequences, and then compare them to the
@@ -230,42 +230,20 @@ def print_alignment(f1_id, f2_id, alignment, output):
     cur = cur + 60
 
 # Helper function for printing out a matrix, since numpy is being annoying
-def print_matrix(matrix, output, columns, rows, replace_zeros):
+def print_matrix(matrix, output, columns, rows):
   if (matrix.shape[0] > 0 and matrix.shape[1] > 0):
-    # print header
-    output.write(" ")
+    matrix = matrix.tolist()
 
-    output.write(str(columns[0]))
-    for i in range(1, len(columns)):
-      output.write("\t" + str(columns[i]))
-    output.write("\n")
-
-    # print actual data
     for i in range(len(matrix)):
-      line = matrix[i]
-      output.write(str(rows[i]))
-      
-      output.write("[")
+      matrix[i].insert(0, rows[i])
 
-      if (replace_zeros):
-        if (str(line[0]) == "0"):
-          output.write(" ")
-        else:
-          output.write(str(line[0]))
-      else:
-        output.write(str(line[0]))
-      
-      for i in range(1, len(line)):
-        if (replace_zeros):
-          if (str(line[i]) == "0"):
-            output.write("\t" + " ")
-          else:
-            output.write("\t" + str(line[i]))
-        else:
-          output.write("\t" + str(line[i]))
-      
-      output.write("]")
-      output.write("\n")
+    matrix.insert(0, list("-" * len(columns)))
+    matrix.insert(0, columns)
+    
+
+    output.write(tabulate(matrix))
+
+    output.write("\n")
 
 # Helper function for printing out the p-value
 def print_pvalue(f1, f2, best_align, num_permutations, output):
@@ -331,7 +309,7 @@ def main():
     for j in range(i + 1, k):
       if ((fasta_list[i][0].accession == "P15172" and fasta_list[j][0].accession == "Q10574")
           or (fasta_list[i][0].accession == "P15172" and fasta_list[j][0].accession == "O95363")):
-        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], 9, output)
+        final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], 999, output)
       else:
         final_matrix[i][j] = compare_seqs(fasta_list[i], fasta_list[j], num_epochs, output)
       
@@ -339,10 +317,11 @@ def main():
 
   # 4. Write the final matrix as well before closing output
   seqnum_list = [*range(1, len(final_matrix) + 1)]
-  print_matrix(final_matrix, output, seqnum_list, seqnum_list, True)
-  
-  output.close()
+  print_matrix(final_matrix, output, seqnum_list, seqnum_list)
+  print(tabulate(final_matrix))
+  # output.write(tabulate(final_matrix))
 
+  output.close()
 
 if __name__ == "__main__":
   main()
