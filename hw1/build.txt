@@ -1,3 +1,6 @@
+Michael Huang (mhuang19)
+1862567
+
 If you have issues on Windows, first ensure that your configured python is python 3.7, or alternatively we can simply enter
   alias python=python3
 

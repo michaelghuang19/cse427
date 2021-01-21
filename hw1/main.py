@@ -1,3 +1,6 @@
+# Michael Huang (mhuang19)
+# 1862567
+
 import pandas as pd
 import numpy as np
 import urllib as ul
