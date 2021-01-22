@@ -52,5 +52,8 @@ II (b) One sentence summary of the protein's (known) function. Based on that, wr
 9.	LIN32_CAEEL: This gene in C. elegans is expected to be involved in the development and differentiation of neurons. Since this gene deals with nerve-related functions rather than muscles, I don’t expect this gene to be similar to the others.
 10.	SYFM_HUMAN: Linked to dealing with tRNA in mitochondrial translation and other tRNA functions, such as delivering tRNA to the ribosome and incorporating damaged amino acid into proteins. This doesn’t seem as explicitly MyoD- or muscle-related as the other genes, although it is in humans, so I don’t expect this gene to be as similar to the others.
 
+Reflection
 After seeing the scores, my predicted similarities have changed very slightly, but generally have stayed the same, with MyoD-related genes being quite similar to each other, while other genes were not as similar to the others.
 
+Extra Credit b. 
+The naive algorithm does indeed correctly shuffle a 2 card deck. Say our 2 card deck is represented as {1, 2}. In the same terminology as the blog post, for the KFY shuffle, we would call rand.Next(2) exactly once when selecting which card to swap, which would give us the possible outputs of {1, 2} and {2, 1}. However, in the same step, the naive algorithm would call rand.Next(2) twice. We notice that this would give us {1, 2} twice and {2, 1} twice as the outputs for the naive algorithm. These are equivalent in terms of probability, since we would have a 50% chance of getting either possible combination.
