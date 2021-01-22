@@ -1,5 +1,7 @@
 import numpy as np
 
+# most of the global constants necessary are in here.
+
 name_set = ["MYOD1_HUMAN", "TAL1_HUMAN", "MYOD1_MOUSE", "MYOD1_CHICK", 
 "MYODA_XENLA", "MYOD1_DANRE", "Q8IU24_BRABE", "MYOD_DROME", "LIN32_CAEEL", 
 "SYFM_HUMAN"]

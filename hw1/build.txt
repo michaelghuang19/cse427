@@ -14,10 +14,10 @@ Make sure to modify the constants.py file as necessary. Specifically, if we need
 
 In addition, ensure that our global constants at the top of main.py are properly set, as necessary for whichever case of matrix/scoring we are doing.
 
-Give the main function in main.py a look--there are numbered steps explaining what we need to do.
+Give the main function in main.py a look--there are numbered steps explaining what we (might) need to do.
 Comment or uncomment these as desired.
 
 Next, with all the settings and code sections we need to run set up, we can simply run the script by entering
   python main.py
 
-Our individual results would normally then be printed to the results/ folder, but for the purpose of the specified test cases as deemed necessary in the spec, we have combined some specific results into output.txt in the top-layer of the environment.
+Our individual results would normally then be printed to the results/ folder, but for the purpose of the assignment, we have compiled the specified test cases as deemed necessary in the spec and combined the specific results in the output.txt file in the top-layer of the environment.

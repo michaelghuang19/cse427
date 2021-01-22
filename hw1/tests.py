@@ -6,6 +6,8 @@ import main
 import fasta
 import constants
 
+# various test modules (WIP)
+
 def test1(output):
   main.compare_seqs([fasta.fasta_info("", "s1", "", "DEADLY")],
                     [fasta.fasta_info("", "s2", "", "DDGEARLYK")],

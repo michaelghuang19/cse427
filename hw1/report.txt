@@ -38,7 +38,7 @@ p-value: 2.800000e-02
 III(3)
 p-value for P15172 and Q10574: 1.000000e-03
 p-value for P15172 and O95363: 5.180000e-01
-I did 999 trials for each.
+I did 999 random trials for each.
 
 II (b) One sentence summary of the protein's (known) function. Based on that, write whether you expect each protein to be similar to the others or not.
 1.	MYOD_HUMAN: An activator gene that promotes transcription of muscle-specific genes and helps with muscle differentiation. Since some other genes are from humans and muscle or myoblast-related as well, I expect this protein to be similar to the others.

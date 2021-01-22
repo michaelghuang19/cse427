@@ -10,7 +10,7 @@ import fasta
 import constants
 import tests
 
-# 0. remember to set these constants
+# 0. Remember to set these constants as necessary
 element_map = constants.blosum_map
 score_matrix = constants.blosum_matrix
 final_matrix = []
@@ -190,7 +190,7 @@ def backtrack(matrix, best_align, seq1, seq2):
 
   return (''.join(alignment1), ''.join(alignment2), curx, cury, ''.join(similarities))
 
-# Helper function for printing out alignment
+# Helper function for printing out alignments (relatively) neatly
 def print_alignment(f1_id, f2_id, alignment, output):
   cur = 0
   end = 0
@@ -263,7 +263,7 @@ def print_pvalue(f1, f2, best_align, num_permutations, output):
   empirical_p = (p_count + 1) / (num_permutations + 1)
   output.write("p-value: " + "{:e}".format(empirical_p) + "\n\n")
 
-# Helper function for generating permutations, as detailed in lecture
+# Helper function for generating permutations, using as detailed in lecture
 def generate_permutations(sequence):
   seq_letters = list(sequence)
 
@@ -275,14 +275,16 @@ def generate_permutations(sequence):
 
   return ''.join(seq_letters)
 
+# Main function for running the alignment algorithm
 def main():
-  # 1. Get our desired fasta files. Comment if you don't need to.
+  # 1. Get our desired fasta files. Comment if you don't need to/already did,
+  # this can take a bit (check if the fasta folder contains fasta files already).
   get_fasta()
 
   # 2. Process fasta into individual lists. This results in a list of lists,
   # where each list contains corresponding fasta data structures for each
   # individual accession file, should a file contain multiple sequences.
-  # You shouldn't really be commenting this in normal cases.
+  # You shouldn't really be commenting this out in normal cases.
   fasta_list = []
   for accession in constants.accession_set:
     fasta_list.append(process_fasta(accession))
@@ -300,7 +302,7 @@ def main():
   
   # 3. Perform analysis using the Smith-Waterman sequence alignment algorithm
   # This is the actual analysis work, so it shouldn't be commented.
-
+  # For the purposes of the assignment, we open output.txt rather than individual files.
   output = open("output.txt", "wt")
 
   # Test 1.
