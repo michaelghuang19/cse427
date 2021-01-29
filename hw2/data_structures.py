@@ -1,7 +1,6 @@
-# describes the fasta info data structure, and best alignment data structure
+# describes any custom data structures that we might need
+
 class fasta_info:
-  def __init__(self, species, accession, description, sequence):
-    self.species = species
-    self.accession = accession
+  def __init__(self, description, sequence):
     self.description = description
     self.sequence = sequence

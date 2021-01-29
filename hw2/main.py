@@ -59,9 +59,14 @@ def main():
   # where each list contains corresponding fasta data structures for each
   # individual accession file, should a file contain multiple sequences.
   # You shouldn't really be commenting this out in normal cases.
-  fasta_list = []
-  for accession in c.file_set:
-    fasta_list.append(h.process_fasta(accession[0]))
+  fasta_files = []
+  for accession in c.file_dict.keys():
+    fasta_files.append(h.process_fasta(accession))
+
+  for fasta_list in fasta_files:
+    for fasta in fasta_list:
+      # if (fasta.description == "mm9_chr1:80073137-80073149(+)"):
+      print(fasta.sequence)
 
 if __name__ == "__main__":
   main()
