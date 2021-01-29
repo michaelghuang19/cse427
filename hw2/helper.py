@@ -29,3 +29,14 @@ def process_fasta(filename):
   print("Successfully processed fasta for " + filename)
 
   return fasta_array
+
+def create_empty_count_matrix():
+  print("create_empty_count_matrix")
+
+def create_empty_frequency_matrix():
+  print("create_empty_frequency_matrix")
+
+def create_empty_weight_matrix():
+  print("create_empty_weight_matrix")
+
+
