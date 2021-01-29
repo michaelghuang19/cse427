@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import urllib as ul
 from tabulate import tabulate
+import itertools
 
 import fasta
 import constants
@@ -303,10 +304,10 @@ def main():
   # 3. Perform analysis using the Smith-Waterman sequence alignment algorithm
   # This is the actual analysis work, so it shouldn't be commented.
   # For the purposes of the assignment, we open output.txt rather than individual files.
-  output = open("output.txt", "wt")
+  output = open("output" + constants.text_exten, "wt")
 
   # Test 1.
-  tests.test1(output)
+  tests.test1(output, 999)
 
   # Tests 2. and 3.
   k = len(fasta_list)
@@ -327,5 +328,51 @@ def main():
 
   output.close()
 
+# Extra credit f: Helper for finding out exactly how many possible permutations
+# outscore the given deadly/ddgearlyk pair
+def ec_exact():
+  
+  output = open(constants.results_folder + "ec_exact" + constants.text_exten, "wt")
+
+  threshold = tests.test1(output, 0)
+
+  count = 0
+  num_perms = 0
+
+  s1_list = list(itertools.permutations("DEADLY"))
+  s2_list = list(itertools.permutations("DDGEARLYK"))
+
+  for s1 in s1_list:
+    for s2 in s2_list:
+        score = compare_seqs([fasta.fasta_info("", "s1", "", ''.join(s1))],
+                          [fasta.fasta_info("", "s2", "", ''.join(s2))],
+                          0,
+                          output)
+        
+        num_perms = num_perms + 1
+        if (score > threshold):
+          count = count + 1
+
+  output.write(str(count))
+  output.write(str(count / num_perms))
+
+  output.close()
+
+# Extra credit f: Helper for testing how often random permutations outscore the 
+# deadly/ddgearlyk pair
+def ec_random():
+  output = open(constants.results_folder + "ec_random" + constants.text_exten, "wt")
+
+  threshold = tests.test1(output, 0)
+
+  # this will print p-values to the file, which we can then accumulate in report
+  for i in range(20):
+    tests.test1(output, 10000)
+
+  output.close()
+
+
 if __name__ == "__main__":
-  main()
+  # main()
+  ec_exact()
+  ec_random()

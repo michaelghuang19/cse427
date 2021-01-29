@@ -8,10 +8,10 @@ import constants
 
 # various test modules (WIP)
 
-def test1(output):
-  main.compare_seqs([fasta.fasta_info("", "s1", "", "DEADLY")],
+def test1(output, num_epochs):
+  return main.compare_seqs([fasta.fasta_info("", "s1", "", "DEADLY")],
                     [fasta.fasta_info("", "s2", "", "DDGEARLYK")],
-                    999,
+                    num_epochs,
                     output)
 
 def site_tests(output):
@@ -23,3 +23,7 @@ def site_tests(output):
                [fasta.fasta_info("", "seqid004", "", "MSNWTATSSDSTS")],
                main.num_epochs,
                output)
+
+def extracredit_test(output):
+  print("asd")
+  # compare_seqs()
