@@ -32,17 +32,26 @@ def makeCountMatrix(seq_list):
 def addPseudo(count_matrix, pseudocount_vector): 
   assert (len(count_matrix) == len(pseudocount_vector))
 
-  result = count_matrix
+  result = np.copy(count_matrix)
 
   for i in range(len(pseudocount_vector)):
-    count_matrix[i] = count_matrix[i] + pseudocount_vector[i]
+    result[i] = count_matrix[i] + pseudocount_vector[i]
 
   return result
 
 
 # make a frequency matrix from a count matrix.
-def makeFrequencyMatrix(): 
-  print("makeFrequencyMatrix")
+def makeFrequencyMatrix(count_matrix): 
+  assert (len(count_matrix) == len(c.nucleotides))
+  
+  result = np.copy(count_matrix)
+  total = sum(count_matrix)
+  
+  for i in range(len(result[0])):
+    for j in range(len(c.nucleotides)):
+      result[j][i] = count_matrix[j][i] / total[i]
+
+  return result
 
 # calculate the entropy of a frequency matrix relative to background.
 def entropy(): 
@@ -73,6 +82,31 @@ def Estep():
 def Mstep(): 
   print("Mstep")
 
+def test(train_files, eval_files):
+  
+  # makeCountMatrix test
+  # Note that we use eval_files rather than train_files since
+  # train_files sequences actually don't have the same length
+  count_matrix_list = []
+  for fasta_list in eval_files:
+    result = makeCountMatrix(fasta_list)
+    # print(result)
+    count_matrix_list.append(result)
+
+  # addPseudo test
+  pseudo_matrix_list = []
+  for count_matrix in count_matrix_list:
+    result = addPseudo(count_matrix, c.pseudocount_vector)
+    # print(result)
+    pseudo_matrix_list.append(result)
+
+  # makeFrequencyMatrix test
+  freq_matrix_list = []
+  for pseudo_matrix in count_matrix_list:
+    result = makeFrequencyMatrix(pseudo_matrix)
+    # print(result)
+    freq_matrix_list.append(result)
+
 def main():
   print("hello world")
 
@@ -85,19 +119,9 @@ def main():
     train_files.append(h.process_fasta(accession))
     eval_files.append(h.process_fasta(c.file_dict[accession]))
   
-  # makeCountMatrix test
-  count_matrix_list = []
-  for fasta_list in eval_files:
-    result = makeCountMatrix(fasta_list)
-    print(result)
-    count_matrix_list.append(result)
+  # TODO: Note that the training files' sequences aren't the same length
+  test(train_files, eval_files)
 
-  pseudo_matrix_list = []
-  for count_matrix in count_matrix_list:
-    result = addPseudo(count_matrix, c.pseudocount_vector)
-    print(result)
-    pseudo_matrix_list.append(result)
-  
   print("done")
 
 if __name__ == "__main__":
