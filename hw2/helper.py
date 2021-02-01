@@ -1,4 +1,6 @@
 # Various helper functions
+import numpy as np
+
 import constants as c
 import data_structures as ds
 
@@ -34,17 +36,12 @@ def process_fasta(filename):
 def regulate_sequence(sequence):
   result = ""
   for char in sequence:
-    if (char.upper() == "A" or char.upper() == "C"
-        or char.upper() == "G" or char.upper() == "T"):
+    if (char.upper() in c.nucleotides):
       result += char.upper()
     elif (not char.isspace()):
       result += "T"
 
   return result
-
-
-def create_empty_count_matrix():
-  print("create_empty_count_matrix")
 
 def create_empty_frequency_matrix():
   print("create_empty_frequency_matrix")

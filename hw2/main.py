@@ -12,12 +12,33 @@ import data_structures as ds
 import helper as h
 
 # build a count matrix corresponding to a given list of length k sequences.
-def makeCountMatrix(): 
-  print("makeCountMatrix")
+def makeCountMatrix(seq_list): 
+  assert (len(seq_list) > 0)
+
+  seq_length = len(seq_list[0].sequence)
+
+  result = np.zeros((len(c.nucleotides), seq_length), dtype=float)
+
+  for seq in seq_list:
+    for i in range(seq_length):
+      nuc = seq.sequence[i]
+      nuc_index = c.nucleotides.index(nuc)
+
+      result[nuc_index][i] = result[nuc_index][i] + 1
+
+  return result
 
 # given a count matrix, and a pseudocount vector, build a new count matrix by adding them.
-def addPseudo(): 
-  print("addPseudo")
+def addPseudo(count_matrix, pseudocount_vector): 
+  assert (len(count_matrix) == len(pseudocount_vector))
+
+  result = count_matrix
+
+  for i in range(len(pseudocount_vector)):
+    count_matrix[i] = count_matrix[i] + pseudocount_vector[i]
+
+  return result
+
 
 # make a frequency matrix from a count matrix.
 def makeFrequencyMatrix(): 
@@ -55,18 +76,29 @@ def Mstep():
 def main():
   print("hello world")
 
-  # 2. Process fasta into individual lists. This results in a list of lists,
-  # where each list contains corresponding fasta data structures for each
-  # individual accession file, should a file contain multiple sequences.
-  # You shouldn't really be commenting this out in normal cases.
-  fasta_files = []
-  for accession in c.file_dict.keys():
-    fasta_files.append(h.process_fasta(accession))
+  # 1. Process fasta into individual lists.
+  # This results in a list of lists, where each list contains those
+  # fasta data structures specified within each fasta file.
+  train_files = []
+  eval_files = []
+  for accession in c.file_dict:
+    train_files.append(h.process_fasta(accession))
+    eval_files.append(h.process_fasta(c.file_dict[accession]))
+  
+  # makeCountMatrix test
+  count_matrix_list = []
+  for fasta_list in eval_files:
+    result = makeCountMatrix(fasta_list)
+    print(result)
+    count_matrix_list.append(result)
 
-  for fasta_list in fasta_files:
-    for fasta in fasta_list:
-      # if (fasta.description == "mm9_chr1:80073137-80073149(+)"):
-      print(fasta.sequence)
+  pseudo_matrix_list = []
+  for count_matrix in count_matrix_list:
+    result = addPseudo(count_matrix, c.pseudocount_vector)
+    print(result)
+    pseudo_matrix_list.append(result)
+  
+  print("done")
 
 if __name__ == "__main__":
   main()
