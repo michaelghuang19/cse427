@@ -71,7 +71,7 @@ def entropy(frequency_matrix, bg_vector):
       entropy = m.log(entropy, 2)
       entropy = entropy * val
 
-      total = total + entropy
+      total += entropy
   
   return total
 
@@ -116,7 +116,7 @@ def scanWMM(wmm, seq_list):
     for i in range(num_scores):
       total = 0
       for j in range(i, i + len(wmm)):
-        total = total + wmm[c.nucleotides.index(seq[j])][j]
+        total += wmm[c.nucleotides.index(seq[j])][j]
       scores[i] = total
     result.append(scores)
   
@@ -135,15 +135,16 @@ def Estep(wmm, seq_set):
 
   for seq in seq_set:
 
-    expectation = [0] * len(seq)
+    # expectation = [0] * len(seq)
+    scores = scanWMM(wmm, [seq])
 
-    scores = scanWMM(wmm, list(seq))
+    prob_list = 2**np.asarray(scores)
+    total_prob = prob_list.sum()
+    prob_list /= total_prob
 
-    result.append(expectation)
+    result.append(prob_list)
   
   return result
-
-
 
 # given the Estep result, re-estimate the WMM. 
 # (This is similar to makeCountMatrix / addPseudo / makeFrequencyMatrix / makeWMM,
@@ -151,8 +152,12 @@ def Estep(wmm, seq_set):
 # and it may be convenient to generalize makeCountMatrix so that its k-mer inputs are successive, 
 # overlapping subsequences of some longer strings, 
 # rather than having them explicitly presented as distinct, non-overlapping inputs.)
-def Mstep(): 
-  print("Mstep")
+def Mstep(seq_list, estep_result):
+  assert (len(seq_list) > 0 and len(estep_result) > 0)
+
+  result = np.zeros((len(c.nucleotides), len(seq_list)), dtype=float)
+
+  return result
 
 def test(train_fasta, eval_fasta):
   
@@ -196,11 +201,11 @@ def test(train_fasta, eval_fasta):
   # scanWMM test
   for i in range(len(wmm_list)):
     result = scanWMM(wmm_list[i], h.get_sequence_list(eval_fasta[i]))
-    print(result)
+    # print(result)
 
   # Estep test
-  # for i in range(len(wmm_list)):
-    # result = Estep(wmm_list[i], h.get_sequence_list(eval_fasta[i]))
+  for i in range(len(wmm_list)):
+    result = Estep(wmm_list[i], h.get_sequence_list(eval_fasta[i]))
     # print(result)
 
   # Mstep test
