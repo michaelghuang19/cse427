@@ -101,8 +101,7 @@ def scanWMM(wmm, seq_list):
   motif_length = len(wmm)
   num_seqs = len(seq_list)
 
-  assert (motif_length > 0)
-  assert (num_seqs > 0)
+  assert (motif_length > 0 and num_seqs > 0)
 
   result = []
 
@@ -126,8 +125,25 @@ def scanWMM(wmm, seq_list):
 # given an(estimated) WMM and a set of sequences, run the E-step of MEME's EM algorithm;
 # i.e., what is E[zij], where zij is the zero-one variable indicating whether the
 # motif instance in sequence i begins in position j. (scanWMM does most of the required work.)
-def Estep(): 
-  print("Estep")
+def Estep(wmm, seq_set): 
+  motif_length = len(wmm)
+  num_seqs = len(seq_set)
+  
+  assert (motif_length > 0 and num_seqs > 0)
+
+  result = []
+
+  for seq in seq_set:
+
+    expectation = [0] * len(seq)
+
+    scores = scanWMM(wmm, list(seq))
+
+    result.append(expectation)
+  
+  return result
+
+
 
 # given the Estep result, re-estimate the WMM. 
 # (This is similar to makeCountMatrix / addPseudo / makeFrequencyMatrix / makeWMM,
@@ -180,9 +196,12 @@ def test(train_fasta, eval_fasta):
   # scanWMM test
   for i in range(len(wmm_list)):
     result = scanWMM(wmm_list[i], h.get_sequence_list(eval_fasta[i]))
-    # print(result)
+    print(result)
 
   # Estep test
+  # for i in range(len(wmm_list)):
+    # result = Estep(wmm_list[i], h.get_sequence_list(eval_fasta[i]))
+    # print(result)
 
   # Mstep test
 
