@@ -2,8 +2,9 @@
 # 1862567
 
 import itertools
-import pandas as pd
+import math as m
 import numpy as np
+import pandas as pd
 import urllib as ul
 from tabulate import tabulate
 
@@ -54,13 +55,45 @@ def makeFrequencyMatrix(count_matrix):
   return result
 
 # calculate the entropy of a frequency matrix relative to background.
-def entropy(): 
-  print("entropy")
+def entropy(frequency_matrix, bg_vector): 
+  assert (len(frequency_matrix) > 0)
+  
+  total = 0
+
+  for i in range(len(frequency_matrix[0])):
+    for j in range(len(bg_vector)):
+      val = frequency_matrix[j][i]
+      
+      if val == 0:
+        continue
+
+      entropy = val / bg_vector[j]
+      entropy = m.log(entropy, 2)
+      entropy = entropy * val
+
+      total = total + entropy
+  
+  return total
 
 # make a weight matrix from a frequency matrix and background vector.
 # (It may be convenient to save the entropy with the WMM, too.)
-def makeWMM(): 
-  print("makeWMM")
+def makeWMM(frequency_matrix, bg_vector): 
+  assert (len(frequency_matrix) > 0)
+
+  result = np.copy(frequency_matrix)
+
+  for i in range(len(result[0])):
+    for j in range(len(bg_vector)):
+      if frequency_matrix[j][i] == 0:
+        result[j][i] = -m.inf
+        continue;
+
+      val = frequency_matrix[j][i] / bg_vector[j]
+      result[j][i] = m.log(val, 2)
+
+  # result = ds.wmm_info(result, entropy(frequency_matrix, bg_vector))
+
+  return result
 
 # given a WMM of width k and one or more sequences of varying lengths ≥ k,
 # scan/score each position of each sequence(excluding those < k from the rightmost end).
@@ -106,6 +139,27 @@ def test(train_files, eval_files):
     result = makeFrequencyMatrix(pseudo_matrix)
     # print(result)
     freq_matrix_list.append(result)
+
+  # entropy test
+  entropy_list = []
+  for freq_matrix in freq_matrix_list:
+    result = entropy(freq_matrix, c.bg_vector)
+    # print(result)
+    entropy_list.append(result)
+  
+  # makeWMM test
+  wmm_list = []
+  for freq_matrix in freq_matrix_list:
+    result = makeWMM(freq_matrix, c.bg_vector)
+    # print(result)
+    wmm_list.append(result)
+
+  # scanWMM test
+
+  # Estep test
+
+  # Mstep test
+
 
 def main():
   print("hello world")

@@ -42,11 +42,3 @@ def regulate_sequence(sequence):
       result += "T"
 
   return result
-
-def create_empty_frequency_matrix():
-  print("create_empty_frequency_matrix")
-
-def create_empty_weight_matrix():
-  print("create_empty_weight_matrix")
-
-

@@ -1,6 +1,6 @@
 k = 10
 
-freq_vector = [0.25, 0.25, 0.25, 0.25]
+bg_vector = [0.25, 0.25, 0.25, 0.25]
 pseudocount_vector = [0.25, 0.25, 0.25, 0.25]
 nucleotides = ["A", "C", "G", "T"]
 
