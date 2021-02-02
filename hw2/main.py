@@ -97,8 +97,31 @@ def makeWMM(frequency_matrix, bg_vector):
 
 # given a WMM of width k and one or more sequences of varying lengths ≥ k,
 # scan/score each position of each sequence(excluding those < k from the rightmost end).
-def scanWMM(): 
-  print("scanWMM")
+def scanWMM(wmm, seq_list): 
+  motif_length = len(wmm)
+  num_seqs = len(seq_list)
+
+  assert (motif_length > 0)
+  assert (num_seqs > 0)
+
+  result = []
+
+  for seq in seq_list:
+    seq_length = len(seq)
+
+    assert (seq_length - motif_length >= 0)
+
+    num_scores = seq_length - motif_length + 1
+    scores = [0] * num_scores
+
+    for i in range(num_scores):
+      total = 0
+      for j in range(i, i + len(wmm)):
+        total = total + wmm[c.nucleotides.index(seq[j])][j]
+      scores[i] = total
+    result.append(scores)
+  
+  return result
 
 # given an(estimated) WMM and a set of sequences, run the E-step of MEME's EM algorithm;
 # i.e., what is E[zij], where zij is the zero-one variable indicating whether the
@@ -115,13 +138,13 @@ def Estep():
 def Mstep(): 
   print("Mstep")
 
-def test(train_files, eval_files):
+def test(train_fasta, eval_fasta):
   
   # makeCountMatrix test
-  # Note that we use eval_files rather than train_files since
+  # Note that we use eval_fasta rather than train_fasta since
   # train_files sequences actually don't have the same length
   count_matrix_list = []
-  for fasta_list in eval_files:
+  for fasta_list in eval_fasta:
     result = makeCountMatrix(fasta_list)
     # print(result)
     count_matrix_list.append(result)
@@ -155,6 +178,9 @@ def test(train_files, eval_files):
     wmm_list.append(result)
 
   # scanWMM test
+  for i in range(len(wmm_list)):
+    result = scanWMM(wmm_list[i], h.get_sequence_list(eval_fasta[i]))
+    # print(result)
 
   # Estep test
 
@@ -167,14 +193,14 @@ def main():
   # 1. Process fasta into individual lists.
   # This results in a list of lists, where each list contains those
   # fasta data structures specified within each fasta file.
-  train_files = []
-  eval_files = []
+  train_fasta = []
+  eval_fasta = []
   for accession in c.file_dict:
-    train_files.append(h.process_fasta(accession))
-    eval_files.append(h.process_fasta(c.file_dict[accession]))
+    train_fasta.append(h.process_fasta(accession))
+    eval_fasta.append(h.process_fasta(c.file_dict[accession]))
   
   # TODO: Note that the training files' sequences aren't the same length
-  test(train_files, eval_files)
+  test(train_fasta, eval_fasta)
 
   print("done")
 

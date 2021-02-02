@@ -42,3 +42,11 @@ def regulate_sequence(sequence):
       result += "T"
 
   return result
+
+def get_sequence_list(fasta_list):
+  result = []
+
+  for fasta in fasta_list:
+    result.append(fasta.sequence)
+  
+  return result
