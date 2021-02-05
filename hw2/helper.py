@@ -50,3 +50,16 @@ def get_sequence_list(fasta_list):
     result.append(fasta.sequence)
   
   return result
+
+def get_wmm_list(wmm_list):
+  result = []
+
+  for wmm in wmm_list:
+    result.append(wmm.wmm)
+
+  return result
+
+def initialize(sequence, k):
+  result = []
+
+  return result
