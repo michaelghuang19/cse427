@@ -3,6 +3,7 @@ import numpy as np
 
 import constants as c
 import data_structures as ds
+import main as m
 
 # convert fasta data to a list of formatted data structures
 def process_fasta(filename):
@@ -43,6 +44,7 @@ def regulate_sequence(sequence):
 
   return result
 
+# extracts sequences from fasta info structs
 def get_sequence_list(fasta_list):
   result = []
 
@@ -51,6 +53,7 @@ def get_sequence_list(fasta_list):
   
   return result
 
+# extracts wmms from wmm info structs
 def get_wmm_list(wmm_list):
   result = []
 
@@ -59,7 +62,38 @@ def get_wmm_list(wmm_list):
 
   return result
 
+# 
 def initialize(sequence, k):
+  i = 0
+  increment = int(k / 2)
+  init_pseudo_count = np.full((4), ((1 / 0.85) - 1) / 4)
+
   result = []
+
+  while i + k <= len(sequence):
+    window = [sequence[i : i + k]]
+
+    count_matrix = m.makeCountMatrix(window)
+    count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
+
+    freq_matrix = m.makeFrequencyMatrix(count_matrix)
+    wmm_struct = m.makeWMM(freq_matrix, c.bg_vector)
+    
+    result.append(wmm_struct)
+    i += increment
+
+  # check if we missed a possible spot, and slide back accordingly
+  diff = (i - len(sequence))
+  if diff % increment != 0:
+    i = len(sequence) - k
+    window = [sequence[i : i + k]]
+
+    count_matrix = m.makeCountMatrix(window)
+    count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
+
+    freq_matrix = m.makeFrequencyMatrix(count_matrix)
+    wmm_struct = m.makeWMM(freq_matrix, c.bg_vector)
+
+    result.append(wmm_struct)
 
   return result

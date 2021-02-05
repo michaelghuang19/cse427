@@ -257,6 +257,10 @@ def test(train_fasta, eval_fasta):
     # print(result[1].wmm)
     new_wmm_info_list.append(result)
 
+  # initialization test
+  result = h.initialize(h.regulate_sequence("ABCDEFGHIJKLMNOPQRSTUVW"), c.k)[3].wmm
+  # print(tabulate(result))
+
 def main():
   print("hello world")
 
@@ -273,6 +277,7 @@ def main():
   # test(train_fasta, eval_fasta)
 
   # 2. Run things
+  
 
   print("done")
 
