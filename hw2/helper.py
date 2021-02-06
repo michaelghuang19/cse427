@@ -45,7 +45,7 @@ def regulate_sequence(sequence):
   return result
 
 # extracts sequences from fasta info structs
-def get_sequence_list(fasta_list):
+def get_seq_list(fasta_list):
   result = []
 
   for fasta in fasta_list:
@@ -62,11 +62,11 @@ def get_wmm_list(wmm_list):
 
   return result
 
-# 
+# em initialization step
 def initialize(sequence, k):
   i = 0
   increment = int(k / 2)
-  init_pseudo_count = np.full((4), ((1 / 0.85) - 1) / 4)
+  init_pseudo_count = np.full((4), ((1 / c.seed_proportion) - 1) / 4)
 
   result = []
 

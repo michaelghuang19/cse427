@@ -261,22 +261,46 @@ def test(train_fasta, eval_fasta):
   result = h.initialize(h.regulate_sequence("ABCDEFGHIJKLMNOPQRSTUVW"), c.k)[3].wmm
   # print(tabulate(result))
 
+# perform training step
+def train_step(wmm_list, seq_list):
+  print("training step")
+  
+  freq_result = []
+  wmm_result = []
+
+  for wmm_struct in wmm_list:
+    freq_trials = []
+    wmm_trials = []
+    
+    print(wmm_struct.wmm)
+
+    for i in range(c.trials):
+      print(i)
+
+# perform evaluation step
+def eval_step():
+  print("evaluation step")
+
 def main():
   print("hello world")
 
-  # 1. Process fasta into individual lists.
+  # 1. Process fasta into list of fasta data structures
   # This results in a list of fasta data structure lists.
-  train_fasta = []
-  eval_fasta = []
-  for accession in c.file_dict:
-    train_fasta.append(h.process_fasta(accession))
-    eval_fasta.append(h.process_fasta(c.file_dict[accession]))
+  train_data = h.get_seq_list(h.process_fasta(c.train_fasta))
+  eval_data = h.get_seq_list(h.process_fasta(c.eval_fasta))
   
   # 1a. Test as necessary
   # TODO: Note that the training files' sequences aren't the same length
   # test(train_fasta, eval_fasta)
 
-  # 2. Run things
+  # 2. Run on training data
+  wmm_info_train = []
+  freq_matrix_list = []
+
+  init_list = h.initialize(train_data[0], c.k)
+  train_step(init_list, train_data[1:])
+
+  # 3. Run on evaluation data
   
 
   print("done")
