@@ -207,17 +207,17 @@ def train_step(wmm_list, seq_list):
   entropy_result = []
 
   print(seq_list[0])
-  for struct in wmm_list:
+  for wmm in wmm_list:
     freq_trials = []
     wmm_trials = []
     entropy_trials = []
 
-    wmm = struct
+    print(wmm)
 
     for i in range(c.trials):
 
       estep_result = Estep(wmm, seq_list)
-      print(len(estep_result))
+      # print(estep_result[0])
       mstep_result = Mstep(seq_list, wmm, estep_result, c.pseudocount_vector, c.bg_vector)
 
       # print(mstep_result)
