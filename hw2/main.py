@@ -115,8 +115,8 @@ given a WMM of width k and one or more sequences of varying lengths ≥ k,
 scan/score each position of each sequence (excluding those < k from the rightmost end).
 output: scores of each valid position 
 """
-def scanWMM(wmm, seq_list): 
-  motif_length = len(wmm)
+def scanWMM(wmm, seq_list):
+  motif_length = len(wmm[0])
   num_seqs = len(seq_list)
 
   assert (motif_length > 0 and num_seqs > 0)
@@ -131,11 +131,16 @@ def scanWMM(wmm, seq_list):
     num_scores = seq_length - motif_length + 1
     scores = [0] * num_scores
 
+    # iterate through start places
     for i in range(num_scores):
       total = 0
-      for j in range(i, i + len(wmm)):
-        total += wmm[c.nucleotides.index(seq[j])][j]
+      window = seq[i : i + motif_length]
+
+      # iterate through each sequence from start
+      for j in range(len(window)):
+        total += wmm[c.nucleotides.index(seq[i])][j]
       scores[i] = total
+
     result.append(scores)
   
   return result
@@ -150,7 +155,9 @@ def Estep(wmm, seq_set):
   result = []
 
   scores = scanWMM(wmm, seq_set)
-  prob_list = 2**np.asarray(scores)
+  prob_list = []
+  for score in scores:
+    prob_list.append(2**np.asarray(score))
 
   for prob in prob_list:
     norm_prob = np.copy(prob)
@@ -264,18 +271,25 @@ def test(train_fasta, eval_fasta):
 # perform training step
 def train_step(wmm_list, seq_list):
   print("training step")
-  
+  print(len(wmm_list))
   freq_result = []
   wmm_result = []
 
   for wmm_struct in wmm_list:
     freq_trials = []
     wmm_trials = []
-    
-    print(wmm_struct.wmm)
 
     for i in range(c.trials):
-      print(i)
+      estep_result = Estep(wmm_struct.wmm, seq_list)
+      mstep_result = Mstep(seq_list, wmm_struct.wmm, estep_result, c.pseudocount_vector, c.bg_vector)
+      
+      freq = mstep_result[0]
+      wmm = mstep_result[1]
+
+      freq_trials.append(freq)
+      wmm_trials.append(wmm)
+
+    print([item.entropy for item in wmm_trials])
 
 # perform evaluation step
 def eval_step():
@@ -298,6 +312,7 @@ def main():
   freq_matrix_list = []
 
   init_list = h.initialize(train_data[0], c.k)
+  print([item.entropy for item in init_list])
   train_step(init_list, train_data[1:])
 
   # 3. Run on evaluation data
