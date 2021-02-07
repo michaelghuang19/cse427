@@ -8,11 +8,3 @@ class fasta_info:
   def __init__(self, description, sequence):
     self.description = description
     self.sequence = sequence
-
-"""
-wmm info struct, with wmm and entropy fields
-"""
-class wmm_info:
-  def __init__(self, wmm, entropy):
-    self.wmm = wmm
-    self.entropy = entropy

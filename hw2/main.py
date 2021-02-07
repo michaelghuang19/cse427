@@ -90,7 +90,7 @@ def entropy(frequency_matrix, bg_vector):
 
 """
 make a weight matrix from a frequency matrix and background vector.
-output: wmm info struct
+output: tuple; tuple[0] = wmm, tuple[1] = entropy
 """
 def makeWMM(frequency_matrix, bg_vector): 
   assert (len(frequency_matrix) > 0)
@@ -105,10 +105,8 @@ def makeWMM(frequency_matrix, bg_vector):
 
       val = frequency_matrix[j][i] / bg_vector[j]
       result[j][i] = math.log(val, 2)
-
-  result = ds.wmm_info(result, entropy(frequency_matrix, bg_vector))
-
-  return result
+  
+  return result, entropy(frequency_matrix, bg_vector)
 
 """
 given a WMM of width k and one or more sequences of varying lengths ≥ k,
@@ -138,6 +136,10 @@ def scanWMM(wmm, seq_list):
 
       # iterate through each sequence from start
       for j in range(len(window)):
+        # print("wmm")
+        # print(wmm)
+        # print(c.nucleotides.index(seq[i]))
+        # print(wmm[c.nucleotides.index(seq[i])])
         total += wmm[c.nucleotides.index(seq[i])][j]
       scores[i] = total
 
@@ -155,23 +157,26 @@ def Estep(wmm, seq_set):
   result = []
 
   scores = scanWMM(wmm, seq_set)
-  prob_list = []
-  for score in scores:
-    prob_list.append(2**np.asarray(score))
+  
+  for i, row in enumerate(scores):
+    prob_list = []
+    total_prob = 0
 
-  for prob in prob_list:
-    norm_prob = np.copy(prob)
-    
-    total_prob = prob.sum()
-    norm_prob /= total_prob
+    # get total prob
+    for score in row:
+      total_prob = total_prob + 2**score
 
-    result.append(norm_prob.tolist())
+    # normalize and place probs accordingly
+    for j, score in enumerate(row):
+      prob_list.append(2**score / total_prob)
 
+    result.append(prob_list)
+  
   return result
 
 """
 given the Estep result, re-estimate the WMM. 
-output: tuple; tuple[0] = frequency matrix, tuple[1] wmm info struct
+output: tuple; tuple[0] = frequency matrix, tuple[1] = wmm, tuple[2] = entropy
 """
 def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
   num_seqs = len(seq_list)
@@ -189,84 +194,9 @@ def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
 
   result = addPseudo(result, pseudocount_vector)
   result = makeFrequencyMatrix(result)
-  wmm = makeWMM(result, bg_vector)
+  wmm, entropy = makeWMM(result, bg_vector)
 
-  return result, wmm
-
-# test suite for working with subroutines
-def test(train_fasta, eval_fasta):
-  train_list = []
-  eval_list = []
-  
-  for fasta in train_fasta:
-    train_list.append(h.get_sequence_list(fasta))
-  for fasta in eval_fasta:
-    eval_list.append(h.get_sequence_list(fasta))
-  
-  # makeCountMatrix test
-  # Note that we use eval_list rather than train_list since
-  # train_files sequences actually don't have the same length
-  count_matrix_list = []
-  for seq in eval_list:
-    result = makeCountMatrix(seq)
-    # print(result)
-    count_matrix_list.append(result)
-
-  # addPseudo test
-  pseudo_matrix_list = []
-  for count_matrix in count_matrix_list:
-    result = addPseudo(count_matrix, c.pseudocount_vector)
-    # print(result)
-    pseudo_matrix_list.append(result)
-
-  # makeFrequencyMatrix test
-  freq_matrix_list = []
-  for pseudo_matrix in count_matrix_list:
-    result = makeFrequencyMatrix(pseudo_matrix)
-    # print(result)
-    freq_matrix_list.append(result)
-
-  # entropy test
-  entropy_list = []
-  for freq_matrix in freq_matrix_list:
-    result = entropy(freq_matrix, c.bg_vector)
-    # print(result)
-    entropy_list.append(result)
-  
-  # makeWMM test
-  wmm_info_list = []
-  for freq_matrix in freq_matrix_list:
-    result = makeWMM(freq_matrix, c.bg_vector)
-    # print(result)
-    wmm_info_list.append(result)
-
-  wmm_list = h.get_wmm_list(wmm_info_list)
-
-  # scanWMM test
-  score_list = []
-  for i in range(len(wmm_list)):
-    result = scanWMM(wmm_list[i], eval_list[i])
-    # print(result)
-    score_list.append(result)
-
-  # Estep test
-  estep_list = []
-  for i in range(len(wmm_list)):
-    result = Estep(wmm_list[i], eval_list[i])
-    # print(result)
-    estep_list.append(result)
-
-  # Mstep test
-  new_wmm_info_list = []
-  for i in range(len(eval_fasta)):
-    result = Mstep(eval_list[i], wmm_list[i], estep_list[i], c.pseudocount_vector, c.bg_vector)
-    # print(result[0])
-    # print(result[1].wmm)
-    new_wmm_info_list.append(result)
-
-  # initialization test
-  result = h.initialize(h.regulate_sequence("ABCDEFGHIJKLMNOPQRSTUVW"), c.k)[3].wmm
-  # print(tabulate(result))
+  return result, wmm, entropy
 
 # perform training step
 def train_step(wmm_list, seq_list):
@@ -274,29 +204,35 @@ def train_step(wmm_list, seq_list):
   print(len(wmm_list))
   freq_result = []
   wmm_result = []
+  entropy_result = []
 
-  # print([wmm.wmm for wmm  in wmm_list])
   print(seq_list[0])
   for struct in wmm_list:
     freq_trials = []
     wmm_trials = []
+    entropy_trials = []
 
-    wmm_struct = struct
+    wmm = struct
 
     for i in range(c.trials):
-      # print(wmm_struct.wmm)
 
-      estep_result = Estep(wmm_struct.wmm, seq_list)
-      mstep_result = Mstep(seq_list, wmm_struct.wmm, estep_result, c.pseudocount_vector, c.bg_vector)
-      
+      estep_result = Estep(wmm, seq_list)
+      print(len(estep_result))
+      mstep_result = Mstep(seq_list, wmm, estep_result, c.pseudocount_vector, c.bg_vector)
+
+      # print(mstep_result)
+
       freq = mstep_result[0]
-      wmm_struct = mstep_result[1]
+      wmm = mstep_result[1]
+      entropy = mstep_result[2]
 
       freq_trials.append(freq)
-      wmm_trials.append(wmm_struct)
+      wmm_trials.append(wmm)
+      entropy_trials.append(entropy)
 
-    print([item.entropy for item in wmm_trials])
+    freq_result.append(freq)
     wmm_result.append(wmm_trials)
+    entropy_result.append(entropy)
 
     # median: use int
 
@@ -320,9 +256,8 @@ def main():
   wmm_info_train = []
   freq_matrix_list = []
 
-  init_list = h.initialize(train_data[0], c.k)
-  # print([item.wmm for item in init_list])
-  train_step(init_list, train_data)
+  init_wmm, init_entropy = h.initialize(train_data[0], c.k)
+  train_step(init_wmm, train_data)
 
   # 3. Run on evaluation data
   

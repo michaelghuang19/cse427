@@ -53,35 +53,28 @@ def get_seq_list(fasta_list):
   
   return result
 
-# extracts wmms from wmm info structs
-def get_wmm_list(wmm_list):
-  result = []
-
-  for wmm in wmm_list:
-    result.append(wmm.wmm)
-
-  return result
-
 # em initialization step
+# returns: tuple; tuple[0] = list of wmms, tuple[1] = list of entropies
 def initialize(sequence, k):
   i = 0
   increment = int(k / 2)
   init_pseudo_count = np.full((4), ((1 / c.seed_proportion) - 1) / 4)
 
-  result = []
+  wmm_result = []
+  entropy_result = []
 
   while i + k <= len(sequence):
     window = [sequence[i : i + k]]
 
     count_matrix = m.makeCountMatrix(window)
     count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
-    # print(m.tabulate(count_matrix))
 
     freq_matrix = m.makeFrequencyMatrix(count_matrix)
-    wmm_struct = m.makeWMM(freq_matrix, c.bg_vector)
-    # print(m.tabulate())
+    wmm, entropy = m.makeWMM(freq_matrix, c.bg_vector)
     
-    result.append(wmm_struct)
+    wmm_result.append(wmm)
+    entropy_result.append(wmm)
+
     i += increment
 
   # check if we missed a possible spot, and slide back accordingly
@@ -94,8 +87,9 @@ def initialize(sequence, k):
     count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
 
     freq_matrix = m.makeFrequencyMatrix(count_matrix)
-    wmm_struct = m.makeWMM(freq_matrix, c.bg_vector)
+    wmm, entropy = m.makeWMM(freq_matrix, c.bg_vector)
 
-    result.append(wmm_struct)
+    wmm_result.append(wmm)
+    entropy_result.append(wmm)
 
-  return result
+  return wmm_result, entropy_result
