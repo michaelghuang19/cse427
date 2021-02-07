@@ -191,7 +191,8 @@ def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
 
       window_count = prob * makeCountMatrix(window)
       result = result + window_count
-
+  
+  print(result)
   result = addPseudo(result, pseudocount_vector)
   result = makeFrequencyMatrix(result)
   wmm, entropy = makeWMM(result, bg_vector)
@@ -206,29 +207,25 @@ def train_step(wmm_list, seq_list):
   wmm_result = []
   entropy_result = []
 
-  print(seq_list[0])
+  print(seq_list)
   for wmm in wmm_list:
     freq_trials = []
     wmm_trials = []
     entropy_trials = []
 
-    print(wmm)
+    # print(wmm)
 
     for i in range(c.trials):
 
       estep_result = Estep(wmm, seq_list)
       # print(estep_result[0])
-      mstep_result = Mstep(seq_list, wmm, estep_result, c.pseudocount_vector, c.bg_vector)
-
-      # print(mstep_result)
-
-      freq = mstep_result[0]
-      wmm = mstep_result[1]
-      entropy = mstep_result[2]
+      freq, wmm, entropy = Mstep(seq_list, wmm, estep_result, c.pseudocount_vector, c.bg_vector)
 
       freq_trials.append(freq)
       wmm_trials.append(wmm)
       entropy_trials.append(entropy)
+
+      # print(freq)
 
     freq_result.append(freq)
     wmm_result.append(wmm_trials)
