@@ -9,10 +9,14 @@ nucleotides = ["A", "C", "G", "T"]
 train_fasta = "hw2-debug-train"
 eval_fasta = "hw2-debug-eval"
 
+# train_fasta = "hw2-train"
+# eval_fasta = "hw2-eval"
+
 file_dict = {
   "hw2-debug-train": "hw2-debug-eval",
-  "hw2-train-later": "hw2-eval-later"
+  "hw2-train": "hw2-eval"
 }
+
 
 fasta_folder = "fasta/"
 results_folder = "results/"

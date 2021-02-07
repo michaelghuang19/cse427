@@ -75,9 +75,11 @@ def initialize(sequence, k):
 
     count_matrix = m.makeCountMatrix(window)
     count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
+    # print(m.tabulate(count_matrix))
 
     freq_matrix = m.makeFrequencyMatrix(count_matrix)
     wmm_struct = m.makeWMM(freq_matrix, c.bg_vector)
+    # print(m.tabulate())
     
     result.append(wmm_struct)
     i += increment

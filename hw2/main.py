@@ -2,7 +2,7 @@
 # 1862567
 
 import itertools
-import math as m
+import math
 import numpy as np
 import pandas as pd
 import urllib as ul
@@ -69,19 +69,19 @@ calculate the entropy of a frequency matrix relative to background.
 output: entropy value
 """
 def entropy(frequency_matrix, bg_vector): 
+
   assert (len(frequency_matrix) > 0)
   
   total = 0
 
-  for i in range(len(frequency_matrix[0])):
-    for j in range(len(bg_vector)):
-      val = frequency_matrix[j][i]
+  for i, row in enumerate(frequency_matrix):
+    for val in row:
       
       if val == 0:
         continue
 
-      entropy = val / bg_vector[j]
-      entropy = m.log(entropy, 2)
+      entropy = val / bg_vector[i]
+      entropy = math.log2(entropy)
       entropy = entropy * val
 
       total += entropy
@@ -100,11 +100,11 @@ def makeWMM(frequency_matrix, bg_vector):
   for i in range(len(result[0])):
     for j in range(len(bg_vector)):
       if frequency_matrix[j][i] == 0:
-        result[j][i] = -m.inf
+        result[j][i] = -math.inf
         continue;
 
       val = frequency_matrix[j][i] / bg_vector[j]
-      result[j][i] = m.log(val, 2)
+      result[j][i] = math.log(val, 2)
 
   result = ds.wmm_info(result, entropy(frequency_matrix, bg_vector))
 
@@ -275,21 +275,30 @@ def train_step(wmm_list, seq_list):
   freq_result = []
   wmm_result = []
 
-  for wmm_struct in wmm_list:
+  # print([wmm.wmm for wmm  in wmm_list])
+  print(seq_list[0])
+  for struct in wmm_list:
     freq_trials = []
     wmm_trials = []
 
+    wmm_struct = struct
+
     for i in range(c.trials):
+      # print(wmm_struct.wmm)
+
       estep_result = Estep(wmm_struct.wmm, seq_list)
       mstep_result = Mstep(seq_list, wmm_struct.wmm, estep_result, c.pseudocount_vector, c.bg_vector)
       
       freq = mstep_result[0]
-      wmm = mstep_result[1]
+      wmm_struct = mstep_result[1]
 
       freq_trials.append(freq)
-      wmm_trials.append(wmm)
+      wmm_trials.append(wmm_struct)
 
     print([item.entropy for item in wmm_trials])
+    wmm_result.append(wmm_trials)
+
+    # median: use int
 
 # perform evaluation step
 def eval_step():
@@ -312,8 +321,8 @@ def main():
   freq_matrix_list = []
 
   init_list = h.initialize(train_data[0], c.k)
-  print([item.entropy for item in init_list])
-  train_step(init_list, train_data[1:])
+  # print([item.wmm for item in init_list])
+  train_step(init_list, train_data)
 
   # 3. Run on evaluation data
   
