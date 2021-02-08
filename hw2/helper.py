@@ -73,7 +73,7 @@ def initialize(sequence, k):
     wmm, entropy = m.makeWMM(freq_matrix, c.bg_vector)
     
     wmm_result.append(wmm)
-    entropy_result.append(wmm)
+    entropy_result.append(entropy)
 
     i += increment
 

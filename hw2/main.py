@@ -1,11 +1,9 @@
 # Michael Huang (mhuang19)
 # 1862567
 
-import itertools
 import math
+import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-import urllib as ul
 from tabulate import tabulate
 
 import constants as c
@@ -199,22 +197,57 @@ def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
   return result, wmm, entropy
 
 # perform training step
-def train_step(wmm_list, seq_list):
+def train_step(wmm_list, seq_list, init_entropy):
   print("training step")
   freq_result = []
   wmm_result = []
   entropy_result = []
+  
+  print("generating ABC from initial 3 E/M pairs")
+
+  for wmm in wmm_list:
+    for i in range(c.trials):
+      estep_result = Estep(wmm, seq_list)
+      freq, wmm, entropy = Mstep(seq_list, wmm, estep_result, c.pseudocount_vector, c.bg_vector)
+    
+    freq_result.append(freq)
+    wmm_result.append(wmm)
+    entropy_result.append(entropy)
+
+  ABCD_wmm = []
+  ABCD_freq = []
+
+  A_index = np.argmax(entropy_result)
+  B_index = np.argmin(entropy_result)
+  C_index = np.argsort(entropy_result)[len(entropy_result)//2]
+
+  ABCD_wmm.append(wmm_result[A_index])
+  ABCD_wmm.append(wmm_result[B_index])
+  ABCD_wmm.append(wmm_result[C_index])
+
+  ABCD_freq.append(freq_result[A_index])
+  ABCD_freq.append(freq_result[B_index])
+  ABCD_freq.append(freq_result[C_index])
+
+  print("generating D from running 7 additional E/M pairs on ABC")
+
+  freq_result = []
+  wmm_result = []
+  entropy_result = []
+
+  last_freq_result = []
+  last_wmm_result = []
+  last_entropy_result = []
 
   for wmm in wmm_list:
     freq_trials = []
     wmm_trials = []
     entropy_trials = []
 
-    for i in range(c.trials):
-      estep_result = Estep(np.copy(wmm), np.copy(seq_list))
-      freq, wmm, entropy = Mstep(np.copy(seq_list), np.copy(wmm), np.copy(estep_result), c.pseudocount_vector, c.bg_vector)
-
-      print(entropy)
+    # run 10 iterations
+    for i in range(c.k):
+      estep_result = Estep(wmm, seq_list)
+      freq, wmm, entropy = Mstep(seq_list, wmm, estep_result, c.pseudocount_vector, c.bg_vector)
 
       freq_trials.append(freq)
       wmm_trials.append(wmm)
@@ -222,17 +255,88 @@ def train_step(wmm_list, seq_list):
 
     freq_result.append(freq_trials)
     wmm_result.append(wmm_trials)
-    entropy_result.append(entropy)
+    entropy_result.append(entropy_trials)
 
-    # median: use int
+    last_freq_result.append(freq)
+    last_wmm_result.append(wmm)
+    last_entropy_result.append(entropy)
+
+  D_index = np.argmax(last_entropy_result)
+  ABCD_wmm.append(last_wmm_result[D_index])
+  ABCD_freq.append(last_freq_result[D_index])
+  
+  print("writing training data to output")
+  
+  # write data to output
+  for i in range(len(entropy_result)):
+    entropy_result[i].insert(0, init_entropy[0])
+
+  output = open(c.results_folder + "train_step" + c.text_exten, "wt")
+  output.write(tabulate(entropy_result))
+  output.write("\n")
+  for freq in ABCD_freq:
+    output.write(tabulate(freq))
+  output.close()
+  
+  return ABCD_wmm, ABCD_freq
 
 # perform evaluation step
-def eval_step():
+
+
+def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   print("evaluation step")
 
-def main():
-  print("hello world")
+  score_list = []
+  start_list = []
 
+  print("evaluating models and plotting histograms")
+  for i in range(len(ABCD_wmm)):
+    wmm = ABCD_wmm[i]
+    freq = ABCD_freq[i]
+
+    scores = scanWMM(wmm, seq_list)
+    values = [0] * len(scores[0])
+
+    for j, row in enumerate(scores):
+      values[np.argmax(row)] += 1
+
+    start = np.argmax(values)
+
+    score_list.append(scores)
+    start_list.append(start)
+
+    # plotting stuff
+    model_label = chr(ord('@') + i + 1)
+    plt.bar(range(len(scores[0])), values)
+    plt.title("Most common location of best motif hit: " + str(start))
+    plt.savefig(c.results_folder + "wmm_plot_{}.png".format(model_label), dpi = 200)
+    plt.close()
+  
+  print("calculating auc and creating roc")
+  # do roc and auc stuff
+  for i, score_struct in enumerate(score_list):
+    ss_pairs = [] 
+    counts = [[0] * len(score_struct)] * len(score_struct[0])
+
+    for i, row in enumerate(score_struct):
+      row_list = []
+      for j, element in enumerate(row):
+        row_list.append(element)
+        # ss_pairs[i][j] = element
+
+      counts.append(row_list)
+
+    print(len(counts))
+    print(len(counts[0]))
+    
+    # print(counts)
+    auc = 0
+  
+  print("creating roc")
+  # plt.scatter()
+
+
+def main():
   # 1. Process fasta into list of fasta data structures
   # This results in a list of fasta data structure lists.
   train_data = h.get_seq_list(h.process_fasta(c.train_fasta))
@@ -247,10 +351,10 @@ def main():
   freq_matrix_list = []
 
   init_wmm, init_entropy = h.initialize(train_data[0], c.k)
-  train_step(init_wmm, train_data)
+  ABCD_wmm, ABCD_freq = train_step(init_wmm, train_data, init_entropy)
 
   # 3. Run on evaluation data
-  
+  eval_step(ABCD_wmm, ABCD_freq, eval_data)
 
   print("done")
 
