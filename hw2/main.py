@@ -272,9 +272,11 @@ def train_step(wmm_list, seq_list, init_entropy):
     entropy_result[i].insert(0, init_entropy[0])
 
   output = open(c.results_folder + "train_step" + c.text_exten, "wt")
+  output.write("entropies\n")
   output.write(tabulate(entropy_result))
   output.write("\n")
-  for freq in ABCD_freq:
+  for i, freq in enumerate(ABCD_freq):
+    output.write(h.get_letter(i) + "frequency \n")
     output.write(tabulate(freq))
   output.close()
 
@@ -305,10 +307,9 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
     start_list.append(start)
 
     # plotting stuff
-    model_label = chr(ord('@') + i + 1)
     plt.bar(range(len(scores[0])), values)
     plt.title("Most common location of best motif hit: " + str(start))
-    plt.savefig(c.results_folder + "wmm_plot_{}.png".format(model_label), dpi = 200)
+    plt.savefig(c.results_folder + "wmm_plot_{}.png".format(h.get_letter(i)), dpi = 200)
     plt.close()
   
   print("calculating auc and creating roc")
@@ -361,7 +362,7 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
     auc = metrics.auc(x_values, y_values)
 
     auc_list.append(auc)
-    label_list.append(chr(ord('@') + i + 1) + ": (" + str(auc) + ")")
+    label_list.append(h.get_letter(i) + ": (" + str(auc) + ")")
 
     plt.plot(x_values, y_values)
 
@@ -377,8 +378,9 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
 
   # write test output
   output = open(c.results_folder + "eval_step" + c.text_exten, "wt")
+  output.write("auc list for [A, B, C, D]\n")
   output.write(str(auc_list))
-  output.write("\n")
+  output.write("\nconcrete point: [tpr, fpr, score]\n")
   output.write(str(break_point))
   output.close()
 

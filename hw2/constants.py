@@ -6,11 +6,11 @@ bg_vector = [0.25, 0.25, 0.25, 0.25]
 pseudocount_vector = [0.25, 0.25, 0.25, 0.25]
 nucleotides = ["A", "C", "G", "T"]
 
-train_fasta = "hw2-debug-train"
-eval_fasta = "hw2-debug-eval"
+# train_fasta = "hw2-debug-train"
+# eval_fasta = "hw2-debug-eval"
 
-# train_fasta = "hw2-train"
-# eval_fasta = "hw2-eval"
+train_fasta = "hw2-train"
+eval_fasta = "hw2-eval"
 
 file_dict = {
   "hw2-debug-train": "hw2-debug-eval",
