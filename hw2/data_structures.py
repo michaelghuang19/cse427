@@ -1,6 +1,5 @@
 # describes any custom data structures that we might need
 
-
 """
 fasta info struct, with description and sequence fields
 """

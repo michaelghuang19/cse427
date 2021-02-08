@@ -17,7 +17,6 @@ file_dict = {
   "hw2-train": "hw2-eval"
 }
 
-
 fasta_folder = "fasta/"
 results_folder = "results/"
 fasta_exten = ".fasta"

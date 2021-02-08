@@ -54,7 +54,7 @@ def get_seq_list(fasta_list):
   return result
 
 # em initialization step
-# returns: tuple; tuple[0] = list of wmms, tuple[1] = list of entropies
+# output: tuple; tuple[0] = list of wmms, tuple[1] = list of entropies
 def initialize(sequence, k):
   i = 0
   increment = int(k / 2)
@@ -78,21 +78,22 @@ def initialize(sequence, k):
     i += increment
 
   # check if we missed a possible spot, and slide back accordingly
-  # diff = (i - len(sequence))
-  # if diff % increment != 0:
-  #   i = len(sequence) - k
-  #   window = [sequence[i : i + k]]
+  diff = (i - len(sequence))
+  if diff % increment != 0:
+    i = len(sequence) - k
+    window = [sequence[i : i + k]]
 
-  #   count_matrix = m.makeCountMatrix(window)
-  #   count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
+    count_matrix = m.makeCountMatrix(window)
+    count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
 
-  #   freq_matrix = m.makeFrequencyMatrix(count_matrix)
-  #   wmm, entropy = m.makeWMM(freq_matrix, c.bg_vector)
+    freq_matrix = m.makeFrequencyMatrix(count_matrix)
+    wmm, entropy = m.makeWMM(freq_matrix, c.bg_vector)
 
-  #   wmm_result.append(wmm)
-  #   entropy_result.append(wmm)
+    wmm_result.append(wmm)
+    entropy_result.append(wmm)
 
   return wmm_result, entropy_result
 
+# flattens a 2d list into a long singular list
 def flatten_2d_list(input_list):
   return [item for sublist in input_list for item in sublist]

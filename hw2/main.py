@@ -14,7 +14,7 @@ import helper as h
 
 """
 build a count matrix corresponding to a given list of length k sequences.
-output: count matrix
+returns: count matrix
 """
 def makeCountMatrix(seq_list): 
   num_seqs = len(seq_list)
@@ -36,7 +36,7 @@ def makeCountMatrix(seq_list):
 
 """
 given a count matrix, and a pseudocount vector, build a new count matrix by adding them.
-output: modified count matrix
+returns: modified count matrix
 """
 def addPseudo(count_matrix, pseudocount_vector): 
   assert (len(count_matrix) == len(pseudocount_vector))
@@ -50,7 +50,7 @@ def addPseudo(count_matrix, pseudocount_vector):
 
 """
 make a frequency matrix from a count matrix.
-output: frequency matrix
+returns: frequency matrix
 """
 def makeFrequencyMatrix(count_matrix): 
   assert (len(count_matrix) == len(c.nucleotides))
@@ -66,7 +66,7 @@ def makeFrequencyMatrix(count_matrix):
 
 """
 calculate the entropy of a frequency matrix relative to background.
-output: entropy value
+returns: entropy value
 """
 def entropy(frequency_matrix, bg_vector): 
 
@@ -90,7 +90,7 @@ def entropy(frequency_matrix, bg_vector):
 
 """
 make a weight matrix from a frequency matrix and background vector.
-output: tuple; tuple[0] = wmm, tuple[1] = entropy
+returns: tuple; tuple[0] = wmm, tuple[1] = entropy
 """
 def makeWMM(frequency_matrix, bg_vector): 
   assert (len(frequency_matrix) > 0)
@@ -112,7 +112,7 @@ def makeWMM(frequency_matrix, bg_vector):
 """
 given a WMM of width k and one or more sequences of varying lengths ≥ k,
 scan/score each position of each sequence (excluding those < k from the rightmost end).
-output: scores of each valid position 
+returns: scores of each valid position 
 """
 def scanWMM(wmm, seq_list):
   motif_length = len(wmm[0])
@@ -146,7 +146,7 @@ def scanWMM(wmm, seq_list):
 
 """
 given an(estimated) WMM and a set of sequences, run the E-step of MEME's EM algorithm.
-output: matrix of probabilities according to the wmm
+returns: matrix of probabilities according to the wmm
 """
 def Estep(wmm, seq_set):
   assert (len(wmm) > 0 and len(seq_set) > 0)
@@ -173,14 +173,13 @@ def Estep(wmm, seq_set):
 
 """
 given the Estep result, re-estimate the WMM. 
-output: tuple; tuple[0] = frequency matrix, tuple[1] = wmm, tuple[2] = entropy
+returns: tuple; tuple[0] = frequency matrix, tuple[1] = wmm, tuple[2] = entropy
 """
 def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
   num_seqs = len(seq_list)
   wmm_length = len(wmm[0])
 
   result = np.zeros((len(c.nucleotides), wmm_length), dtype=float)
-  # print(estep_result)
 
   for i, seq in enumerate(seq_list):
     for j in range(len(seq) - wmm_length + 1):
@@ -193,7 +192,6 @@ def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
   
   result = addPseudo(result, pseudocount_vector)
   result = makeFrequencyMatrix(result)
-  # print(result)
   wmm, entropy = makeWMM(result, bg_vector)
 
   return result, wmm, entropy
@@ -283,6 +281,7 @@ def train_step(wmm_list, seq_list, init_entropy):
   return ABCD_wmm, ABCD_freq
 
 # perform evaluation step
+# returns: tuple; tuple[0] = ABCD WMMs, tuple[1] = ABCD frequency matrices 
 def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   print("evaluation step")
 
@@ -383,18 +382,13 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   output.write(str(break_point))
   output.close()
 
-
 def main():
   # 1. Process fasta into list of fasta data structures
   # This results in a list of fasta data structure lists.
   train_data = h.get_seq_list(h.process_fasta(c.train_fasta))
   eval_data = h.get_seq_list(h.process_fasta(c.eval_fasta))
-  
-  # 1a. Test as necessary
-  # TODO: Note that the training files' sequences aren't the same length
-  # test(train_fasta, eval_fasta)
 
-  # 2. Run on training data
+  # 2. Train using training data
   wmm_info_train = []
   freq_matrix_list = []
 
