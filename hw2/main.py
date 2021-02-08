@@ -4,6 +4,8 @@
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+from sklearn import metrics
 from tabulate import tabulate
 
 import constants as c
@@ -277,12 +279,10 @@ def train_step(wmm_list, seq_list, init_entropy):
   for freq in ABCD_freq:
     output.write(tabulate(freq))
   output.close()
-  
+
   return ABCD_wmm, ABCD_freq
 
 # perform evaluation step
-
-
 def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   print("evaluation step")
 
@@ -314,26 +314,74 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   
   print("calculating auc and creating roc")
   # do roc and auc stuff
+  label_list = []
+  auc_list = []
+  break_point = [0, 1, 0]
   for i, score_struct in enumerate(score_list):
     ss_pairs = [] 
-    counts = [[0] * len(score_struct)] * len(score_struct[0])
+    counts = []
 
-    for i, row in enumerate(score_struct):
+    for index in score_struct:
       row_list = []
-      for j, element in enumerate(row):
+      for element in index:
         row_list.append(element)
-        # ss_pairs[i][j] = element
-
       counts.append(row_list)
-
-    print(len(counts))
-    print(len(counts[0]))
     
-    # print(counts)
-    auc = 0
-  
+    # we'd rather be able to directly index by start position, so swap axes
+    counts = np.swapaxes(counts, 0, 1)
+
+    flat_list = h.flatten_2d_list(counts)
+    flat_list = sorted(flat_list)
+
+    for score in flat_list:
+      correct_matrix = counts >= score
+
+      motif_section = correct_matrix[start_list[i] - 1]
+      nonmotif_section = np.delete(correct_matrix, start_list[i] - 1, 0)
+
+      motif_section = motif_section.flatten()
+      nonmotif_section = nonmotif_section.flatten()
+
+      true_positives = np.sum(motif_section)
+      false_positives = np.sum(nonmotif_section)
+      false_negatives = np.sum(~motif_section)
+      true_negatives = np.sum(~nonmotif_section)
+      
+      tpr = true_positives / (true_positives + false_negatives)
+      fpr = false_positives / (false_positives + true_negatives)
+
+      ss_pairs.append([tpr, fpr])
+
+      # see if we can update our special point
+      if tpr == 1 and i == 2 and fpr < break_point[1]:
+        break_point = [tpr, fpr, score]
+
+    ss_pairs = sorted(ss_pairs, key = lambda pair: [pair[0], pair[1]])
+    x_values = [point[0] for point in ss_pairs]
+    y_values = [point[1] for point in ss_pairs]
+    auc = metrics.auc(x_values, y_values)
+
+    auc_list.append(auc)
+    label_list.append(chr(ord('@') + i + 1) + ": (" + str(auc) + ")")
+
+    plt.plot(x_values, y_values)
+
   print("creating roc")
-  # plt.scatter()
+  # plot true positive rate vs false positive rate
+  plt.plot([0, 1], [0, 1], linestyle = ":")
+  plt.scatter(break_point[0], break_point[1])
+  plt.legend(label_list)
+  plt.ylabel("True Positive Rate")
+  plt.xlabel("False Positive Rate")
+  plt.savefig(c.results_folder + "roc.png", dpi = 200)
+  plt.close()
+
+  # write test output
+  output = open(c.results_folder + "eval_step" + c.text_exten, "wt")
+  output.write(str(auc_list))
+  output.write("\n")
+  output.write(str(break_point))
+  output.close()
 
 
 def main():

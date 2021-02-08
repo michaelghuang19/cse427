@@ -93,3 +93,6 @@ def initialize(sequence, k):
   #   entropy_result.append(wmm)
 
   return wmm_result, entropy_result
+
+def flatten_2d_list(input_list):
+  return [item for sublist in input_list for item in sublist]
