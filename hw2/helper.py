@@ -78,18 +78,18 @@ def initialize(sequence, k):
     i += increment
 
   # check if we missed a possible spot, and slide back accordingly
-  diff = (i - len(sequence))
-  if diff % increment != 0:
-    i = len(sequence) - k
-    window = [sequence[i : i + k]]
+  # diff = (i - len(sequence))
+  # if diff % increment != 0:
+  #   i = len(sequence) - k
+  #   window = [sequence[i : i + k]]
 
-    count_matrix = m.makeCountMatrix(window)
-    count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
+  #   count_matrix = m.makeCountMatrix(window)
+  #   count_matrix = m.addPseudo(count_matrix, init_pseudo_count)
 
-    freq_matrix = m.makeFrequencyMatrix(count_matrix)
-    wmm, entropy = m.makeWMM(freq_matrix, c.bg_vector)
+  #   freq_matrix = m.makeFrequencyMatrix(count_matrix)
+  #   wmm, entropy = m.makeWMM(freq_matrix, c.bg_vector)
 
-    wmm_result.append(wmm)
-    entropy_result.append(wmm)
+  #   wmm_result.append(wmm)
+  #   entropy_result.append(wmm)
 
   return wmm_result, entropy_result

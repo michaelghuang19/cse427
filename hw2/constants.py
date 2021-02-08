@@ -1,6 +1,6 @@
 k = 10
 seed_proportion = 0.85
-trials = 1
+trials = 3
 
 bg_vector = [0.25, 0.25, 0.25, 0.25]
 pseudocount_vector = [0.25, 0.25, 0.25, 0.25]

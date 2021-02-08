@@ -68,66 +68,46 @@ def makeFrequencyMatrix(count_matrix):
 calculate the entropy of a frequency matrix relative to background.
 output: entropy value
 """
-# def entropy(frequency_matrix, bg_vector): 
+def entropy(frequency_matrix, bg_vector): 
 
-#   assert (len(frequency_matrix) > 0)
+  assert (len(frequency_matrix) > 0)
   
-#   total = 0
+  total = 0
 
-#   for i, row in enumerate(frequency_matrix):
-#     for val in row:
+  for i, row in enumerate(frequency_matrix):
+    for val in row:
       
-#       if val == 0:
-#         continue
+      if val == 0:
+        continue
 
-#       entropy = val / bg_vector[i]
-#       entropy = math.log2(entropy)
-#       entropy = entropy * val
+      entropy = val / bg_vector[i]
+      entropy = math.log2(entropy)
+      entropy = entropy * val
 
-#       total += entropy
+      total += entropy
   
-#   return total
-def entropy(frequencyMatrix, background):
-    entr = 0
-    for i, row in enumerate(frequencyMatrix):
-        for freq in row:
-            entr += freq * math.log2(freq / background[i])
-
-    return entr
+  return total
 
 """
 make a weight matrix from a frequency matrix and background vector.
 output: tuple; tuple[0] = wmm, tuple[1] = entropy
 """
-# def makeWMM(frequency_matrix, bg_vector): 
-#   assert (len(frequency_matrix) > 0)
+def makeWMM(frequency_matrix, bg_vector): 
+  assert (len(frequency_matrix) > 0)
 
-#   result = np.copy(frequency_matrix)
+  result = np.copy(frequency_matrix)
 
-#   for i, row in enumerate(frequency_matrix):
-#     for j, frequency in enumerate(row):
+  for i, row in enumerate(frequency_matrix):
+    for j, frequency in enumerate(row):
 
-#       if frequency == 0:
-#         result[i][j] = -math.inf
-#         continue;
+      if frequency == 0:
+        result[i][j] = -math.inf
+        continue;
 
-#       val = frequency / bg_vector[i]
-#       result[i][j] = math.log2(val)
+      val = frequency / bg_vector[i]
+      result[i][j] = math.log2(val)
   
-#   print(result)
-#   return result, entropy(frequency_matrix, bg_vector)
-
-
-def makeWMM(frequencyMatrix, background):
-    WMM = np.copy(frequencyMatrix)
-
-    for i, row in enumerate(frequencyMatrix):
-        for j, freq in enumerate(row):
-            WMM[i, j] = math.log2(freq / background[i])
-
-    entr = entropy(frequencyMatrix, background)
-
-    return WMM, entr
+  return result, entropy(frequency_matrix, bg_vector)
 
 """
 given a WMM of width k and one or more sequences of varying lengths ≥ k,
@@ -157,54 +137,39 @@ def scanWMM(wmm, seq_list):
 
       # iterate through each sequence from start
       for j in range(len(window)):
-        total += wmm[c.nucleotides.index(seq[i])][j]
+        total += wmm[c.nucleotides.index(seq[i + j])][j]
       scores[i] = total
-      # print(total)
 
     result.append(scores)
   
-  # print(result)
   return result
 
 """
 given an(estimated) WMM and a set of sequences, run the E-step of MEME's EM algorithm.
 output: matrix of probabilities according to the wmm
 """
-# def Estep(wmm, seq_set):
-#   assert (len(wmm) > 0 and len(seq_set) > 0)
+def Estep(wmm, seq_set):
+  assert (len(wmm) > 0 and len(seq_set) > 0)
 
-#   result = []
+  result = []
 
-#   scores = scanWMM(wmm, seq_set)
+  scores = scanWMM(wmm, seq_set)
   
-#   for i, row in enumerate(scores):
-#     prob_list = []
-#     total_prob = 0
+  for i, row in enumerate(scores):
+    prob_list = []
+    total_prob = 0
 
-#     # get total prob
-#     for score in row:
-#       total_prob = total_prob + 2**score
+    # get total prob
+    for score in row:
+      total_prob = total_prob + 2**score
 
-#     # normalize and place probs accordingly
-#     for j, score in enumerate(row):
-#       prob_list.append(2**score / total_prob)
+    # normalize and place probs accordingly
+    for j, score in enumerate(row):
+      prob_list.append(2**score / total_prob)
 
-#     result.append(prob_list)
+    result.append(prob_list)
   
-#   return result
-def Estep(WMM, sequences):
-    scores = scanWMM(WMM, sequences)
-    EMatrix = []
-    for i, row in enumerate(scores):
-        E_row = np.zeros(shape=len(row))
-        total_score = 0
-        for score in row:
-            total_score = total_score + 2**score
-        for j, score in enumerate(row):
-            E_row[j] = 2**score / total_score
-        EMatrix.append(E_row)
-
-    return EMatrix
+  return result
 
 """
 given the Estep result, re-estimate the WMM. 
@@ -221,13 +186,10 @@ def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
     for j in range(len(seq) - wmm_length + 1):
       window = [seq[j : j + wmm_length]]
       prob = estep_result[i][j]
-      # print(prob)
 
       count_matrix = makeCountMatrix(window)
       window_count = prob * count_matrix
-      # print(window_count)
       result = result + window_count
-      # print(len(result))
   
   result = addPseudo(result, pseudocount_vector)
   result = makeFrequencyMatrix(result)
@@ -239,30 +201,24 @@ def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
 # perform training step
 def train_step(wmm_list, seq_list):
   print("training step")
-  print(len(wmm_list))
   freq_result = []
   wmm_result = []
   entropy_result = []
-
-  print(seq_list)
 
   for wmm in wmm_list:
     freq_trials = []
     wmm_trials = []
     entropy_trials = []
 
-    # print(wmm)
-
     for i in range(c.trials):
+      estep_result = Estep(np.copy(wmm), np.copy(seq_list))
+      freq, wmm, entropy = Mstep(np.copy(seq_list), np.copy(wmm), np.copy(estep_result), c.pseudocount_vector, c.bg_vector)
 
-      estep_result = Estep(wmm, seq_list)
-      # print(estep_result[0])
-      # freq, wmm, entropy = Mstep(seq_list, wmm, estep_result, c.pseudocount_vector, c.bg_vector)
-      # print(entropy)
+      print(entropy)
 
-      # freq_trials.append(freq)
-      # wmm_trials.append(wmm)
-      # entropy_trials.append(entropy)
+      freq_trials.append(freq)
+      wmm_trials.append(wmm)
+      entropy_trials.append(entropy)
 
     freq_result.append(freq_trials)
     wmm_result.append(wmm_trials)
