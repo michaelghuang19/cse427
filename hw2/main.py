@@ -430,7 +430,7 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   output.write(str(auc_list) + "\n")
   output.write("concrete point:\n")
   output.write("[false positive rate, true positive rate, score]\n")
-  output.write(str(break_point))
+  output.write(str(break_point) + "\n")
   output.write("[true positives, false positives, false negatives, true negatives]\n")
   output.write(str(break_point_stats))
   output.close()
