@@ -217,7 +217,7 @@ def make_logo(ABCD_freq):
 # perform training step
 # returns: tuple; tuple[0] = ABCD WMMs, tuple[1] = ABCD frequency matrices
 def train_step(wmm_list, seq_list, init_entropy):
-  print("training step")
+  print("---training step---")
   freq_result = []
   wmm_result = []
   entropy_result = []
@@ -303,7 +303,7 @@ def train_step(wmm_list, seq_list, init_entropy):
 
 # perform evaluation step
 def eval_step(ABCD_wmm, ABCD_freq, seq_list):
-  print("evaluation step")
+  print("---evaluation step---")
 
   score_list = []
   start_list = []
@@ -340,6 +340,7 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   label_list = []
   auc_list = []
   break_point = [0, 1, 0]
+  break_point_stats = [0, 0, 0, 0]
   for i, score_struct in enumerate(score_list):
     ss_pairs = [] 
     counts = []
@@ -359,14 +360,14 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
     # for properly shaping the score structs
     flat_list = []
     for j, count in enumerate(counts):
-      if j == start_list[i]:
-        state = True
-        pos_count += 1
-      else:
-        state = False
-        neg_count += 1
-      
       for val in count:
+        if j == start_list[i]:
+          state = True
+          pos_count += 1
+        else:
+          state = False
+          neg_count += 1
+        
         score = ds.score_info(val, state)
         flat_list.append(score)
 
@@ -375,48 +376,32 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
     true_count = 0
     total = len(flat_list)
 
-    for j, score in enumerate(flat_list):
+    flat_list = h.flatten_2d_list(counts)
+    flat_list = sorted(flat_list)
 
-      true_count += np.multiply(score.true, 1)
+    for score in flat_list:
+      correct_matrix = counts >= score
 
-      true_positives = true_count
-      false_positives = j - true_count + 1
-      # false_positives = total - (j + 1) - (pos_count - true_count)
+      motif_section = correct_matrix[start_list[i]]
+      nonmotif_section = np.delete(correct_matrix, start_list[i], 0)
 
-      tpr = true_positives / pos_count
-      fpr = false_positives / neg_count
+      motif_section = motif_section.flatten()
+      nonmotif_section = nonmotif_section.flatten()
 
-      ss_pairs.append([tpr, fpr])
+      true_positives = np.sum(motif_section)
+      false_positives = np.sum(nonmotif_section)
+      false_negatives = np.sum(~motif_section)
+      true_negatives = np.sum(~nonmotif_section)
+
+      tpr = true_positives / (true_positives + false_negatives)
+      fpr = false_positives / (false_positives + true_negatives)
+
+      ss_pairs.append([fpr, tpr])
 
       # see if we can update our concrete point
       if tpr == 1 and i == 2 and fpr < break_point[1]:
-        break_point = [tpr, fpr, score]
-
-    # flat_list = h.flatten_2d_list(counts)
-    # flat_list = sorted(flat_list)
-
-    # for score in flat_list:
-    #   correct_matrix = counts >= score
-
-    #   motif_section = correct_matrix[start_list[i] - 1]
-    #   nonmotif_section = np.delete(correct_matrix, start_list[i] - 1, 0)
-
-    #   motif_section = motif_section.flatten()
-    #   nonmotif_section = nonmotif_section.flatten()
-
-    #   true_positives = np.sum(motif_section)
-    #   false_positives = np.sum(nonmotif_section)
-    #   false_negatives = np.sum(~motif_section)
-    #   true_negatives = np.sum(~nonmotif_section)
-      
-    #   tpr = true_positives / (true_positives + false_negatives)
-    #   fpr = false_positives / (false_positives + true_negatives)
-
-    #   ss_pairs.append([tpr, fpr])
-
-    #   # see if we can update our concrete point
-    #   if tpr == 1 and i == 2 and fpr < break_point[1]:
-    #     break_point = [tpr, fpr, score]
+        break_point = [fpr, tpr, score]
+        break_point_stats = [true_positives, false_positives, false_negatives, true_negatives]
 
     ss_pairs = sorted(ss_pairs, key = lambda pair: [pair[0], pair[1]])
     x_values = [point[0] for point in ss_pairs]
@@ -441,10 +426,13 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   # write test output
   print("writing eval data to output")
   output = open(c.results_folder + "eval_step" + c.text_exten, "wt")
-  output.write("auc list for [A, B, C, D]\n")
-  output.write(str(auc_list))
-  output.write("\nconcrete point: [tpr, fpr, score]\n")
+  output.write("auc for [A, B, C, D]:\n")
+  output.write(str(auc_list) + "\n")
+  output.write("concrete point:\n")
+  output.write("[false positive rate, true positive rate, score]\n")
   output.write(str(break_point))
+  output.write("[true positives, false positives, false negatives, true negatives]\n")
+  output.write(str(break_point_stats))
   output.close()
 
 def main():

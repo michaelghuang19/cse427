@@ -1,0 +1,6 @@
+auc for [A, B, C, D]:
+[0.998876645631068, 0.9954095485436893, 0.7088914660194174, 0.9988834417475728]
+concrete point:
+[false positive rate, true positive rate, score]
+[0.9587961165048544, 1.0, -9.087520597474741][true positives, false positives, false negatives, true negatives]
+[1000, 98756, 0, 4244]
