@@ -26,7 +26,16 @@ Results:
     + Extra credit d: Sequence Logo figures in results folder
     + Extra credit e: Slide 1 position instead of 5 positions
         Note that for this extra credit, we placed these in the results/slide1 folder.
-        We find that using the "slide 1 position" method for the data set doesn't seem to change much, although it does indeed improve the highest-entropy and median model's AUC. 
+        The innate advantage of using Slide 1 is the idea that it will be more specific than
+        simply Slide 5, should it find a better model that was passed over. However,
+        it doesn't seem to be significantly better compared to the Slide 5 strategy that
+        we normally employ. Interestingly enough, when we run the program using Slide 1, we
+        find that the data set doesn't seem to change much in terms of raw values, besides
+        providing a wider array of entropies that give us a better of idea for where the
+        entropies in general will be trending, and also very slightly improve the
+        highest-entropy and median model's AUC. The wider array of entropies also means that
+        our lowest-entropy model when we use the Slide 1 method has significantly lower AUC
+        (~0.7 vs ~0.9) than our lowest-entropy model with the Slide 5 method.
 
   The results/slide5 folder has pre-produced results from running the program in its
   standard state, but it's encouraged to re-run the program again to confirm results.
