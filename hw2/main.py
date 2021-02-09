@@ -237,8 +237,8 @@ def train_step(wmm_list, seq_list, init_entropy):
   ABCD_freq = []
 
   A_index = np.argmax(entropy_result)
-  B_index = np.argmin(entropy_result)
-  C_index = np.argsort(entropy_result)[len(entropy_result)//2]
+  B_index = np.argsort(entropy_result)[len(entropy_result)//2]
+  C_index = np.argmin(entropy_result)
 
   ABCD_wmm.append(wmm_result[A_index])
   ABCD_wmm.append(wmm_result[B_index])
@@ -352,47 +352,71 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
     
     # we'd rather be able to directly index by start position, so swap axes
     counts = np.swapaxes(counts, 0, 1)
-    
-    # # for properly shaping the score structs
-    # flat_list = []
-    # for j, count in enumerate(counts):
-    #   state = False
-    #   if j == start_list[i]:
-    #     state = True
+
+    pos_count = 0
+    neg_count = 0
+
+    # for properly shaping the score structs
+    flat_list = []
+    for j, count in enumerate(counts):
+      if j == start_list[i]:
+        state = True
+        pos_count += 1
+      else:
+        state = False
+        neg_count += 1
       
-    #   for val in count:
-    #     score = ds.score_info(val, state)
-    #     flat_list.append(score)
+      for val in count:
+        score = ds.score_info(val, state)
+        flat_list.append(score)
 
-    #   # see if we can update our concrete point
-    #   if tpr == 1 and i == 2 and fpr < break_point[1]:
-    #     break_point = [tpr, fpr, score]
+    flat_list = sorted(flat_list, key=lambda score: [score.score])
 
-    flat_list = h.flatten_2d_list(counts)
-    flat_list = sorted(flat_list)
+    true_count = 0
+    total = len(flat_list)
 
-    for score in flat_list:
-      correct_matrix = counts >= score
+    for j, score in enumerate(flat_list):
 
-      motif_section = correct_matrix[start_list[i] - 1]
-      nonmotif_section = np.delete(correct_matrix, start_list[i] - 1, 0)
+      true_count += np.multiply(score.true, 1)
 
-      motif_section = motif_section.flatten()
-      nonmotif_section = nonmotif_section.flatten()
+      true_positives = true_count
+      false_positives = j - true_count + 1
+      # false_positives = total - (j + 1) - (pos_count - true_count)
 
-      true_positives = np.sum(motif_section)
-      false_positives = np.sum(nonmotif_section)
-      false_negatives = np.sum(~motif_section)
-      true_negatives = np.sum(~nonmotif_section)
-      
-      tpr = true_positives / (true_positives + false_negatives)
-      fpr = false_positives / (false_positives + true_negatives)
+      tpr = true_positives / pos_count
+      fpr = false_positives / neg_count
 
       ss_pairs.append([tpr, fpr])
 
       # see if we can update our concrete point
       if tpr == 1 and i == 2 and fpr < break_point[1]:
         break_point = [tpr, fpr, score]
+
+    # flat_list = h.flatten_2d_list(counts)
+    # flat_list = sorted(flat_list)
+
+    # for score in flat_list:
+    #   correct_matrix = counts >= score
+
+    #   motif_section = correct_matrix[start_list[i] - 1]
+    #   nonmotif_section = np.delete(correct_matrix, start_list[i] - 1, 0)
+
+    #   motif_section = motif_section.flatten()
+    #   nonmotif_section = nonmotif_section.flatten()
+
+    #   true_positives = np.sum(motif_section)
+    #   false_positives = np.sum(nonmotif_section)
+    #   false_negatives = np.sum(~motif_section)
+    #   true_negatives = np.sum(~nonmotif_section)
+      
+    #   tpr = true_positives / (true_positives + false_negatives)
+    #   fpr = false_positives / (false_positives + true_negatives)
+
+    #   ss_pairs.append([tpr, fpr])
+
+    #   # see if we can update our concrete point
+    #   if tpr == 1 and i == 2 and fpr < break_point[1]:
+    #     break_point = [tpr, fpr, score]
 
     ss_pairs = sorted(ss_pairs, key = lambda pair: [pair[0], pair[1]])
     x_values = [point[0] for point in ss_pairs]
