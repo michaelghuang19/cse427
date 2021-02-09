@@ -353,16 +353,20 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
     # we'd rather be able to directly index by start position, so swap axes
     counts = np.swapaxes(counts, 0, 1)
     
-    flat_list = []
-    
-    # for properly shaping the score structs
-    # for j, count in counts:
+    # # for properly shaping the score structs
+    # flat_list = []
+    # for j, count in enumerate(counts):
     #   state = False
     #   if j == start_list[i]:
     #     state = True
+      
+    #   for val in count:
+    #     score = ds.score_info(val, state)
+    #     flat_list.append(score)
 
-    #   score = ds.score_info(count, state)
-    #   flat_list.append(score)
+    #   # see if we can update our concrete point
+    #   if tpr == 1 and i == 2 and fpr < break_point[1]:
+    #     break_point = [tpr, fpr, score]
 
     flat_list = h.flatten_2d_list(counts)
     flat_list = sorted(flat_list)
@@ -411,6 +415,7 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   plt.close()
 
   # write test output
+  print("writing eval data to output")
   output = open(c.results_folder + "eval_step" + c.text_exten, "wt")
   output.write("auc list for [A, B, C, D]\n")
   output.write(str(auc_list))
@@ -433,6 +438,9 @@ def main():
 
   # 3. Run on evaluation data
   eval_step(ABCD_wmm, ABCD_freq, eval_data)
+
+  # Extra credit d: Sequence Logos
+  make_logo(ABCD_freq)
 
   print("done")
 
