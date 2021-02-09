@@ -1,6 +1,7 @@
 # Michael Huang (mhuang19)
 # 1862567
 
+import logomaker as lm
 import math
 import matplotlib.pyplot as plt
 import numpy as np
@@ -196,7 +197,25 @@ def Mstep(seq_list, wmm, estep_result, pseudocount_vector, bg_vector):
 
   return result, wmm, entropy
 
+"""
+extra credit d: logomaker function, writes logo figure to results folder
+"""
+def make_logo(ABCD_freq):
+  print("plotting logos for frequency matrices")
+
+  for i, freq in enumerate(ABCD_freq):
+    df = pd.DataFrame(freq.T, columns=['A', 'C', 'G', 'T'])
+    lm.Logo(df)
+
+    letter = h.get_letter(i)
+
+    # save plot
+    plt.title("{}: Sequence Logo of Frequency Matrix".format(letter))
+    plt.savefig(c.results_folder + "seq_logo_{}".format(letter) + c.png_exten, dpi = 200)
+    plt.close()
+
 # perform training step
+# returns: tuple; tuple[0] = ABCD WMMs, tuple[1] = ABCD frequency matrices
 def train_step(wmm_list, seq_list, init_entropy):
   print("training step")
   freq_result = []
@@ -276,14 +295,13 @@ def train_step(wmm_list, seq_list, init_entropy):
   output.write(tabulate(entropy_result))
   output.write("\n")
   for i, freq in enumerate(ABCD_freq):
-    output.write(h.get_letter(i) + "frequency \n")
+    output.write("\n" + h.get_letter(i) + " frequency\n")
     output.write(tabulate(freq))
   output.close()
 
   return ABCD_wmm, ABCD_freq
 
 # perform evaluation step
-# returns: tuple; tuple[0] = ABCD WMMs, tuple[1] = ABCD frequency matrices 
 def eval_step(ABCD_wmm, ABCD_freq, seq_list):
   print("evaluation step")
 
@@ -307,12 +325,17 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
     start_list.append(start)
 
     # plotting stuff
+    letter = h.get_letter(i)
+
     plt.bar(range(len(scores[0])), values)
-    plt.title("Most common location of best motif hit: " + str(start))
-    plt.savefig(c.results_folder + "wmm_plot_{}.png".format(h.get_letter(i)), dpi = 200)
+    plt.title("Most common location of best motif hit")
+    plt.legend([letter + ": " + str(start)])
+    plt.xlabel('Index')
+    plt.ylabel('Score')
+    plt.savefig(c.results_folder + "wmm_plot_{}".format(letter) + c.png_exten, dpi=200)
     plt.close()
   
-  print("calculating auc and creating roc")
+  print("calculating auc and finding roc points")
   # do roc and auc stuff
   label_list = []
   auc_list = []
@@ -329,6 +352,17 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
     
     # we'd rather be able to directly index by start position, so swap axes
     counts = np.swapaxes(counts, 0, 1)
+    
+    flat_list = []
+    
+    # for properly shaping the score structs
+    # for j, count in counts:
+    #   state = False
+    #   if j == start_list[i]:
+    #     state = True
+
+    #   score = ds.score_info(count, state)
+    #   flat_list.append(score)
 
     flat_list = h.flatten_2d_list(counts)
     flat_list = sorted(flat_list)
@@ -352,7 +386,7 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
 
       ss_pairs.append([tpr, fpr])
 
-      # see if we can update our special point
+      # see if we can update our concrete point
       if tpr == 1 and i == 2 and fpr < break_point[1]:
         break_point = [tpr, fpr, score]
 
@@ -366,14 +400,14 @@ def eval_step(ABCD_wmm, ABCD_freq, seq_list):
 
     plt.plot(x_values, y_values)
 
-  print("creating roc")
+  print("plotting roc graph")
   # plot true positive rate vs false positive rate
   plt.plot([0, 1], [0, 1], linestyle = ":")
   plt.scatter(break_point[0], break_point[1])
   plt.legend(label_list)
   plt.ylabel("True Positive Rate")
   plt.xlabel("False Positive Rate")
-  plt.savefig(c.results_folder + "roc.png", dpi = 200)
+  plt.savefig(c.results_folder + "roc" + c.png_exten, dpi = 200)
   plt.close()
 
   # write test output

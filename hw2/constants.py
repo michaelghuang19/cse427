@@ -20,4 +20,5 @@ file_dict = {
 fasta_folder = "fasta/"
 results_folder = "results/"
 fasta_exten = ".fasta"
+png_exten = ".png"
 text_exten = ".txt"
