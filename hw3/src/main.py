@@ -14,13 +14,23 @@ import helper as h
 
 def viterbi_training(sequence):
   print("viterbi training")
+  seq_len = len(sequence)
 
-  # we sum log probabilities to add, essentially
+  assert seq_len > 0
+
+  emissions = c.init_emissions
+  transitions = c.init_transitions
+
+  prob_list = np.zeros((2, seq_len))
+  state_list = np.zeros((2, seq_len))
 
   for i in range(c.n):
     print("---Viterbi Parameter Estimation: Trial {}---".format(i + 1))
 
-    # as we test
+    # one test run
+
+    print(c.init_emissions)
+    print(c.init_transitions)
     break;
 
 def hmm_viterbi():

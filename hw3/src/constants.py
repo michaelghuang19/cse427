@@ -11,12 +11,14 @@ init_emissions = np.array([
     [0.25, 0.25, 0.25, 0.25], # state 1
     [0.20, 0.30, 0.30, 0.20]  # state 2
 ])
+init_emissions = np.log2(init_emissions)
 init_transitions = np.array([
     # [state 1, state 2]
     [0.9999, 0.0001],  # begin
     [0.9999, 0.0001],  # state 1
     [0.01, 0.99]       # state 2
 ])
+init_transitions = np.log2(init_transitions)
 nucleotides = ["A", "C", "G", "T"]
 
 data_folder = "../data/"
