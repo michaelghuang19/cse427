@@ -3,7 +3,6 @@
 
 genome_file = "GCF_000091665.1_ASM9166v1_genomic"
 
-
 file_dict = {
     "hw2-debug-train": "hw2-debug-eval",
     "hw2-train": "hw2-eval"

@@ -44,3 +44,12 @@ def regulate_sequence(sequence):
       result += "T"
 
   return result
+
+# extracts sequences from fasta info structs
+def get_seq_list(fasta_list):
+  result = []
+
+  for fasta in fasta_list:
+    result.append(fasta.sequence)
+
+  return result

@@ -2,3 +2,10 @@ Michael Huang (mhuang19)
 1862567
 
 
+
+
+Build instructions:
+  pip install -r requirements.txt 
+
+
+
