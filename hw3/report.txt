@@ -5,7 +5,16 @@ Michael Huang (mhuang19)
 
 
 Build instructions:
+
+As necessary, ensure that we are using Python 3:
+  alias python=python3
+
+Install any required packages as necessary:
   pip install -r requirements.txt 
+
+Finally, run the program itself:
+  python main.py
+
 
 
 

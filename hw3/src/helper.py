@@ -1,16 +1,17 @@
-# Various helper functions
+# various helper functions
 
 import numpy as np
+import re
 
 import constants as c
 import data_structures as ds
 import main as m
 
 # convert fasta data to a list of formatted data structures
-def process_fasta(filename):
+def process_fasta(filename, exten):
   fasta_array = []
 
-  file = open(c.fasta_folder + filename + c.fasta_exten, "r")
+  file = open(c.data_folder + filename + exten, "r")
   text = file.read()
   seq_list = text.split(">")
 
@@ -53,3 +54,32 @@ def get_seq_list(fasta_list):
     result.append(fasta.sequence)
 
   return result
+
+# convert gff data to a list of known genes
+def process_gff(filename, exten):
+  result = []
+
+  file = open(c.data_folder + filename + exten, "r")
+  text = file.read()
+  gene_list = text.split("\n")
+
+  assert len(gene_list) > 0
+
+  gene_list = sorted(gene_list)
+  while len(gene_list[0]) == 0 or gene_list[0][0] == "#":
+    gene_list.pop(0)
+
+  for gene in gene_list:
+    is_nc_rna = re.search(r"gene_biotype=.*RNA", gene)
+
+    if is_nc_rna:
+      col_vals = gene.split("\t")
+
+      info = ds.gene_info(
+          col_vals[0], col_vals[1], col_vals[2], col_vals[3], col_vals[4], col_vals[6], col_vals[8])
+
+      result.append(info)
+  
+  return result
+
+
