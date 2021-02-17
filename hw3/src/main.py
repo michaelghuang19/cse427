@@ -24,13 +24,26 @@ def viterbi_training(sequence):
   prob_list = np.zeros((2, seq_len))
   state_list = np.zeros((2, seq_len))
 
+  # initialize using given emission/transition
+  # prob_list = viterbi trellis idea
+  # state_list = actual states
+
+  prob_list[0][0] = c.transitions[0][0] + \
+    c.emissions[0][c.nucleotides.index(sequence[0])]
+  prob_list[1][0] = c.transitions[0][1] + \
+    c.emissions[1][c.nucleotides.index(sequence[0])]
+
   for i in range(c.n):
     print("---Viterbi Parameter Estimation: Trial {}---".format(i + 1))
 
-    # one test run
+    for j, nuc in enumerate(sequence):
+      nuc = 0
+
 
     print(c.init_emissions)
     print(c.init_transitions)
+    
+    # one test run
     break;
 
 def hmm_viterbi():
