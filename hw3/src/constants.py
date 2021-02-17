@@ -2,7 +2,8 @@
 
 import numpy as np
 
-n = 10
+# n = 10
+n = 1
 k = 5
 genome_file = "GCF_000091665.1_ASM9166v1_genomic"
 

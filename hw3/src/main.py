@@ -22,41 +22,41 @@ def viterbi(sequence):
   emissions = c.init_emissions
   transitions = c.init_transitions
 
-  prob_list = np.zeros((2, seq_len))
-  state_list = np.zeros((2, seq_len))
-
-  # initialize using given emission/transition
-  # prob_list = viterbi trellis idea
-  # state_list = actual states
-
-  prob_list[0][0] = transitions[0][0] + \
-    emissions[0][c.nucleotides.index(sequence[0])]
-  prob_list[1][0] = transitions[0][1] + \
-    emissions[1][c.nucleotides.index(sequence[0])]
-
   for i in range(c.n):
     print("---Viterbi Parameter Estimation: Trial {}---".format(i + 1))
+    print(tabulate(emissions))
+    print(tabulate(transitions))
+
+    prob_list = np.zeros((2, seq_len))
+    prev_state_list = np.zeros((2, seq_len))
+
+    # initialize using emissions + transitions
+    # prob_list = viterbi trellis idea
+    # prev_state_list = previous state
+
+    prob_list[0][0] = transitions[0][0] + \
+      emissions[0][c.nucleotides.index(sequence[0])]
+    prob_list[1][0] = transitions[0][1] + \
+      emissions[1][c.nucleotides.index(sequence[0])]
 
     for j in range(1, seq_len):
-      # print(tabulate(emissions))
-      # print(tabulate(transitions))
-
-      for k in range(len(state_list)):
-
+      for k in range(1, len(transitions)):
         prev_scores = prob_list[:, j - 1] + transitions[k]
 
-        state_list[k][j] = np.argmax(prev_scores)
-        prob_list[k][j] = emissions[k][c.nucleotides.index(
+        prev_state_list[k - 1][j] = np.argmax(prev_scores)
+        prob_list[k - 1][j] = emissions[k - 1][c.nucleotides.index(
             sequence[j])] + np.amax(prev_scores)
+    
+    path = traceback(prob_list, prev_state_list)
+    hit_list = get_hits(path)
+
+    emissions = update_emissions(path, sequence)
+    transitions = update_transitions(path, hit_list)
     
     # one test run
     break;
 
-  path = traceback(prob_list, state_list)
-  print(path)
-  hit_list = get_hits(path)
-
-def traceback(prob_list, state_list):
+def traceback(prob_list, prev_state_list):
   print("doing traceback")
   result = []
   
@@ -64,8 +64,8 @@ def traceback(prob_list, state_list):
   result.append(last_index)
 
   # decrement to traceback
-  for i in range(len(state_list[0]) - 1, 0, -1):
-    last_index = int(state_list[last_index][i])
+  for i in range(len(prev_state_list[0]) - 1, 0, -1):
+    last_index = int(prev_state_list[last_index][i])
     result.append(last_index)
   
   return np.flip(result)
@@ -75,15 +75,30 @@ def get_hits(path):
   result = []
 
   # find 1's in path
-  # path = np.where(path == 1)
-  print(path)
+  hits = np.where(path == 1)[0]
 
   # group by intervals where we had consecutive 1's
+  # thanks geeksforgeeks
+  for key, group in it.groupby(enumerate(hits), key=lambda t: t[1] - t[0]):
+    group = list(group)
+    result.append([group[0][1], group[-1][1]])
 
-  # for _, group in itertools.groupby(enumerate(hit_locations), key=lambda x: x[1]-x[0]):
-  #   group = list(group)
-  #   result.append((group[0][1], group[-1][1]))
-  #     self.intervals = hit_intervals
+  return result
+
+def update_emissions(path, sequence):
+  result = np.zeros((2, 4))
+
+  # set state 1 and state 2 emission probability
+
+  return result
+
+def update_transitions(path, hit_list):
+  result = np.zeros((3, 2))
+  
+  # how do we set the beginning transition probability?
+  result[0] = c.transitions[0]
+
+  # set state 1 and state 2 transition probability
 
   return result
 
