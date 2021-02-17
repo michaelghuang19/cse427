@@ -22,10 +22,14 @@ def viterbi(sequence):
   emissions = c.init_emissions
   transitions = c.init_transitions
 
+  # TODO: consider refactoring this loop outwards, since it's pretty clunky
   for i in range(c.n):
     print("---Viterbi Parameter Estimation: Trial {}---".format(i + 1))
-    print(tabulate(emissions))
-    print(tabulate(transitions))
+    # a. the HMM emission/transition parameters used for this pass (e.g., from the tables above for pass 1),
+    print("emissions")
+    print(tabulate(np.exp(emissions)))
+    print("transitions")
+    print(tabulate(np.exp(transitions)))
 
     prob_list = np.zeros((2, seq_len))
     prev_state_list = np.zeros((2, seq_len))
@@ -47,13 +51,21 @@ def viterbi(sequence):
         prob_list[k - 1][j] = emissions[k - 1][c.nucleotides.index(
             sequence[j])] + np.amax(prev_scores)
     
-    path = traceback(prob_list, prev_state_list)
+    final_prob, path = traceback(prob_list, prev_state_list)
+    # b. the log probability(natural log, base-e) of the overall Viterbi path,
+    print(final_prob)
+  
     hit_list = get_hits(path)
+    # c. the total number of "hits" found, where a hit is (contiguous) subsequence assigned to state 2 in the Viterbi path, and
+    print(len(hit_list))
+    for hit in hit_list:
+      # d. the lengths and locations(starting and ending positions) of the first k(defined below) "hits." Print all hits, if there are fewer than k of them. (By convention, genomic positions are 1-based, not 0-based, indices.)
+      print(str(hit) + " of length " + str(hit[1] - hit[0]))
 
     emissions = update_emissions(path, sequence)
     transitions = update_transitions(path, hit_list)
-    
-    # one test run
+
+    # run only once for testing
     break;
 
 def traceback(prob_list, prev_state_list):
@@ -68,7 +80,7 @@ def traceback(prob_list, prev_state_list):
     last_index = int(prev_state_list[last_index][i])
     result.append(last_index)
   
-  return np.flip(result)
+  return prob_list[last_index, -1], np.flip(result)
 
 def get_hits(path):
   print("finding hits")
@@ -96,16 +108,15 @@ def update_transitions(path, hit_list):
   result = np.zeros((3, 2))
   
   # how do we set the beginning transition probability?
-  result[0] = c.transitions[0]
+  result[0] = c.init_transitions[0]
 
   # set state 1 and state 2 transition probability
 
   return result
 
-def test():
-  print("test")
+def evaluate():
+  print("evaluating against golden standard")
 
-  ginfo_list = h.process_gff(c.genome_file, c.gff_exten)  # "golden standard"
 
 def main():
   print("hello world")
@@ -113,8 +124,10 @@ def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
   seq = h.get_seq_list(fasta_list)[0]
 
-  # remember to store log probabilities vs probabilities
-  viterbi(seq)
+  intervals = viterbi(seq)
+
+  ginfo_list = h.process_gff(c.genome_file, c.gff_exten)  # "golden standard"
+  evaluate(intervals, ginfo_list)
 
   print("done")
 

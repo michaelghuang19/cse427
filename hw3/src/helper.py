@@ -82,18 +82,3 @@ def process_gff(filename, exten):
   
   return result
 
-# build a count matrix corresponding to a given sequence
-def makeCountMatrix(seq_list):
-  seq_length = len(seq_list)
-
-  assert (seq_length > 0)
-
-  result = np.zeros((len(c.nucleotides), seq_length), dtype=float)
-
-  for i in range(seq_length):
-    nuc = seq_list[i]
-    nuc_index = c.nucleotides.index(nuc)
-
-    result[nuc_index][j] = result[nuc_index] + 1
-
-  return result
