@@ -12,7 +12,14 @@ class gene_info:
   def __init__(self, seqid, ftype, start, end, strand, attributes):
     self.seqid = seqid
     self.ftype = ftype
-    self.start = start
-    self.end = end
+    self.start = int(start)
+    self.end = int(end)
     self.strand = strand
     self.attributes = attributes
+
+  def __str__(self):
+    result = self.seqid + " " + self.ftype + " " + self.strand + "\n"
+    result += str([self.start, self.end]) + "\n"
+    result += attributes + "\n"
+
+    return result

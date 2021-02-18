@@ -82,31 +82,16 @@ def process_gff(filename, exten):
   
   return result
 
-# make count matrix from sequence
-def make_count_matrix(sequence):
-  seq_length = len(sequence)
+# make a frequency matrix from a sequence list
+def make_freq_matrix(seq_list):
+  seq_array = np.array(seq_list)
+  
+  result = []
+  
+  for i in range(len(c.nucleotides)):
+    result.append(np.count_nonzero(seq_array == c.nucleotides[i]))
 
-  assert (seq_length > 0)
-
-  result = np.zeros((len(c.nucleotides), seq_length), dtype=float)
-
-  for i in range(seq_length):
-    nuc = sequence[i]
-    nuc_index = c.nucleotides.index(nuc)
-
-    result[nuc_index] += 1
-
-  return result
-
-# make a frequency matrix from a count matrix
-def make_freq_matrix(count_matrix):
-  assert (len(count_matrix) == len(c.nucleotides))
-
-  result = np.copy(count_matrix)
-  total = sum(count_matrix)
-
-  for i, row in enumerate(count_matrix):
-    for j, count in enumerate(row):
-      result[i][j] = count / total[j]
+  result = np.array(result)
+  result = result / np.sum(result)
 
   return result

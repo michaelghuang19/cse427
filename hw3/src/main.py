@@ -19,11 +19,12 @@ perform the viterbi algorithm, iterating n times
 def viterbi(sequence):
   print("performing viterbi algorithm")
   seq_len = len(sequence)
+  seq_list = list(sequence)
 
   assert seq_len > 0
 
-  emissions = c.init_emissions
-  transitions = c.init_transitions
+  emissions = np.log(c.init_emissions)
+  transitions = np.log(c.init_transitions)
 
   # TODO: consider refactoring this loop outwards, since it's pretty clunky
   for i in range(c.n):
@@ -69,11 +70,13 @@ def viterbi(sequence):
       # d. the lengths and locations(starting and ending positions) of the first k(defined below) "hits." Print all hits, if there are fewer than k of them. (By convention, genomic positions are 1-based, not 0-based, indices.)
       print(str(hit) + " of length " + str(hit[1] - hit[0]))
 
-    emissions = update_emissions(path, sequence)
+    emissions = update_emissions(path, seq_list)
     transitions = update_transitions(path, hit_list)
 
     # run only once for testing
     break;
+
+  return hit_list
 
 """
 trace the most likely probability path
@@ -113,23 +116,20 @@ def get_hits(path):
 """
 given our path, update our emissions probabilities
 """
-def update_emissions(path, sequence):
-  state0_seq = ""
-  state1_seq = ""
+def update_emissions(path, seq_list):
+  print("updating emissions")
 
-  for i, element in enumerate(path):
-    if element == 0:
-      state0_seq += sequence[i]
-    if element == 1:
-      state1_seq += sequence[i]
-  
-  state0_count_matrix = h.make_count_matrix(state0_seq)
-  state1_count_matrix = h.make_count_matrix(state1_seq)
+  state0_indices = [np.where(path == 0)[0]]
+  state1_indices = [np.where(path == 1)[0]]
 
-  state0_probs = h.make_freq_matrix(state0_count_matrix)
-  state1_probs = h.make_freq_matrix(state1_count_matrix)
+  state0_seq = pd.Series(seq_list)
+  state1_seq = pd.Series(seq_list)
 
-  result =  np.array([state0_probs, state1_probs])
+  state0_probs = h.make_freq_matrix(state0_seq)
+  state1_probs = h.make_freq_matrix(state1_seq)
+
+  result = np.array([state0_probs, state1_probs])
+  print(result)
 
   return np.log(result)
 
@@ -137,6 +137,8 @@ def update_emissions(path, sequence):
 given our path, update our transitions probabilities
 """
 def update_transitions(path, hit_list):
+  print("updating transitions")
+
   result = np.zeros((3, 2))
   num_intervals = len(hit_list)
   
@@ -167,6 +169,10 @@ def update_transitions(path, hit_list):
 
     prev = cur
 
+  print(state1_total)
+  print(state2_total)
+  print(result)
+
   result[1] = result[1] / state1_total
   result[2] = result[2] / state2_total
 
@@ -174,7 +180,8 @@ def update_transitions(path, hit_list):
   # trans_12_prob = (2 * num_intervals) / state1_total
   # trans_21_prob = (2 * num_intervals) / state2_total
   # trans_22_prob = (state2_total - (2 * num_intervals)) / state2_total
-
+  
+  print(result)
   return np.log(result)
 
 """
@@ -182,11 +189,11 @@ evaluate our list of intervals against the list of 'golden standard' rnas
 """
 def evaluate(intervals, ginfo_list):
   print("evaluating against golden standard")
-  result = [[] * len(intervals)]
+  result = [[]] * len(intervals)
 
   for ginfo in ginfo_list:
     for i, interval in enumerate(intervals):
-      if ginfo.start >= interval[0] and ginfo.end <= interval[1]:
+      if int(ginfo.start) >= int(interval[0]) and ginfo.end <= int(interval[1]):
         result[i].append(ginfo)
 
   for i, item_list in enumerate(result):
