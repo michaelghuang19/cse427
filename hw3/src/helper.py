@@ -70,15 +70,43 @@ def process_gff(filename, exten):
     gene_list.pop(0)
 
   for gene in gene_list:
-    is_nc_rna = re.search(r"gene_biotype=.*RNA", gene)
+    is_nc_rna = re.search(c.eval_filter, gene)
 
     if is_nc_rna:
       col_vals = gene.split("\t")
 
       info = ds.gene_info(
-          col_vals[0], col_vals[1], col_vals[2], col_vals[3], col_vals[4], col_vals[6], col_vals[8])
+        col_vals[0], col_vals[2], col_vals[3], col_vals[4], col_vals[6], col_vals[8])
 
       result.append(info)
   
   return result
 
+# make count matrix from sequence
+def make_count_matrix(sequence):
+  seq_length = len(sequence)
+
+  assert (seq_length > 0)
+
+  result = np.zeros((len(c.nucleotides), seq_length), dtype=float)
+
+  for i in range(seq_length):
+    nuc = sequence[i]
+    nuc_index = c.nucleotides.index(nuc)
+
+    result[nuc_index] += 1
+
+  return result
+
+# make a frequency matrix from a count matrix
+def make_freq_matrix(count_matrix):
+  assert (len(count_matrix) == len(c.nucleotides))
+
+  result = np.copy(count_matrix)
+  total = sum(count_matrix)
+
+  for i, row in enumerate(count_matrix):
+    for j, count in enumerate(row):
+      result[i][j] = count / total[j]
+
+  return result

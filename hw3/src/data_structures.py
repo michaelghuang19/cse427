@@ -9,10 +9,10 @@ class fasta_info:
     self.sequence = sequence
 
 class gene_info:
-  def __init__(self, seqid, source, ftype, start, end, strand, attributes):
+  def __init__(self, seqid, ftype, start, end, strand, attributes):
     self.seqid = seqid
-    self.source = source
     self.ftype = ftype
     self.start = start
     self.end = end
     self.strand = strand
+    self.attributes = attributes

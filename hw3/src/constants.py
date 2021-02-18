@@ -6,6 +6,10 @@ import numpy as np
 n = 2
 k = 5
 genome_file = "GCF_000091665.1_ASM9166v1_genomic"
+# regex for filtering what we want to look for 
+# when we compare against the database "golden standard"
+# r"gene" should consider everything
+eval_filter = r"gene_biotype=.*RNA"
 
 init_emissions = np.array([
     # [A, C, T, G]
