@@ -14,9 +14,15 @@ import data_structures as ds
 import helper as h
 
 """
+perform the baum-welch algorithm + posterior decoding, iterating n times
+"""
+def baum_welch(sequence):
+  print("performing baum_welch algorithm")
+
+"""
 perform the viterbi algorithm, iterating n times
 """
-def viterbi(sequence):
+def viterbi(sequence, output):
   print("performing viterbi algorithm")
   seq_len = len(sequence)
   seq_list = list(sequence)
@@ -28,12 +34,14 @@ def viterbi(sequence):
 
   # TODO: consider refactoring this loop outwards, since it's pretty clunky
   for i in range(c.n):
-    print("---Viterbi Parameter Estimation: Trial {}---".format(i + 1))
+    output.write("---Viterbi Parameter Estimation: Trial {}---\n".format(i + 1))
     # a. the HMM emission/transition parameters used for this pass (e.g., from the tables above for pass 1),
-    print("emissions")
-    print(tabulate(np.exp(emissions)))
-    print("transitions")
-    print(tabulate(np.exp(transitions)))
+    output.write("emissions\n")
+    output.write(tabulate(np.exp(emissions)))
+    output.write("\n")
+    output.write("transitions\n")
+    output.write(tabulate(np.exp(transitions)))
+    output.write("\n")
 
     prob_list = np.zeros((2, seq_len))
     prev_state_list = np.zeros((2, seq_len))
@@ -57,18 +65,18 @@ def viterbi(sequence):
     
     final_prob, path = traceback(prob_list, prev_state_list)
     # b. the log probability(natural log, base-e) of the overall Viterbi path,
-    print(final_prob)
+    output.write("final log-prob: " + str(final_prob))
   
     hit_list = get_hits(path)
     # c. the total number of "hits" found, where a hit is (contiguous) subsequence assigned to state 2 in the Viterbi path, and
-    print(len(hit_list))
+    output.write("hits: " + str(len(hit_list)))
     
     k = c.k
     if i == c.n - 1:
       k = len(hit_list)
     for hit in hit_list:
       # d. the lengths and locations(starting and ending positions) of the first k(defined below) "hits." Print all hits, if there are fewer than k of them. (By convention, genomic positions are 1-based, not 0-based, indices.)
-      print(str(hit) + " of length " + str(hit[1] - hit[0]))
+      output.write(str(hit) + " of length " + str(hit[1] - hit[0]))
 
     emissions = update_emissions(path, seq_list)
     transitions = update_transitions(path, hit_list)
@@ -129,7 +137,6 @@ def update_emissions(path, seq_list):
   state1_probs = h.make_freq_matrix(state1_seq)
 
   result = np.array([state0_probs, state1_probs])
-  print(result)
 
   return np.log(result)
 
@@ -169,10 +176,6 @@ def update_transitions(path, hit_list):
 
     prev = cur
 
-  print(state1_total)
-  print(state2_total)
-  print(result)
-
   result[1] = result[1] / state1_total
   result[2] = result[2] / state2_total
 
@@ -181,13 +184,12 @@ def update_transitions(path, hit_list):
   # trans_21_prob = (2 * num_intervals) / state2_total
   # trans_22_prob = (state2_total - (2 * num_intervals)) / state2_total
   
-  print(result)
   return np.log(result)
 
 """
 evaluate our list of intervals against the list of 'golden standard' rnas
 """
-def evaluate(intervals, ginfo_list):
+def evaluate(intervals, ginfo_list, output):
   print("evaluating against golden standard")
   result = [[]] * len(intervals)
 
@@ -197,9 +199,10 @@ def evaluate(intervals, ginfo_list):
         result[i].append(ginfo)
 
   for i, item_list in enumerate(result):
-    print(intervals[i])
+    output.write(str(intervals[i]))
+    output.write("\n")
     for item in item_list:
-      print(item)
+      output.write(str(item))
 
   return result
 
@@ -209,11 +212,18 @@ def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
   seq = h.get_seq_list(fasta_list)[0]
 
-  intervals = viterbi(seq)
-
   ginfo_list = h.process_gff(c.genome_file, c.gff_exten)
   ginfo_list = sorted(ginfo_list, key=lambda ginfo: ginfo.start)
-  evaluate(intervals, ginfo_list)
+
+  viterbi_output = open(c.results_folder + "viterbi" + c.text_exten, "wt")
+  viterbi_intervals = viterbi(seq, viterbi_output)
+  evaluate(viterbi_intervals, ginfo_list, viterbi_output)
+  viterbi_output.close()
+
+  # baum_welch_output = open(c.results_folder + "viterbi" + c.text_exten, "wt")
+  # baum_welch_intervals = baum_welch(seq, baum_welch_output)
+  # evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
+  # baum_welch_output.close()
 
   print("done")
 

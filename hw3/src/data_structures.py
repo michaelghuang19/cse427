@@ -20,6 +20,6 @@ class gene_info:
   def __str__(self):
     result = self.seqid + " " + self.ftype + " " + self.strand + "\n"
     result += str([self.start, self.end]) + "\n"
-    result += attributes + "\n"
+    result += self.attributes + "\n"
 
     return result

@@ -31,7 +31,7 @@ def process_fasta(filename, exten):
     fasta_struct = ds.fasta_info(description, sequence)
     fasta_array.append(fasta_struct)
 
-  print("Successfully processed fasta for " + filename)
+  print("Successfully processed {} for ".format(exten) + filename)
 
   return fasta_array
 
@@ -80,6 +80,8 @@ def process_gff(filename, exten):
 
       result.append(info)
   
+  print("Successfully processed {} for ".format(exten) + filename)
+
   return result
 
 # make a frequency matrix from a sequence list
