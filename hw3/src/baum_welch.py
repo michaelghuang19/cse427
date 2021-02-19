@@ -81,51 +81,53 @@ def baum_welch(sequence, output):
 
   return hit_list
 
-  def get_forward_list(emissions, transitions, sequence):
-    seq_len = len(sequence)
+def get_forward_list(emissions, transitions, sequence):
+  seq_len = len(sequence)
 
-    assert seq_len > 0
+  assert seq_len > 0
 
-    result = np.zeros((2, seq_len))
-    
-    result[0][0] = transitions[0][0] + \
-        emissions[0][c.nucleotides.index(sequence[0])]
-    result[1][0] = transitions[0][1] + \
-        emissions[1][c.nucleotides.index(sequence[0])]
+  result = np.zeros((2, seq_len))
 
-    for i in range(1, len(sequence)):
-      for j in range(1, len(transitions)):
-        state_index = j - 1
-        for k in range(1, len(transitions)):
-          temp_index = k - 1
-          temp_term = result[temp_index][i - 1] + transitions[k][j]
+  result[0][0] = transitions[0][0] + \
+  emissions[0][c.nucleotides.index(sequence[0])]
+  result[1][0] = transitions[0][1] + \
+       emissions[1][c.nucleotides.index(sequence[0])]
 
-          result[state_index][i] = h.log_of_sum_of_logs(
-              result[state_index][i], temp_term)
-        
-        result[state_index][i] += emissions[state_index][c.nucleotides.index(
-            sequence[i])]
+  for i in range(1, len(sequence)):
+    for j in range(1, len(transitions)):
+      state_index = j - 1
+      for k in range(1, len(transitions)):
+        temp_index = k - 1
+        temp_term = result[temp_index][i - 1] + transitions[k][state_index]
 
-    return result
+        result[state_index][i] = h.log_of_sum_of_logs(
+            result[state_index][i], temp_term)
 
-  def get_backward_list(emissions, transitions, sequence):
-    seq_len = len(sequence)
+      result[state_index][i] += emissions[state_index][c.nucleotides.index(
+          sequence[i])]
 
-    assert seq_len > 0
+  return result
 
-    result = np.zeros((2, seq_len))
-    
-    result[0][seq_len - 1] = 1
-    result[1][seq_len - 1] = 1
 
-    for i in range(seq_len - 2, -1, -1):
-      for j in range(1, len(transitions)):
-        state_index = j - 1
-        for k in range(1, len(transitions)):
-          temp_index = k - 1
-          temp_term = result[temp_index][i + 1] + transitions[k][j] + \
-              emissions[state_index][c.nucleotides.index(sequence[i + 1])]
+def get_backward_list(emissions, transitions, sequence):
+  seq_len = len(sequence)
 
-          result[state_index][i] = h.log_of_sum_of_logs(result[state_index][i], temp_term)
-    
-    return result
+  assert seq_len > 0
+
+  result = np.zeros((2, seq_len))
+
+  result[0][seq_len - 1] = 1
+  result[1][seq_len - 1] = 1
+
+  for i in range(seq_len - 2, -1, -1):
+    for j in range(1, len(transitions)):
+      state_index = j - 1
+      for k in range(1, len(transitions)):
+        temp_index = k - 1
+        temp_term = result[temp_index][i + 1] + transitions[j][temp_index] + \
+            emissions[state_index][c.nucleotides.index(sequence[i + 1])]
+
+      result[state_index][i] = h.log_of_sum_of_logs(
+          result[state_index][i], temp_term)
+
+  return result
