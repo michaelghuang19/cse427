@@ -38,6 +38,7 @@ def baum_welch(sequence, output):
 
     # changes start here
     prob_list = np.zeros((2, seq_len))
+    path = np.zeros(seq_len)
 
     # initialize using emissions + transitions
     # prob_list = baum-welch trellis idea
@@ -45,9 +46,20 @@ def baum_welch(sequence, output):
 
     # check 0.5
     prob_list[0][0] = transitions[0][0] + \
-        emissions[0][c.nucleotides.index(sequence[0])]
+      emissions[0][c.nucleotides.index(sequence[0])]
     prob_list[1][0] = transitions[0][1] + \
-        emissions[1][c.nucleotides.index(sequence[0])]
+      emissions[1][c.nucleotides.index(sequence[0])]
+
+    for j in range(1, seq_len):
+      for k in range(1, len(transitions)):
+        total = 0
+        for m in range(1, len(transitions)):
+      
+      # update path
+      # path[k - 1][j] = np.argmax(prev_scores)
+
+      # figure out how to some emissions properly
+      # prob_list[k - 1][j] = emissions[k - 1][c.nucleotides.index(sequence[j])] + np.amax(prev_scores)
 
     # run only once for testing
     break

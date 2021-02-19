@@ -10,7 +10,11 @@ transitions
 0.9999  0.0001
 0.01    0.99
 ------  ------
-final log-prob: -2308117.250520281hits: 2[154650, 159578] of length 4928[638463, 643446] of length 4983[154650, 159578]
+final log-prob: -2308117.250520281
+hits: 2
+[154650, 159578] of length 4928
+[638463, 643446] of length 4983
+[154650, 159578]
 NC_000909.1 gene -
 [154662, 157639]
 ID=gene-MJ_RS00815;Dbxref=GeneID:1451001;Name=MJ_RS00815;gbkey=Gene;gene_biotype=rRNA;locus_tag=MJ_RS00815;old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S
