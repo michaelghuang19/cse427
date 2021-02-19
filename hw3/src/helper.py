@@ -97,3 +97,14 @@ def make_freq_matrix(seq_list):
   result = result / np.sum(result)
 
   return result
+
+def log_of_sum_of_logs(lx, ly):
+  if lx == -np.inf:
+    return ly
+  if ly == -np.inf:
+    return lx
+
+  if lx > ly:
+    return lx + np.log(1 + np.exp(ly - lx))
+  else:
+    return ly + np.log(1 + np.exp(lx - ly))
