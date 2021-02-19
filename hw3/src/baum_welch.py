@@ -36,32 +36,96 @@ def baum_welch(sequence, output):
     output.write(tabulate(np.exp(transitions)))
     output.write("\n")
 
-    # changes start here
-    prob_list = np.zeros((2, seq_len))
+    # initialize using emissions + transitions
+    # forward_list = forward probabilities
+    # backward_list = backward probabilities
+    # prob_list = baum-welch trellis idea
+
+    forward_list = get_forward_list(emissions, transitions, sequence)
+    backward_list = get_backward_list(emissions, transitions, sequence)
+
+    final_prob_list= forward_list[:, -1]
+    final_prob = 0
+    for prob in final_prob_list:
+      final_prob += h.log_of_sum_of_logs(final_prob, prob)
+    prob_list = (forward_list + backward_list) - final_prob
+
     path = np.zeros(seq_len)
 
-    # initialize using emissions + transitions
-    # prob_list = baum-welch trellis idea
-    # prev_state_list = previous state
+    for j in range(0, seq_len):
+      if prob_list[1][j] > 0.5:
+        path[j] = 1
 
-    # check 0.5
-    prob_list[0][0] = transitions[0][0] + \
-      emissions[0][c.nucleotides.index(sequence[0])]
-    prob_list[1][0] = transitions[0][1] + \
-      emissions[1][c.nucleotides.index(sequence[0])]
+    # b. the log probability of the genomic input given current params
+    output.write("final log-prob: " + str(np.amax(prob_list[:, -1])) + "\n")
 
-    for j in range(1, seq_len):
-      for k in range(1, len(transitions)):
-        total = 0
-        for m in range(1, len(transitions)):
-      
-      # update path
-      # path[k - 1][j] = np.argmax(prev_scores)
+    hit_list = m.get_hits(path)
+    # c. the total number of "hits" found, where a hit is (contiguous)
+    # subsequence assigned to state 2 in the Viterbi path
+    output.write("hits: " + str(len(hit_list)) + "\n")
 
-      # figure out how to some emissions properly
-      # prob_list[k - 1][j] = emissions[k - 1][c.nucleotides.index(sequence[j])] + np.amax(prev_scores)
+    k = c.k
+    if i == c.n - 1:
+      k = len(hit_list)
+    for hit in hit_list:
+      # d. the lengths and locations(starting and ending positions)
+      # of the first k(defined below) "hits." Print all hits, if there are fewer than k of them.
+      # (By convention, genomic positions are 1-based, not 0-based, indices.)
+      output.write(str(hit) + " of length " + str(hit[1] - hit[0]) + "\n")
+
+    emissions = m.update_emissions(path, seq_list)
+    transitions = m.update_transitions(path, hit_list)
 
     # run only once for testing
     break
 
-  return None
+  return hit_list
+
+  def get_forward_list(emissions, transitions, sequence):
+    seq_len = len(sequence)
+
+    assert seq_len > 0
+
+    result = np.zeros((2, seq_len))
+    
+    result[0][0] = transitions[0][0] + \
+        emissions[0][c.nucleotides.index(sequence[0])]
+    result[1][0] = transitions[0][1] + \
+        emissions[1][c.nucleotides.index(sequence[0])]
+
+    for i in range(1, len(sequence)):
+      for j in range(1, len(transitions)):
+        state_index = j - 1
+        for k in range(1, len(transitions)):
+          temp_index = k - 1
+          temp_term = result[temp_index][i - 1] + transitions[k][j]
+
+          result[state_index][i] = h.log_of_sum_of_logs(
+              result[state_index][i], temp_term)
+        
+        result[state_index][i] += emissions[state_index][c.nucleotides.index(
+            sequence[i])]
+
+    return result
+
+  def get_backward_list(emissions, transitions, sequence):
+    seq_len = len(sequence)
+
+    assert seq_len > 0
+
+    result = np.zeros((2, seq_len))
+    
+    result[0][seq_len - 1] = 1
+    result[1][seq_len - 1] = 1
+
+    for i in range(seq_len - 2, -1, -1):
+      for j in range(1, len(transitions)):
+        state_index = j - 1
+        for k in range(1, len(transitions)):
+          temp_index = k - 1
+          temp_term = result[temp_index][i + 1] + transitions[k][j] + \
+              emissions[state_index][c.nucleotides.index(sequence[i + 1])]
+
+          result[state_index][i] = h.log_of_sum_of_logs(result[state_index][i], temp_term)
+    
+    return result

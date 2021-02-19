@@ -16,6 +16,24 @@ import helper as h
 import viterbi as v
 
 """
+get hits from the path (where we have state 2)
+"""
+def get_hits(path):
+  print("finding hits")
+  result = []
+
+  # find 1's in path
+  hits = np.where(path == 1)[0]
+
+  # group by intervals where we had consecutive 1's
+  # thanks geeksforgeeks
+  for key, group in it.groupby(enumerate(hits), key=lambda t: t[1] - t[0]):
+    group = list(group)
+    result.append([group[0][1], group[-1][1]])
+
+  return result
+
+"""
 given our path, update our emissions probabilities
 """
 def update_emissions(path, seq_list):

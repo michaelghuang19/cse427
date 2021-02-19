@@ -53,17 +53,18 @@ def viterbi(sequence, output):
 
     for j in range(1, seq_len):
       for k in range(1, len(transitions)):
+        state_index = k - 1
         prev_scores = prob_list[:, j - 1] + transitions[k]
 
-        prev_state_list[k - 1][j] = np.argmax(prev_scores)
-        prob_list[k - 1][j] = emissions[k - 1][c.nucleotides.index(
+        prev_state_list[state_index][j] = np.argmax(prev_scores)
+        prob_list[state_index][j] = emissions[state_index][c.nucleotides.index(
             sequence[j])] + np.amax(prev_scores)
 
     final_prob, path = traceback(prob_list, prev_state_list)
-    # b. the log probability(natural log, base-e) of the overall Viterbi path,
+    # b. the log probability(natural log, base-e) of the overall Viterbi path
     output.write("final log-prob: " + str(final_prob) + "\n")
 
-    hit_list = get_hits(path)
+    hit_list = m.get_hits(path)
     # c. the total number of "hits" found, where a hit is (contiguous)
     # subsequence assigned to state 2 in the Viterbi path
     output.write("hits: " + str(len(hit_list)) + "\n")
@@ -102,22 +103,3 @@ def traceback(prob_list, prev_state_list):
     result.append(last_index)
 
   return prob_list[last_index, -1], np.flip(result)
-
-
-"""
-get hits from the path (where we have state 2)
-"""
-def get_hits(path):
-  print("finding hits")
-  result = []
-
-  # find 1's in path
-  hits = np.where(path == 1)[0]
-
-  # group by intervals where we had consecutive 1's
-  # thanks geeksforgeeks
-  for key, group in it.groupby(enumerate(hits), key=lambda t: t[1] - t[0]):
-    group = list(group)
-    result.append([group[0][1], group[-1][1]])
-
-  return result
