@@ -127,12 +127,12 @@ def main():
   ginfo_list = h.process_gff(c.genome_file, c.gff_exten)
   ginfo_list = sorted(ginfo_list, key=lambda ginfo: ginfo.start)
 
-  # viterbi_output = open(c.results_folder + "viterbi" + c.text_exten, "wt")
-  # viterbi_intervals = v.viterbi(seq, viterbi_output)
-  # evaluate(viterbi_intervals, ginfo_list, viterbi_output)
-  # viterbi_output.close()
+  viterbi_output = open(c.results_folder + "viterbi" + c.text_exten, "wt")
+  viterbi_intervals = v.viterbi(seq, viterbi_output)
+  evaluate(viterbi_intervals, ginfo_list, viterbi_output)
+  viterbi_output.close()
 
-  baum_welch_output = open(c.results_folder + "viterbi" + c.text_exten, "wt")
+  baum_welch_output = open(c.results_folder + "baum_welch" + c.text_exten, "wt")
   baum_welch_intervals = bw.baum_welch(seq, baum_welch_output)
   evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
   baum_welch_output.close()

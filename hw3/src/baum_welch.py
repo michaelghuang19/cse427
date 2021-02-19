@@ -53,7 +53,7 @@ def baum_welch(sequence, output):
     path = np.zeros(seq_len)
 
     for j in range(0, seq_len):
-      if prob_list[1][j] > 0.5:
+      if prob_list[1][j] > np.log(0.5):
         path[j] = 1
 
     # b. the log probability of the genomic input given current params
