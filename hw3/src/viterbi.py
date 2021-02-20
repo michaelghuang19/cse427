@@ -46,18 +46,17 @@ def viterbi(sequence, output):
     # prob_list = viterbi trellis idea
     # prev_state_list = previous state
 
-    prob_list[0][0] = transitions[0][0] + \
+    prob_list[0][0] = c.begin_transitions[0] + \
         emissions[0][c.nucleotides.index(sequence[0])]
-    prob_list[1][0] = transitions[0][1] + \
+    prob_list[1][0] = c.begin_transitions[1] + \
         emissions[1][c.nucleotides.index(sequence[0])]
 
     for j in range(1, seq_len):
-      for k in range(1, len(transitions)):
-        state_index = k - 1
+      for k in range(len(transitions)):
         prev_scores = prob_list[:, j - 1] + transitions[k]
 
-        prev_state_list[state_index][j] = np.argmax(prev_scores)
-        prob_list[state_index][j] = emissions[state_index][c.nucleotides.index(
+        prev_state_list[k][j] = np.argmax(prev_scores)
+        prob_list[k][j] = emissions[k][c.nucleotides.index(
             sequence[j])] + np.amax(prev_scores)
 
     final_prob, path = traceback(prob_list, prev_state_list)
@@ -72,7 +71,8 @@ def viterbi(sequence, output):
     k = c.k
     if i == c.n - 1:
       k = len(hit_list)
-    for hit in hit_list:
+    for interval_counter in range(min(k, len(hit_list))):
+      hit = hit_list[interval_counter]
       # d. the lengths and locations(starting and ending positions)
       # of the first k(defined below) "hits." Print all hits, if there are fewer than k of them.
       # (By convention, genomic positions are 1-based, not 0-based, indices.)

@@ -14,35 +14,35 @@ final log-prob: -2308117.250520281
 hits: 2
 [154650, 159578] of length 4928
 [638463, 643446] of length 4983
-[154650, 159578]
+Matches for [154650, 159578]
 NC_000909.1 gene -
 [154662, 157639]
-ID=gene-MJ_RS00815;Dbxref=GeneID:1451001;Name=MJ_RS00815;gbkey=Gene;gene_biotype=rRNA;locus_tag=MJ_RS00815;old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S
+ID=gene-MJ_RS00815 Dbxref=GeneID:1451001 Name=MJ_RS00815 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00815 old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S 
 NC_000909.1 gene -
 [157847, 157919]
-ID=gene-MJ_RS00820;Dbxref=GeneID:1451002;Name=MJ_RS00820;gbkey=Gene;gene_biotype=tRNA;locus_tag=MJ_RS00820;old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1
+ID=gene-MJ_RS00820 Dbxref=GeneID:1451002 Name=MJ_RS00820 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00820 old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1 
 NC_000909.1 gene -
 [157984, 159463]
-ID=gene-MJ_RS00825;Dbxref=GeneID:1451003;Name=MJ_RS00825;gbkey=Gene;gene_biotype=rRNA;locus_tag=MJ_RS00825;old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S
+ID=gene-MJ_RS00825 Dbxref=GeneID:1451003 Name=MJ_RS00825 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00825 old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S 
 NC_000909.1 gene +
 [639995, 640067]
-ID=gene-MJ_RS03780;Dbxref=GeneID:1451586;Name=MJ_RS03780;gbkey=Gene;gene_biotype=tRNA;locus_tag=MJ_RS03780;old_locus_tag=MJ_t22%2CMJt22%2CtRNA-Ala-3
+ID=gene-MJ_RS03780 Dbxref=GeneID:1451586 Name=MJ_RS03780 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03780 old_locus_tag=MJ_t22%2CMJt22%2CtRNA-Ala-3 
 NC_000909.1 gene +
 [640275, 643254]
-ID=gene-MJ_RS03785;Dbxref=GeneID:1451587;Name=MJ_RS03785;gbkey=Gene;gene_biotype=rRNA;locus_tag=MJ_RS03785;old_locus_tag=MJ_r04%2CMJr04%2CMJrrnB23S
-[638463, 643446]
+ID=gene-MJ_RS03785 Dbxref=GeneID:1451587 Name=MJ_RS03785 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS03785 old_locus_tag=MJ_r04%2CMJr04%2CMJrrnB23S 
+Matches for [638463, 643446]
 NC_000909.1 gene -
 [154662, 157639]
-ID=gene-MJ_RS00815;Dbxref=GeneID:1451001;Name=MJ_RS00815;gbkey=Gene;gene_biotype=rRNA;locus_tag=MJ_RS00815;old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S
+ID=gene-MJ_RS00815 Dbxref=GeneID:1451001 Name=MJ_RS00815 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00815 old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S 
 NC_000909.1 gene -
 [157847, 157919]
-ID=gene-MJ_RS00820;Dbxref=GeneID:1451002;Name=MJ_RS00820;gbkey=Gene;gene_biotype=tRNA;locus_tag=MJ_RS00820;old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1
+ID=gene-MJ_RS00820 Dbxref=GeneID:1451002 Name=MJ_RS00820 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00820 old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1 
 NC_000909.1 gene -
 [157984, 159463]
-ID=gene-MJ_RS00825;Dbxref=GeneID:1451003;Name=MJ_RS00825;gbkey=Gene;gene_biotype=rRNA;locus_tag=MJ_RS00825;old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S
+ID=gene-MJ_RS00825 Dbxref=GeneID:1451003 Name=MJ_RS00825 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00825 old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S 
 NC_000909.1 gene +
 [639995, 640067]
-ID=gene-MJ_RS03780;Dbxref=GeneID:1451586;Name=MJ_RS03780;gbkey=Gene;gene_biotype=tRNA;locus_tag=MJ_RS03780;old_locus_tag=MJ_t22%2CMJt22%2CtRNA-Ala-3
+ID=gene-MJ_RS03780 Dbxref=GeneID:1451586 Name=MJ_RS03780 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03780 old_locus_tag=MJ_t22%2CMJt22%2CtRNA-Ala-3 
 NC_000909.1 gene +
 [640275, 643254]
-ID=gene-MJ_RS03785;Dbxref=GeneID:1451587;Name=MJ_RS03785;gbkey=Gene;gene_biotype=rRNA;locus_tag=MJ_RS03785;old_locus_tag=MJ_r04%2CMJr04%2CMJrrnB23S
+ID=gene-MJ_RS03785 Dbxref=GeneID:1451587 Name=MJ_RS03785 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS03785 old_locus_tag=MJ_r04%2CMJr04%2CMJrrnB23S 

@@ -18,9 +18,11 @@ init_emissions = np.array([
 ])
 init_transitions = np.array([
     # [state 1, state 2]
-    [0.9999, 0.0001],  # begin
     [0.9999, 0.0001],  # state 1
     [0.01, 0.99]       # state 2
+])
+begin_transitions = np.array([
+    [0.9999, 0.0001]  # begin
 ])
 nucleotides = ["A", "C", "G", "T"]
 

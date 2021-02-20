@@ -58,10 +58,8 @@ given our path, update our transitions probabilities
 def update_transitions(path, hit_list):
   print("updating transitions")
 
-  result = np.zeros((3, 2))
+  result = np.zeros((2, 2))
   num_intervals = len(hit_list)
-  
-  result[0] = c.init_transitions[0]
 
   # set state 1 and state 2 transition probability
   # Example: 0011001100, consider boundaries
@@ -70,7 +68,7 @@ def update_transitions(path, hit_list):
   state2_total = 0
   
   prev = path[0]
-  for i in range(1, len(path)):
+  for i in range(len(path)):
     cur = path[i]
 
     if prev == 0 and cur == 0:
@@ -103,15 +101,17 @@ evaluate our list of intervals against the list of 'golden standard' rnas
 """
 def evaluate(intervals, ginfo_list, output):
   print("evaluating against golden standard")
-  result = [[]] * len(intervals)
+  result = []
 
-  for ginfo in ginfo_list:
-    for i, interval in enumerate(intervals):
+  for interval in enumerate(intervals):
+    result_list = []
+    for ginfo in ginfo_list:
       if int(ginfo.start) >= int(interval[0]) and ginfo.end <= int(interval[1]):
-        result[i].append(ginfo)
+        result_list.append(ginfo)
+    result.append(result_list)
 
   for i, item_list in enumerate(result):
-    output.write(str(intervals[i]))
+    output.write("Matches for " + str(intervals[i]))
     output.write("\n")
     for item in item_list:
       output.write(str(item))
@@ -132,10 +132,10 @@ def main():
   evaluate(viterbi_intervals, ginfo_list, viterbi_output)
   viterbi_output.close()
 
-  baum_welch_output = open(c.results_folder + "baum_welch" + c.text_exten, "wt")
-  baum_welch_intervals = bw.baum_welch(seq, baum_welch_output)
-  evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
-  baum_welch_output.close()
+  # baum_welch_output = open(c.results_folder + "baum_welch" + c.text_exten, "wt")
+  # baum_welch_intervals = bw.baum_welch(seq, baum_welch_output)
+  # evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
+  # baum_welch_output.close()
 
   print("done")
 
