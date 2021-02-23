@@ -39,11 +39,13 @@ given our path, update our emissions probabilities
 def update_emissions(path, seq_list):
   print("updating emissions")
 
-  state0_indices = [np.where(path == 0)[0]]
-  state1_indices = [np.where(path == 1)[0]]
+  state0_indices = np.where(path == 0)[0]
+  state1_indices = np.where(path == 1)[0]
 
-  state0_seq = pd.Series(seq_list)
-  state1_seq = pd.Series(seq_list)
+  seq_list = pd.Series(seq_list)
+
+  state0_seq = seq_list[state0_indices]
+  state1_seq = seq_list[state1_indices]
 
   state0_probs = h.make_freq_matrix(state0_seq)
   state1_probs = h.make_freq_matrix(state1_seq)
@@ -72,22 +74,22 @@ def update_transitions(path, hit_list):
     cur = path[i]
 
     if prev == 0 and cur == 0:
-      result[1][0] += 1
+      result[0][0] += 1
       state1_total += 1
     elif prev == 0 and cur == 1:
-      result[1][1] += 1
+      result[0][1] += 1
       state1_total += 1
     elif prev == 1 and cur == 0:
-      result[2][0] += 1
+      result[1][0] += 1
       state2_total += 1
     elif prev == 1 and cur == 1:
-      result[2][1] += 1
+      result[1][1] += 1
       state2_total += 1
 
     prev = cur
 
-  result[1] = result[1] / state1_total
-  result[2] = result[2] / state2_total
+  result[0] = result[0] / state1_total
+  result[1] = result[1] / state2_total
 
   # trans_11_prob = (state1_total - (2 * num_intervals)) / state1_total
   # trans_12_prob = (2 * num_intervals) / state1_total
@@ -103,7 +105,8 @@ def evaluate(intervals, ginfo_list, output):
   print("evaluating against golden standard")
   result = []
 
-  for interval in enumerate(intervals):
+  output.write("\n");
+  for interval in intervals:
     result_list = []
     for ginfo in ginfo_list:
       if int(ginfo.start) >= int(interval[0]) and ginfo.end <= int(interval[1]):
@@ -127,15 +130,15 @@ def main():
   ginfo_list = h.process_gff(c.genome_file, c.gff_exten)
   ginfo_list = sorted(ginfo_list, key=lambda ginfo: ginfo.start)
 
-  viterbi_output = open(c.results_folder + "viterbi" + c.text_exten, "wt")
-  viterbi_intervals = v.viterbi(seq, viterbi_output)
-  evaluate(viterbi_intervals, ginfo_list, viterbi_output)
-  viterbi_output.close()
+  # viterbi_output = open(c.results_folder + "viterbi" + c.text_exten, "wt")
+  # viterbi_intervals = v.viterbi(seq, viterbi_output)
+  # evaluate(viterbi_intervals, ginfo_list, viterbi_output)
+  # viterbi_output.close()
 
-  # baum_welch_output = open(c.results_folder + "baum_welch" + c.text_exten, "wt")
-  # baum_welch_intervals = bw.baum_welch(seq, baum_welch_output)
-  # evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
-  # baum_welch_output.close()
+  baum_welch_output = open(c.results_folder + "baum_welch" + c.text_exten, "wt")
+  baum_welch_intervals = bw.baum_welch(seq, baum_welch_output)
+  evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
+  baum_welch_output.close()
 
   print("done")
 

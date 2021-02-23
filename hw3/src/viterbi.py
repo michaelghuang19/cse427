@@ -29,7 +29,7 @@ def viterbi(sequence, output):
   # TODO: consider refactoring this loop outwards, since it's pretty clunky
   for i in range(c.n):
     output.write(
-        "---Viterbi Parameter Estimation: Trial {}---\n".format(i + 1))
+        "\n---Viterbi Parameter Estimation: Trial {}---\n".format(i + 1))
     # a. the HMM emission/transition parameters used for this pass
     # (e.g., from the tables above for pass 1)
     output.write("emissions\n")
@@ -82,7 +82,7 @@ def viterbi(sequence, output):
     transitions = m.update_transitions(path, hit_list)
 
     # run only once for testing
-    break
+    # break
 
   return hit_list
 

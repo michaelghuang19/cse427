@@ -2,8 +2,7 @@
 
 import numpy as np
 
-# n = 10
-n = 2
+n = 10
 k = 5
 genome_file = "GCF_000091665.1_ASM9166v1_genomic"
 # regex for filtering what we want to look for 
@@ -12,7 +11,7 @@ genome_file = "GCF_000091665.1_ASM9166v1_genomic"
 eval_filter = r"gene_biotype=.*RNA"
 
 init_emissions = np.array([
-    # [A, C, T, G]
+    # [A, C, G, T]
     [0.25, 0.25, 0.25, 0.25], # state 1
     [0.20, 0.30, 0.30, 0.20]  # state 2
 ])
@@ -21,9 +20,9 @@ init_transitions = np.array([
     [0.9999, 0.0001],  # state 1
     [0.01, 0.99]       # state 2
 ])
-begin_transitions = np.array([
+begin_transitions = np.array(
     [0.9999, 0.0001]  # begin
-])
+)
 nucleotides = ["A", "C", "G", "T"]
 
 data_folder = "data/"
