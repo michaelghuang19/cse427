@@ -123,7 +123,7 @@ def get_backward_list(emissions, transitions, sequence):
         temp_term = result[k][i + 1] + transitions[j][k] + \
             emissions[j][c.nucleotides.index(sequence[i + 1])]
 
-      result[state_index][i] = h.log_of_sum_of_logs(
+      result[j][i] = h.log_of_sum_of_logs(
           result[j][i], temp_term)
 
   return result
