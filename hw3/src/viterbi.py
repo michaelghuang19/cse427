@@ -81,9 +81,6 @@ def viterbi(sequence, output):
     emissions = m.update_emissions(path, seq_list)
     transitions = m.update_transitions(path, hit_list)
 
-    # run only once for testing
-    # break
-
   return hit_list
 
 

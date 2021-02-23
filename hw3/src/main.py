@@ -135,9 +135,11 @@ def main():
   # evaluate(viterbi_intervals, ginfo_list, viterbi_output)
   # viterbi_output.close()
 
+  seq = "UUNUU"
+
   baum_welch_output = open(c.results_folder + "baum_welch" + c.text_exten, "wt")
   baum_welch_intervals = bw.baum_welch(seq, baum_welch_output)
-  evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
+  # evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
   baum_welch_output.close()
 
   print("done")

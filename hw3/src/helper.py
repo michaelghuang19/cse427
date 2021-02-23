@@ -99,9 +99,9 @@ def make_freq_matrix(seq_list):
   return result
 
 def log_of_sum_of_logs(lx, ly):
-  if lx == -np.inf:
+  if lx == -np.inf or lx == np.inf:
     return ly
-  if ly == -np.inf:
+  if ly == -np.inf or ly == np.inf:
     return lx
 
   if lx > ly:
