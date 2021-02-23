@@ -54,17 +54,16 @@ def baum_welch(sequence, output):
     # for prob in final_prob_list:
     #   final_prob += h.log_of_sum_of_logs(final_prob, prob)
     prob_list = (forward_list + backward_list) - forward_val
-    print(prob_list)
-    print(np.exp(prob_list))
+    # print(prob_list)
+    # print(np.exp(prob_list))
 
     path = np.zeros(seq_len)
-    # np.exp()
 
     for j in range(0, seq_len):
-      if prob_list[1][j] > np.log(0.5):
+      if prob_list[1][j] > prob_list[0][j]:
         path[j] = 1
 
-    print(path)
+    # print(path)
 
     # b. the log probability of the genomic input given current params
     output.write("final log-prob: " + str(np.amax(prob_list[:, -1])) + "\n")
@@ -86,8 +85,6 @@ def baum_welch(sequence, output):
 
     emissions = m.update_emissions(path, seq_list)
     transitions = m.update_transitions(path, hit_list)
-
-    # run only once for testing
 
   return hit_list
 
