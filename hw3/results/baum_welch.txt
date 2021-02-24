@@ -237,7 +237,7 @@ hits: 64
 [1606184, 1606256] of length 72
 [1622880, 1622981] of length 101
 [1659451, 1659519] of length 68
-baum-welch completed in 1189.8667335510254 seconds
+baum-welch completed in 614.8489174842834 seconds
 
 Matches for [13535, 13665]
 Matches for [37390, 37646]

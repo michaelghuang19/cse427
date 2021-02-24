@@ -47,25 +47,13 @@ def baum_welch(sequence, output):
         emissions, transitions, sequence)
     backward_list = get_backward_list(emissions, transitions, sequence)
 
-    print(forward_list)
-    print(forward_val)
-    print(backward_list)
-
-    # final_prob_list= forward_list[:, -1]
-    # final_prob = 0
-    # for prob in final_prob_list:
-    #   final_prob += h.log_of_sum_of_logs(final_prob, prob)
     prob_list = (forward_list + backward_list) - forward_val
-    # print(prob_list)
-    # print(np.exp(prob_list))
 
     path = np.zeros(seq_len)
 
     for j in range(0, seq_len):
       if prob_list[1][j] > prob_list[0][j]:
         path[j] = 1
-
-    # print(path)
 
     # b. the log probability of the genomic input given current params
     output.write("final log-prob: " + str(np.amax(prob_list[:, -1])) + "\n")
@@ -79,7 +67,7 @@ def baum_welch(sequence, output):
     if i == c.n - 1:
       k = len(hit_list)
     for interval_counter in range(min(k, len(hit_list))):
-      hit = hit_list[interval_counter]
+      hit = list(np.array(hit_list[interval_counter]) + 1)
       # d. the lengths and locations(starting and ending positions)
       # of the first k(defined below) "hits." Print all hits, if there are fewer than k of them.
       output.write(str(hit) + " of length " + str(hit[1] - hit[0]) + "\n")

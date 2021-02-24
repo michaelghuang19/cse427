@@ -10,37 +10,40 @@ Build instructions:
     pip install -r requirements.txt 
 
   Take a look at src/constants.py to see if we want to change any parameters 
-  for running the Viterbi/Baum-Welch algorithms. In addition, comment/uncomment
-  either algorithm as desired in the main method of src/main.py
+  for running the Viterbi/Baum-Welch algorithms. Do note that the Baum-Welch
+  algorithm may take as much as twice as long as the Viterbi algorithm.
+  Feel free to therefore comment/uncomment either algorithm as desired in the
+  main method of src/main.py or change the "n" parameter in src/constants.py
+  to speed things up.
 
   Finally, run the program itself:
     python src/main.py
 
 Report:
 
-First 10 Viterbi hits for the 10th iteration:
-[97325, 97540] of length 215
-[97626, 97822] of length 196
-[111763, 111855] of length 92
-[118078, 118178] of length 100
-[138344, 138418] of length 74
-[154609, 157696] of length 3087
-[157781, 159590] of length 1809
-[186973, 187066] of length 93
-[190830, 190906] of length 76
-[215199, 215295] of length 96
+  First 10 Viterbi hits for the 10th iteration:
+    [97325, 97540] of length 215
+    [97626, 97822] of length 196
+    [111763, 111855] of length 92
+    [118078, 118178] of length 100
+    [138344, 138418] of length 74
+    [154609, 157696] of length 3087
+    [157781, 159590] of length 1809
+    [186973, 187066] of length 93
+    [190830, 190906] of length 76
+    [215199, 215295] of length 96
 
 
 
-First 10 Baum-Welch hits for the 10th iteration:
-[13535, 13665] of length 130
-[37390, 37646] of length 256
-[97323, 97541] of length 218
-[97625, 97819] of length 194
-[111762, 111854] of length 92
-[118077, 118177] of length 100
-[138344, 138418] of length 74
-[154609, 157697] of length 3088
-[157784, 159587] of length 1803
-[186973, 187066] of length 93
+  First 10 Baum-Welch hits for the 10th iteration:
+    [13535, 13665] of length 130
+    [37390, 37646] of length 256
+    [97323, 97541] of length 218
+    [97625, 97819] of length 194
+    [111762, 111854] of length 92
+    [118077, 118177] of length 100
+    [138344, 138418] of length 74
+    [154609, 157697] of length 3088
+    [157784, 159587] of length 1803
+    [186973, 187066] of length 93
 

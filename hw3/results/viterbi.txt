@@ -216,7 +216,7 @@ hits: 36
 [1189942, 1190053] of length 111
 [1313164, 1313250] of length 86
 [1659450, 1659519] of length 69
-viterbi completed in 659.4877066612244 seconds
+viterbi completed in 325.9364049434662 seconds
 
 Matches for [97325, 97540]
 NC_000909.1 gene -

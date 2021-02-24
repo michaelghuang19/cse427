@@ -32,3 +32,7 @@ fna_exten = ".fna"
 gff_exten = ".gff"
 png_exten = ".png"
 text_exten = ".txt"
+
+disclaimer = "***Note that these eval results are not fully representative, since they only consider" + \
+    "those elements that are fully contained within the interval itself" + \
+    "see report.txt for select detailed analyses***\n"

@@ -105,6 +105,7 @@ def evaluate(intervals, ginfo_list, output):
   print("evaluating against golden standard")
   result = []
 
+  output.write(c.disclaimer)
   output.write("\n");
   for interval in intervals:
     result_list = []
@@ -132,13 +133,19 @@ def main():
 
   viterbi_output = open(c.results_folder + "viterbi" + c.text_exten, "wt")
   viterbi_intervals = v.viterbi(seq, viterbi_output)
-  evaluate(viterbi_intervals, ginfo_list, viterbi_output)
   viterbi_output.close()
 
+  viterbi_eval_output = open(c.results_folder + "viterbi_eval" + c.text_exten, "wt")
+  evaluate(viterbi_intervals, ginfo_list, viterbi_eval_output)
+  viterbi_eval_output.close()
+  
   baum_welch_output = open(c.results_folder + "baum_welch" + c.text_exten, "wt")
   baum_welch_intervals = bw.baum_welch(seq, baum_welch_output)
-  evaluate(baum_welch_intervals, ginfo_list, baum_welch_output)
   baum_welch_output.close()
+
+  baum_welch_eval_output = open(c.results_folder + "viterbi_eval" + c.text_exten, "wt")
+  evaluate(baum_welch_intervals, ginfo_list, baum_welch_eval_output)
+  baum_welch_eval_output.close()
 
   print("done")
 

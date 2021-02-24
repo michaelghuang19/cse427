@@ -72,7 +72,7 @@ def viterbi(sequence, output):
     if i == c.n - 1:
       k = len(hit_list)
     for interval_counter in range(min(k, len(hit_list))):
-      hit = hit_list[interval_counter]
+      hit = list(np.array(hit_list[interval_counter]) + 1)
       # d. the lengths and locations(starting and ending positions)
       # of the first k(defined below) "hits." Print all hits, if there are fewer than k of them.
       output.write(str(hit) + " of length " + str(hit[1] - hit[0]) + "\n")
