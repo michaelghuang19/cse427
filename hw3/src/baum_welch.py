@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from sklearn import metrics
 from tabulate import tabulate
+import time
 
 import constants as c
 import data_structures as ds
@@ -16,6 +17,7 @@ perform the baum-welch algorithm + posterior decoding, iterating n times
 """
 def baum_welch(sequence, output):
   print("performing baum_welch algorithm")
+  start_time = time.time()
   seq_len = len(sequence)
   seq_list = list(sequence)
 
@@ -80,12 +82,14 @@ def baum_welch(sequence, output):
       hit = hit_list[interval_counter]
       # d. the lengths and locations(starting and ending positions)
       # of the first k(defined below) "hits." Print all hits, if there are fewer than k of them.
-      # (By convention, genomic positions are 1-based, not 0-based, indices.)
       output.write(str(hit) + " of length " + str(hit[1] - hit[0]) + "\n")
 
     emissions = m.update_emissions(path, seq_list)
     transitions = m.update_transitions(path, hit_list)
-
+  
+  end_time = time.time()
+  output.write("baum-welch completed in " +
+               str(end_time - start_time) + " seconds\n")
   return hit_list
 
 def get_forward_list(emissions, transitions, sequence):
