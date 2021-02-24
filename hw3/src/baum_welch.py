@@ -76,7 +76,7 @@ def baum_welch(sequence, output):
     transitions = m.update_transitions(path, hit_list)
   
   end_time = time.time()
-  output.write("baum-welch completed in " +
+  output.write("\nbaum-welch completed in " +
                str(end_time - start_time) + " seconds\n")
   return hit_list
 

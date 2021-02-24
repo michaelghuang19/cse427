@@ -1,0 +1,146 @@
+***Note that these eval results are not fully representative, since they only considerthose elements that are fully contained within the interval itselfsee report.txt for select detailed analyses***
+
+Matches for [97325, 97540]
+NC_000909.1 gene -
+[97426, 97537]
+ID=gene-MJ_RS00515 Dbxref=GeneID:1450942 Name=MJ_RS00515 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00515 old_locus_tag=MJ_t01%2CMJt01%2CtRNA-Met-1 
+Matches for [97626, 97822]
+NC_000909.1 gene +
+[97629, 97716]
+ID=gene-MJ_RS00520 Dbxref=GeneID:1450943 Name=MJ_RS00520 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00520 old_locus_tag=MJ_t02%2CMJt02%2CtRNA-Leu-1 
+Matches for [111763, 111855]
+NC_000909.1 gene +
+[111766, 111854]
+ID=gene-MJ_RS00580 Dbxref=GeneID:1450955 Name=MJ_RS00580 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00580 old_locus_tag=MJ_t03%2CMJt03%2CtRNA-SeC-1 
+Matches for [118078, 118178]
+Matches for [138344, 138418]
+Matches for [154609, 157696]
+NC_000909.1 gene -
+[154662, 157639]
+ID=gene-MJ_RS00815 Dbxref=GeneID:1451001 Name=MJ_RS00815 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00815 old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S 
+Matches for [157781, 159590]
+NC_000909.1 gene -
+[157847, 157919]
+ID=gene-MJ_RS00820 Dbxref=GeneID:1451002 Name=MJ_RS00820 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00820 old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1 
+NC_000909.1 gene -
+[157984, 159463]
+ID=gene-MJ_RS00825 Dbxref=GeneID:1451003 Name=MJ_RS00825 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00825 old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S 
+Matches for [186973, 187066]
+NC_000909.1 gene +
+[186978, 187066]
+ID=gene-MJ_RS00980 Dbxref=GeneID:1451036 Name=MJ_RS00980 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00980 old_locus_tag=MJ_t06%2CMJt06%2CtRNA-Ser-1 
+Matches for [190830, 190906]
+Matches for [215199, 215295]
+Matches for [227704, 227781]
+NC_000909.1 gene -
+[227704, 227780]
+ID=gene-MJ_RS01250 Dbxref=GeneID:1451090 Name=MJ_RS01250 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS01250 old_locus_tag=MJ_t09%2CMJt09%2CtRNA-Ala-2 
+Matches for [291971, 291996]
+Matches for [303989, 304079]
+Matches for [358765, 358941]
+NC_000909.1 gene +
+[358768, 358845]
+ID=gene-MJ_RS02090 Dbxref=GeneID:1451255 Name=MJ_RS02090 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS02090 old_locus_tag=MJ_t11%2CMJt11%2CtRNA-Arg-1 
+Matches for [359973, 360045]
+Matches for [402968, 403056]
+NC_000909.1 gene -
+[402968, 403044]
+ID=gene-MJ_RS02370 Dbxref=GeneID:1451310 Name=MJ_RS02370 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS02370 old_locus_tag=MJ_t14%2CMJt14%2CtRNA-Val-2 
+Matches for [412581, 412634]
+Matches for [552536, 552861]
+NC_000909.1 gene +
+[552541, 552856]
+ID=gene-MJ_RS03295 Dbxref=GeneID:27929964 Name=ffs gbkey=Gene gene=ffs gene_biotype=SRP_RNA locus_tag=MJ_RS03295 
+Matches for [619160, 619235]
+NC_000909.1 gene -
+[619160, 619234]
+ID=gene-MJ_RS03645 Dbxref=GeneID:1451559 Name=MJ_RS03645 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03645 old_locus_tag=MJ_t15%2CMJt15%2CtRNA-Cys-1 
+Matches for [637578, 638152]
+NC_000909.1 gene +
+[637583, 637659]
+ID=gene-MJ_RS03745 Dbxref=GeneID:1451579 Name=MJ_RS03745 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03745 old_locus_tag=MJ_t16%2CMJt16%2CtRNA-Phe-1 
+NC_000909.1 gene +
+[637667, 637742]
+ID=gene-MJ_RS03750 Dbxref=GeneID:1451580 Name=MJ_RS03750 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03750 old_locus_tag=MJ_t17%2CMJt17%2CtRNA-Asn-1 
+NC_000909.1 gene +
+[637772, 637849]
+ID=gene-MJ_RS03755 Dbxref=GeneID:1451581 Name=MJ_RS03755 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03755 old_locus_tag=MJ_t18%2CMJt18%2CtRNA-Met-3 
+NC_000909.1 gene +
+[637868, 637942]
+ID=gene-MJ_RS03760 Dbxref=GeneID:1451582 Name=MJ_RS03760 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03760 old_locus_tag=MJ_t19%2CMJt19%2CtRNA-Glu-2 
+NC_000909.1 gene +
+[637982, 638069]
+ID=gene-MJ_RS03765 Dbxref=GeneID:1451583 Name=MJ_RS03765 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03765 old_locus_tag=MJ_t20%2CMJt20%2CtRNA-Leu-3 
+NC_000909.1 gene +
+[638081, 638152]
+ID=gene-MJ_RS03770 Dbxref=GeneID:1451584 Name=MJ_RS03770 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03770 old_locus_tag=MJ_t21%2CMJt21%2CtRNA-His-1 
+Matches for [638333, 640131]
+NC_000909.1 gene +
+[638448, 639930]
+ID=gene-MJ_RS03775 Dbxref=GeneID:1451585 Name=MJ_RS03775 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS03775 old_locus_tag=MJ_r03%2CMJr03%2CMJrrnB16S 
+NC_000909.1 gene +
+[639995, 640067]
+ID=gene-MJ_RS03780 Dbxref=GeneID:1451586 Name=MJ_RS03780 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03780 old_locus_tag=MJ_t22%2CMJt22%2CtRNA-Ala-3 
+Matches for [640216, 643448]
+NC_000909.1 gene +
+[640275, 643254]
+ID=gene-MJ_RS03785 Dbxref=GeneID:1451587 Name=MJ_RS03785 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS03785 old_locus_tag=MJ_r04%2CMJr04%2CMJrrnB23S 
+NC_000909.1 gene +
+[643333, 643447]
+ID=gene-MJ_RS03790 Dbxref=GeneID:1451588 Name=rrf gbkey=Gene gene=rrf gene_biotype=rRNA locus_tag=MJ_RS03790 old_locus_tag=MJ_r05%2CMJr05%2CMJrrnB5S 
+Matches for [643499, 643766]
+NC_000909.1 gene +
+[643504, 643761]
+ID=gene-MJ_RS03795 Dbxref=GeneID:27929965 Name=rnpB gbkey=Gene gene=rnpB gene_biotype=RNase_P_RNA locus_tag=MJ_RS03795 
+Matches for [763766, 763844]
+NC_000909.1 gene -
+[763766, 763842]
+ID=gene-MJ_RS04490 Dbxref=GeneID:1451724 Name=MJ_RS04490 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS04490 old_locus_tag=MJ_t23%2CMJt23%2CtRNA-Thr-1 
+Matches for [764021, 764094]
+Matches for [774707, 774787]
+Matches for [863475, 864150]
+NC_000909.1 gene +
+[863479, 863555]
+ID=gene-MJ_RS05005 Dbxref=GeneID:1451824 Name=MJ_RS05005 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05005 old_locus_tag=MJ_t26%2CMJt26%2CtRNA-Thr-2 
+NC_000909.1 gene +
+[863570, 863647]
+ID=gene-MJ_RS05010 Dbxref=GeneID:1451825 Name=MJ_RS05010 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05010 old_locus_tag=MJ_t27%2CMJt27%2CtRNA-Pro-2 
+NC_000909.1 gene +
+[863656, 863732]
+ID=gene-MJ_RS05015 Dbxref=GeneID:1451826 Name=MJ_RS05015 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05015 old_locus_tag=MJ_t28%2CMJt28%2CtRNA-Tyr-1 
+NC_000909.1 gene +
+[863816, 863889]
+ID=gene-MJ_RS05020 Dbxref=GeneID:1451827 Name=MJ_RS05020 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05020 old_locus_tag=MJ_t29%2CMJt29%2CtRNA-Lys-1 
+NC_000909.1 gene +
+[863903, 864017]
+ID=gene-MJ_RS05025 Dbxref=GeneID:1451828 Name=rrf gbkey=Gene gene=rrf gene_biotype=rRNA locus_tag=MJ_RS05025 old_locus_tag=MJ_r06%2CMJr06%2CMJrrnA5S 
+NC_000909.1 gene +
+[864064, 864141]
+ID=gene-MJ_RS05030 Dbxref=GeneID:1451829 Name=MJ_RS05030 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05030 old_locus_tag=MJ_t30%2CMJt30%2CtRNA-Asp-1 
+Matches for [873578, 873777]
+NC_000909.1 gene -
+[873686, 873763]
+ID=gene-MJ_RS05080 Dbxref=GeneID:1451839 Name=MJ_RS05080 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05080 old_locus_tag=MJ_t31%2CMJt31%2CtRNA-Ile-1 
+Matches for [883674, 883754]
+NC_000909.1 gene +
+[883681, 883754]
+ID=gene-MJ_RS05130 Dbxref=GeneID:1451849 Name=MJ_RS05130 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05130 old_locus_tag=MJ_t32%2CMJt32%2CtRNA-Val-3 
+Matches for [951851, 951967]
+Matches for [1038543, 1038621]
+NC_000909.1 gene -
+[1038544, 1038620]
+ID=gene-MJ_RS05875 Dbxref=GeneID:1451994 Name=MJ_RS05875 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05875 old_locus_tag=MJ_t33%2CMJt33%2CtRNA-Arg-3 
+Matches for [1129123, 1129193]
+Matches for [1150141, 1150401]
+NC_000909.1 gene +
+[1150145, 1150220]
+ID=gene-MJ_RS06445 Dbxref=GeneID:1452102 Name=MJ_RS06445 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS06445 old_locus_tag=MJ_t34%2CMJt34%2CtRNA-Gly-1 
+NC_000909.1 gene +
+[1150255, 1150330]
+ID=gene-MJ_RS06450 Dbxref=GeneID:1452103 Name=MJ_RS06450 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS06450 old_locus_tag=MJ_t35%2CMJt35%2CtRNA-Gly-2 
+Matches for [1189942, 1190053]
+Matches for [1313164, 1313250]
+NC_000909.1 gene +
+[1313165, 1313249]
+ID=gene-MJ_RS07295 Dbxref=GeneID:1452267 Name=MJ_RS07295 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS07295 old_locus_tag=MJ_t37%2CMJt37%2CtRNA-Ser-3 
+Matches for [1659450, 1659519]

@@ -11,11 +11,11 @@ transitions
 ------  ------
 final log-prob: -1.3875377606600523
 hits: 5
-[154645, 157660] of length 3015
-[157852, 159546] of length 1694
-[552549, 552841] of length 292
-[638436, 640060] of length 1624
-[640252, 643433] of length 3181
+[154646, 157661] of length 3015
+[157853, 159547] of length 1694
+[552550, 552842] of length 292
+[638437, 640061] of length 1624
+[640253, 643434] of length 3181
 ---Baum-Welch Parameter Estimation: Trial 2---
 emissions
 --------  --------  --------  --------
@@ -29,11 +29,11 @@ transitions
 -----------  -----------
 final log-prob: -1.0721846888773143
 hits: 36
-[13567, 13653] of length 86
-[97324, 97541] of length 217
-[97625, 97742] of length 117
-[111763, 111854] of length 91
-[118077, 118177] of length 100
+[13568, 13654] of length 86
+[97325, 97542] of length 217
+[97626, 97743] of length 117
+[111764, 111855] of length 91
+[118078, 118178] of length 100
 ---Baum-Welch Parameter Estimation: Trial 3---
 emissions
 --------  --------  --------  --------
@@ -47,11 +47,11 @@ transitions
 ----------  -----------
 final log-prob: -1.0712643307633698
 hits: 58
-[13538, 13665] of length 127
-[37390, 37644] of length 254
-[97323, 97541] of length 218
-[97625, 97817] of length 192
-[111763, 111854] of length 91
+[13539, 13666] of length 127
+[37391, 37645] of length 254
+[97324, 97542] of length 218
+[97626, 97818] of length 192
+[111764, 111855] of length 91
 ---Baum-Welch Parameter Estimation: Trial 4---
 emissions
 --------  --------  --------  --------
@@ -65,11 +65,11 @@ transitions
 ---------  -----------
 final log-prob: -1.0710261105559766
 hits: 63
-[13536, 13665] of length 129
-[37390, 37646] of length 256
-[97323, 97541] of length 218
-[97625, 97819] of length 194
-[111763, 111854] of length 91
+[13537, 13666] of length 129
+[37391, 37647] of length 256
+[97324, 97542] of length 218
+[97626, 97820] of length 194
+[111764, 111855] of length 91
 ---Baum-Welch Parameter Estimation: Trial 5---
 emissions
 --------  --------  --------  -------
@@ -83,11 +83,11 @@ transitions
 ----------  -----------
 final log-prob: -1.0709848967380822
 hits: 64
-[13536, 13665] of length 129
-[37390, 37646] of length 256
-[97323, 97541] of length 218
-[97625, 97819] of length 194
-[111762, 111854] of length 92
+[13537, 13666] of length 129
+[37391, 37647] of length 256
+[97324, 97542] of length 218
+[97626, 97820] of length 194
+[111763, 111855] of length 92
 ---Baum-Welch Parameter Estimation: Trial 6---
 emissions
 --------  --------  --------  --------
@@ -101,11 +101,11 @@ transitions
 ----------  ----------
 final log-prob: -1.0709774885326624
 hits: 64
-[13535, 13665] of length 130
-[37390, 37646] of length 256
-[97323, 97541] of length 218
-[97625, 97819] of length 194
-[111762, 111854] of length 92
+[13536, 13666] of length 130
+[37391, 37647] of length 256
+[97324, 97542] of length 218
+[97626, 97820] of length 194
+[111763, 111855] of length 92
 ---Baum-Welch Parameter Estimation: Trial 7---
 emissions
 --------  --------  --------  --------
@@ -119,11 +119,11 @@ transitions
 ----------  -----------
 final log-prob: -1.0709785297513008
 hits: 64
-[13535, 13665] of length 130
-[37390, 37646] of length 256
-[97323, 97541] of length 218
-[97625, 97819] of length 194
-[111762, 111854] of length 92
+[13536, 13666] of length 130
+[37391, 37647] of length 256
+[97324, 97542] of length 218
+[97626, 97820] of length 194
+[111763, 111855] of length 92
 ---Baum-Welch Parameter Estimation: Trial 8---
 emissions
 --------  --------  --------  --------
@@ -137,11 +137,11 @@ transitions
 ----------  -----------
 final log-prob: -1.0709774694405496
 hits: 64
-[13535, 13665] of length 130
-[37390, 37646] of length 256
-[97323, 97541] of length 218
-[97625, 97819] of length 194
-[111762, 111854] of length 92
+[13536, 13666] of length 130
+[37391, 37647] of length 256
+[97324, 97542] of length 218
+[97626, 97820] of length 194
+[111763, 111855] of length 92
 ---Baum-Welch Parameter Estimation: Trial 9---
 emissions
 --------  --------  --------  --------
@@ -155,11 +155,11 @@ transitions
 ----------  -----------
 final log-prob: -1.070975674316287
 hits: 64
-[13535, 13665] of length 130
-[37390, 37646] of length 256
-[97323, 97541] of length 218
-[97625, 97819] of length 194
-[111762, 111854] of length 92
+[13536, 13666] of length 130
+[37391, 37647] of length 256
+[97324, 97542] of length 218
+[97626, 97820] of length 194
+[111763, 111855] of length 92
 ---Baum-Welch Parameter Estimation: Trial 10---
 emissions
 --------  --------  -------  --------
@@ -173,238 +173,69 @@ transitions
 ----------  -----------
 final log-prob: -1.0709750256501138
 hits: 64
-[13535, 13665] of length 130
-[37390, 37646] of length 256
-[97323, 97541] of length 218
-[97625, 97819] of length 194
-[111762, 111854] of length 92
-[118077, 118177] of length 100
-[138344, 138418] of length 74
-[154609, 157697] of length 3088
-[157784, 159587] of length 1803
-[186973, 187066] of length 93
-[190830, 190906] of length 76
-[211375, 211512] of length 137
-[215199, 215295] of length 96
-[227705, 227780] of length 75
-[262346, 262410] of length 64
-[264397, 264484] of length 87
-[282044, 282197] of length 153
-[291971, 291996] of length 25
-[303990, 304080] of length 90
-[325028, 325114] of length 86
-[334437, 334484] of length 47
-[358765, 358941] of length 176
-[359972, 360049] of length 77
-[402968, 403053] of length 85
-[412581, 412635] of length 54
-[448506, 448559] of length 53
-[537594, 537738] of length 144
-[543842, 543932] of length 90
-[552538, 552859] of length 321
-[619160, 619235] of length 75
-[637578, 637741] of length 163
-[637769, 637944] of length 175
-[637980, 638152] of length 172
-[638333, 640128] of length 1795
-[640215, 643447] of length 3232
-[643499, 643765] of length 266
-[763766, 763845] of length 79
-[764019, 764093] of length 74
-[774708, 774808] of length 100
-[862589, 862661] of length 72
-[863473, 864018] of length 545
-[864058, 864150] of length 92
-[873580, 873773] of length 193
-[883676, 883753] of length 77
-[897950, 898011] of length 61
-[951852, 951966] of length 114
-[986083, 986147] of length 64
-[1038543, 1038621] of length 78
-[1129123, 1129194] of length 71
-[1131985, 1132080] of length 95
-[1137153, 1137240] of length 87
-[1150137, 1150400] of length 263
-[1189941, 1190053] of length 112
-[1204228, 1204280] of length 52
-[1220841, 1221016] of length 175
-[1249377, 1249475] of length 98
-[1313164, 1313250] of length 86
-[1368252, 1368368] of length 116
-[1410405, 1410468] of length 63
-[1525022, 1525072] of length 50
-[1553922, 1553981] of length 59
-[1606184, 1606256] of length 72
-[1622880, 1622981] of length 101
-[1659451, 1659519] of length 68
-baum-welch completed in 614.8489174842834 seconds
+[13536, 13666] of length 130
+[37391, 37647] of length 256
+[97324, 97542] of length 218
+[97626, 97820] of length 194
+[111763, 111855] of length 92
+[118078, 118178] of length 100
+[138345, 138419] of length 74
+[154610, 157698] of length 3088
+[157785, 159588] of length 1803
+[186974, 187067] of length 93
+[190831, 190907] of length 76
+[211376, 211513] of length 137
+[215200, 215296] of length 96
+[227706, 227781] of length 75
+[262347, 262411] of length 64
+[264398, 264485] of length 87
+[282045, 282198] of length 153
+[291972, 291997] of length 25
+[303991, 304081] of length 90
+[325029, 325115] of length 86
+[334438, 334485] of length 47
+[358766, 358942] of length 176
+[359973, 360050] of length 77
+[402969, 403054] of length 85
+[412582, 412636] of length 54
+[448507, 448560] of length 53
+[537595, 537739] of length 144
+[543843, 543933] of length 90
+[552539, 552860] of length 321
+[619161, 619236] of length 75
+[637579, 637742] of length 163
+[637770, 637945] of length 175
+[637981, 638153] of length 172
+[638334, 640129] of length 1795
+[640216, 643448] of length 3232
+[643500, 643766] of length 266
+[763767, 763846] of length 79
+[764020, 764094] of length 74
+[774709, 774809] of length 100
+[862590, 862662] of length 72
+[863474, 864019] of length 545
+[864059, 864151] of length 92
+[873581, 873774] of length 193
+[883677, 883754] of length 77
+[897951, 898012] of length 61
+[951853, 951967] of length 114
+[986084, 986148] of length 64
+[1038544, 1038622] of length 78
+[1129124, 1129195] of length 71
+[1131986, 1132081] of length 95
+[1137154, 1137241] of length 87
+[1150138, 1150401] of length 263
+[1189942, 1190054] of length 112
+[1204229, 1204281] of length 52
+[1220842, 1221017] of length 175
+[1249378, 1249476] of length 98
+[1313165, 1313251] of length 86
+[1368253, 1368369] of length 116
+[1410406, 1410469] of length 63
+[1525023, 1525073] of length 50
+[1553923, 1553982] of length 59
+[1606185, 1606257] of length 72
+[1622881, 1622982] of length 101
+[1659452, 1659520] of length 68
 
-Matches for [13535, 13665]
-Matches for [37390, 37646]
-Matches for [97323, 97541]
-NC_000909.1 gene -
-[97426, 97537]
-ID=gene-MJ_RS00515 Dbxref=GeneID:1450942 Name=MJ_RS00515 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00515 old_locus_tag=MJ_t01%2CMJt01%2CtRNA-Met-1 
-Matches for [97625, 97819]
-NC_000909.1 gene +
-[97629, 97716]
-ID=gene-MJ_RS00520 Dbxref=GeneID:1450943 Name=MJ_RS00520 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00520 old_locus_tag=MJ_t02%2CMJt02%2CtRNA-Leu-1 
-Matches for [111762, 111854]
-NC_000909.1 gene +
-[111766, 111854]
-ID=gene-MJ_RS00580 Dbxref=GeneID:1450955 Name=MJ_RS00580 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00580 old_locus_tag=MJ_t03%2CMJt03%2CtRNA-SeC-1 
-Matches for [118077, 118177]
-Matches for [138344, 138418]
-Matches for [154609, 157697]
-NC_000909.1 gene -
-[154662, 157639]
-ID=gene-MJ_RS00815 Dbxref=GeneID:1451001 Name=MJ_RS00815 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00815 old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S 
-Matches for [157784, 159587]
-NC_000909.1 gene -
-[157847, 157919]
-ID=gene-MJ_RS00820 Dbxref=GeneID:1451002 Name=MJ_RS00820 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00820 old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1 
-NC_000909.1 gene -
-[157984, 159463]
-ID=gene-MJ_RS00825 Dbxref=GeneID:1451003 Name=MJ_RS00825 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00825 old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S 
-Matches for [186973, 187066]
-NC_000909.1 gene +
-[186978, 187066]
-ID=gene-MJ_RS00980 Dbxref=GeneID:1451036 Name=MJ_RS00980 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00980 old_locus_tag=MJ_t06%2CMJt06%2CtRNA-Ser-1 
-Matches for [190830, 190906]
-Matches for [211375, 211512]
-Matches for [215199, 215295]
-Matches for [227705, 227780]
-Matches for [262346, 262410]
-Matches for [264397, 264484]
-Matches for [282044, 282197]
-Matches for [291971, 291996]
-Matches for [303990, 304080]
-Matches for [325028, 325114]
-Matches for [334437, 334484]
-Matches for [358765, 358941]
-NC_000909.1 gene +
-[358768, 358845]
-ID=gene-MJ_RS02090 Dbxref=GeneID:1451255 Name=MJ_RS02090 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS02090 old_locus_tag=MJ_t11%2CMJt11%2CtRNA-Arg-1 
-Matches for [359972, 360049]
-NC_000909.1 gene -
-[359972, 360047]
-ID=gene-MJ_RS02105 Dbxref=GeneID:1451258 Name=MJ_RS02105 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS02105 old_locus_tag=MJ_t13%2CMJt13%2CtRNA-Met-2 
-Matches for [402968, 403053]
-NC_000909.1 gene -
-[402968, 403044]
-ID=gene-MJ_RS02370 Dbxref=GeneID:1451310 Name=MJ_RS02370 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS02370 old_locus_tag=MJ_t14%2CMJt14%2CtRNA-Val-2 
-Matches for [412581, 412635]
-Matches for [448506, 448559]
-Matches for [537594, 537738]
-Matches for [543842, 543932]
-Matches for [552538, 552859]
-NC_000909.1 gene +
-[552541, 552856]
-ID=gene-MJ_RS03295 Dbxref=GeneID:27929964 Name=ffs gbkey=Gene gene=ffs gene_biotype=SRP_RNA locus_tag=MJ_RS03295 
-Matches for [619160, 619235]
-NC_000909.1 gene -
-[619160, 619234]
-ID=gene-MJ_RS03645 Dbxref=GeneID:1451559 Name=MJ_RS03645 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03645 old_locus_tag=MJ_t15%2CMJt15%2CtRNA-Cys-1 
-Matches for [637578, 637741]
-NC_000909.1 gene +
-[637583, 637659]
-ID=gene-MJ_RS03745 Dbxref=GeneID:1451579 Name=MJ_RS03745 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03745 old_locus_tag=MJ_t16%2CMJt16%2CtRNA-Phe-1 
-Matches for [637769, 637944]
-NC_000909.1 gene +
-[637772, 637849]
-ID=gene-MJ_RS03755 Dbxref=GeneID:1451581 Name=MJ_RS03755 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03755 old_locus_tag=MJ_t18%2CMJt18%2CtRNA-Met-3 
-NC_000909.1 gene +
-[637868, 637942]
-ID=gene-MJ_RS03760 Dbxref=GeneID:1451582 Name=MJ_RS03760 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03760 old_locus_tag=MJ_t19%2CMJt19%2CtRNA-Glu-2 
-Matches for [637980, 638152]
-NC_000909.1 gene +
-[637982, 638069]
-ID=gene-MJ_RS03765 Dbxref=GeneID:1451583 Name=MJ_RS03765 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03765 old_locus_tag=MJ_t20%2CMJt20%2CtRNA-Leu-3 
-NC_000909.1 gene +
-[638081, 638152]
-ID=gene-MJ_RS03770 Dbxref=GeneID:1451584 Name=MJ_RS03770 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03770 old_locus_tag=MJ_t21%2CMJt21%2CtRNA-His-1 
-Matches for [638333, 640128]
-NC_000909.1 gene +
-[638448, 639930]
-ID=gene-MJ_RS03775 Dbxref=GeneID:1451585 Name=MJ_RS03775 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS03775 old_locus_tag=MJ_r03%2CMJr03%2CMJrrnB16S 
-NC_000909.1 gene +
-[639995, 640067]
-ID=gene-MJ_RS03780 Dbxref=GeneID:1451586 Name=MJ_RS03780 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03780 old_locus_tag=MJ_t22%2CMJt22%2CtRNA-Ala-3 
-Matches for [640215, 643447]
-NC_000909.1 gene +
-[640275, 643254]
-ID=gene-MJ_RS03785 Dbxref=GeneID:1451587 Name=MJ_RS03785 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS03785 old_locus_tag=MJ_r04%2CMJr04%2CMJrrnB23S 
-NC_000909.1 gene +
-[643333, 643447]
-ID=gene-MJ_RS03790 Dbxref=GeneID:1451588 Name=rrf gbkey=Gene gene=rrf gene_biotype=rRNA locus_tag=MJ_RS03790 old_locus_tag=MJ_r05%2CMJr05%2CMJrrnB5S 
-Matches for [643499, 643765]
-NC_000909.1 gene +
-[643504, 643761]
-ID=gene-MJ_RS03795 Dbxref=GeneID:27929965 Name=rnpB gbkey=Gene gene=rnpB gene_biotype=RNase_P_RNA locus_tag=MJ_RS03795 
-Matches for [763766, 763845]
-NC_000909.1 gene -
-[763766, 763842]
-ID=gene-MJ_RS04490 Dbxref=GeneID:1451724 Name=MJ_RS04490 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS04490 old_locus_tag=MJ_t23%2CMJt23%2CtRNA-Thr-1 
-Matches for [764019, 764093]
-Matches for [774708, 774808]
-Matches for [862589, 862661]
-NC_000909.1 gene +
-[862590, 862661]
-ID=gene-MJ_RS04995 Dbxref=GeneID:1451822 Name=MJ_RS04995 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS04995 old_locus_tag=MJ_t25%2CMJt25%2CtRNA-Arg-2 
-Matches for [863473, 864018]
-NC_000909.1 gene +
-[863479, 863555]
-ID=gene-MJ_RS05005 Dbxref=GeneID:1451824 Name=MJ_RS05005 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05005 old_locus_tag=MJ_t26%2CMJt26%2CtRNA-Thr-2 
-NC_000909.1 gene +
-[863570, 863647]
-ID=gene-MJ_RS05010 Dbxref=GeneID:1451825 Name=MJ_RS05010 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05010 old_locus_tag=MJ_t27%2CMJt27%2CtRNA-Pro-2 
-NC_000909.1 gene +
-[863656, 863732]
-ID=gene-MJ_RS05015 Dbxref=GeneID:1451826 Name=MJ_RS05015 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05015 old_locus_tag=MJ_t28%2CMJt28%2CtRNA-Tyr-1 
-NC_000909.1 gene +
-[863816, 863889]
-ID=gene-MJ_RS05020 Dbxref=GeneID:1451827 Name=MJ_RS05020 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05020 old_locus_tag=MJ_t29%2CMJt29%2CtRNA-Lys-1 
-NC_000909.1 gene +
-[863903, 864017]
-ID=gene-MJ_RS05025 Dbxref=GeneID:1451828 Name=rrf gbkey=Gene gene=rrf gene_biotype=rRNA locus_tag=MJ_RS05025 old_locus_tag=MJ_r06%2CMJr06%2CMJrrnA5S 
-Matches for [864058, 864150]
-NC_000909.1 gene +
-[864064, 864141]
-ID=gene-MJ_RS05030 Dbxref=GeneID:1451829 Name=MJ_RS05030 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05030 old_locus_tag=MJ_t30%2CMJt30%2CtRNA-Asp-1 
-Matches for [873580, 873773]
-NC_000909.1 gene -
-[873686, 873763]
-ID=gene-MJ_RS05080 Dbxref=GeneID:1451839 Name=MJ_RS05080 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05080 old_locus_tag=MJ_t31%2CMJt31%2CtRNA-Ile-1 
-Matches for [883676, 883753]
-Matches for [897950, 898011]
-Matches for [951852, 951966]
-Matches for [986083, 986147]
-Matches for [1038543, 1038621]
-NC_000909.1 gene -
-[1038544, 1038620]
-ID=gene-MJ_RS05875 Dbxref=GeneID:1451994 Name=MJ_RS05875 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05875 old_locus_tag=MJ_t33%2CMJt33%2CtRNA-Arg-3 
-Matches for [1129123, 1129194]
-Matches for [1131985, 1132080]
-Matches for [1137153, 1137240]
-Matches for [1150137, 1150400]
-NC_000909.1 gene +
-[1150145, 1150220]
-ID=gene-MJ_RS06445 Dbxref=GeneID:1452102 Name=MJ_RS06445 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS06445 old_locus_tag=MJ_t34%2CMJt34%2CtRNA-Gly-1 
-NC_000909.1 gene +
-[1150255, 1150330]
-ID=gene-MJ_RS06450 Dbxref=GeneID:1452103 Name=MJ_RS06450 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS06450 old_locus_tag=MJ_t35%2CMJt35%2CtRNA-Gly-2 
-Matches for [1189941, 1190053]
-Matches for [1204228, 1204280]
-Matches for [1220841, 1221016]
-Matches for [1249377, 1249475]
-Matches for [1313164, 1313250]
-NC_000909.1 gene +
-[1313165, 1313249]
-ID=gene-MJ_RS07295 Dbxref=GeneID:1452267 Name=MJ_RS07295 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS07295 old_locus_tag=MJ_t37%2CMJt37%2CtRNA-Ser-3 
-Matches for [1368252, 1368368]
-Matches for [1410405, 1410468]
-Matches for [1525022, 1525072]
-Matches for [1553922, 1553981]
-Matches for [1606184, 1606256]
-Matches for [1622880, 1622981]
-Matches for [1659451, 1659519]
+baum-welch completed in 496.68426609039307 seconds
