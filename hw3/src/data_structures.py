@@ -18,8 +18,8 @@ class gene_info:
     self.attributes = attributes
 
   def __str__(self):
-    result = self.seqid + " " + self.ftype + " " + self.strand + "\n"
-    result += str([self.start, self.end]) + "\n"
+    result = "\t" + self.seqid + " " + self.ftype + " " + self.strand + "\n\t"
+    result += str([self.start, self.end]) + "\n\t"
     attributes_list = self.attributes.split(";")
     for attribute in attributes_list:
       result += attribute + " "

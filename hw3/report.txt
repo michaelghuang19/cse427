@@ -22,30 +22,72 @@ Build instructions:
 Report:
 
   First 10 Viterbi hits for the 10th iteration:
-    [97326, 97541] of length 215
-    [97627, 97823] of length 196
-    [111764, 111856] of length 92
-    [118079, 118179] of length 100
-    [138345, 138419] of length 74
-    [154610, 157697] of length 3087
-    [157782, 159591] of length 1809
-    [186974, 187067] of length 93
-    [190831, 190907] of length 76
-    [215200, 215296] of length 96
+    Matches for [97326, 97541]
+      NC_000909.1 gene -
+      [97426, 97537]
+      ID=gene-MJ_RS00515 Dbxref=GeneID:1450942 Name=MJ_RS00515 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00515 old_locus_tag=MJ_t01%2CMJt01%2CtRNA-Met-1 
+    Matches for [97627, 97823]
+      NC_000909.1 gene +
+      [97629, 97716]
+      ID=gene-MJ_RS00520 Dbxref=GeneID:1450943 Name=MJ_RS00520 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00520 old_locus_tag=MJ_t02%2CMJt02%2CtRNA-Leu-1 
+    Matches for [111764, 111856]
+      NC_000909.1 gene +
+      [111766, 111854]
+      ID=gene-MJ_RS00580 Dbxref=GeneID:1450955 Name=MJ_RS00580 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00580 old_locus_tag=MJ_t03%2CMJt03%2CtRNA-SeC-1 
+    Matches for [118079, 118179]
+    Matches for [138345, 138419]
+    Matches for [154610, 157697]
+      NC_000909.1 gene -
+      [154662, 157639]
+      ID=gene-MJ_RS00815 Dbxref=GeneID:1451001 Name=MJ_RS00815 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00815 old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S 
+    Matches for [157782, 159591]
+      NC_000909.1 gene -
+      [157847, 157919]
+      ID=gene-MJ_RS00820 Dbxref=GeneID:1451002 Name=MJ_RS00820 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00820 old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1 
+      NC_000909.1 gene -
+      [157984, 159463]
+      ID=gene-MJ_RS00825 Dbxref=GeneID:1451003 Name=MJ_RS00825 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00825 old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S 
+    Matches for [186974, 187067]
+      NC_000909.1 gene +
+      [186978, 187066]
+      ID=gene-MJ_RS00980 Dbxref=GeneID:1451036 Name=MJ_RS00980 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00980 old_locus_tag=MJ_t06%2CMJt06%2CtRNA-Ser-1 
+    Matches for [190831, 190907]
+    Matches for [215200, 215296]
 
 
   For extra credit, I also implemented and analyzed the Baum-Welch algorithm.
   First 10 Baum-Welch hits for the 10th iteration:
-    [13536, 13666] of length 130
-    [37391, 37647] of length 256
-    [97324, 97542] of length 218
-    [97626, 97820] of length 194
-    [111763, 111855] of length 92
-    [118078, 118178] of length 100
-    [138345, 138419] of length 74
-    [154610, 157698] of length 3088
-    [157785, 159588] of length 1803
-    [186974, 187067] of length 93
+    Matches for [13536, 13666]
+    Matches for [37391, 37647]
+    Matches for [97324, 97542]
+      NC_000909.1 gene -
+      [97426, 97537]
+      ID=gene-MJ_RS00515 Dbxref=GeneID:1450942 Name=MJ_RS00515 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00515 old_locus_tag=MJ_t01%2CMJt01%2CtRNA-Met-1 
+    Matches for [97626, 97820]
+      NC_000909.1 gene +
+      [97629, 97716]
+      ID=gene-MJ_RS00520 Dbxref=GeneID:1450943 Name=MJ_RS00520 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00520 old_locus_tag=MJ_t02%2CMJt02%2CtRNA-Leu-1 
+    Matches for [111763, 111855]
+      NC_000909.1 gene +
+      [111766, 111854]
+      ID=gene-MJ_RS00580 Dbxref=GeneID:1450955 Name=MJ_RS00580 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00580 old_locus_tag=MJ_t03%2CMJt03%2CtRNA-SeC-1 
+    Matches for [118078, 118178]
+    Matches for [138345, 138419]
+    Matches for [154610, 157698]
+      NC_000909.1 gene -
+      [154662, 157639]
+      ID=gene-MJ_RS00815 Dbxref=GeneID:1451001 Name=MJ_RS00815 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00815 old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S 
+    Matches for [157785, 159588]
+      NC_000909.1 gene -
+      [157847, 157919]
+      ID=gene-MJ_RS00820 Dbxref=GeneID:1451002 Name=MJ_RS00820 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00820 old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1 
+      NC_000909.1 gene -
+      [157984, 159463]
+      ID=gene-MJ_RS00825 Dbxref=GeneID:1451003 Name=MJ_RS00825 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00825 old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S 
+    Matches for [186974, 187067]
+      NC_000909.1 gene +
+      [186978, 187066]
+      ID=gene-MJ_RS00980 Dbxref=GeneID:1451036 Name=MJ_RS00980 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00980 old_locus_tag=MJ_t06%2CMJt06%2CtRNA-Ser-1 
 
 The most notable difference between the Baum-Welch and Viterbi results is the number
 of hits. By the 2nd iteration of the Baum-Welch algorithm, we had 36 hits, while 

@@ -217,4 +217,4 @@ hits: 36
 [1313165, 1313251] of length 86
 [1659451, 1659520] of length 69
 
-viterbi completed in 354.7718458175659 seconds
+viterbi completed in 351.10074520111084 seconds

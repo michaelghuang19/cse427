@@ -115,7 +115,7 @@ def evaluate(intervals, ginfo_list, output):
     result.append(result_list)
 
   for i, item_list in enumerate(result):
-    output.write("Matches for " + str(intervals[i]))
+    output.write("Matches for " + str(list(np.array(intervals[i]) + 1)))
     output.write("\n")
     for item in item_list:
       output.write(str(item))
