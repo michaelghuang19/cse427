@@ -6,31 +6,52 @@ Matches for [97323, 97541]
 NC_000909.1 gene -
 [97426, 97537]
 ID=gene-MJ_RS00515 Dbxref=GeneID:1450942 Name=MJ_RS00515 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00515 old_locus_tag=MJ_t01%2CMJt01%2CtRNA-Met-1 
+NC_000909.1 tRNA -
+[97426, 97537]
+ID=rna-MJ_RS00515 Parent=gene-MJ_RS00515 Dbxref=GeneID:1450942 anticodon=(pos:complement(97501..97503)) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS00515 product=tRNA-Met 
 Matches for [97625, 97819]
 NC_000909.1 gene +
 [97629, 97716]
 ID=gene-MJ_RS00520 Dbxref=GeneID:1450943 Name=MJ_RS00520 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00520 old_locus_tag=MJ_t02%2CMJt02%2CtRNA-Leu-1 
+NC_000909.1 tRNA +
+[97629, 97716]
+ID=rna-MJ_RS00520 Parent=gene-MJ_RS00520 Dbxref=GeneID:1450943 anticodon=(pos:97665..97667) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS00520 product=tRNA-Leu 
 Matches for [111762, 111854]
 NC_000909.1 gene +
 [111766, 111854]
 ID=gene-MJ_RS00580 Dbxref=GeneID:1450955 Name=MJ_RS00580 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00580 old_locus_tag=MJ_t03%2CMJt03%2CtRNA-SeC-1 
+NC_000909.1 tRNA +
+[111766, 111854]
+ID=rna-MJ_RS00580 Parent=gene-MJ_RS00580 Dbxref=GeneID:1450955 anticodon=(pos:111803..111805) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS00580 product=tRNA-Sec 
 Matches for [118077, 118177]
 Matches for [138344, 138418]
 Matches for [154609, 157697]
 NC_000909.1 gene -
 [154662, 157639]
 ID=gene-MJ_RS00815 Dbxref=GeneID:1451001 Name=MJ_RS00815 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00815 old_locus_tag=MJ_r01%2CMJr01%2CMJrrnA23S 
+NC_000909.1 rRNA -
+[154662, 157639]
+ID=rna-MJ_RS00815 Parent=gene-MJ_RS00815 Dbxref=GeneID:1451001 gbkey=rRNA locus_tag=MJ_RS00815 product=23S ribosomal RNA 
 Matches for [157784, 159587]
 NC_000909.1 gene -
 [157847, 157919]
 ID=gene-MJ_RS00820 Dbxref=GeneID:1451002 Name=MJ_RS00820 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00820 old_locus_tag=MJ_t05%2CMJt05%2CtRNA-Ala-1 
+NC_000909.1 tRNA -
+[157847, 157919]
+ID=rna-MJ_RS00820 Parent=gene-MJ_RS00820 Dbxref=GeneID:1451002 anticodon=(pos:complement(157884..157886)) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS00820 product=tRNA-Ala 
 NC_000909.1 gene -
 [157984, 159463]
 ID=gene-MJ_RS00825 Dbxref=GeneID:1451003 Name=MJ_RS00825 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS00825 old_locus_tag=MJ_r02%2CMJr02%2CMJrrnA16S 
+NC_000909.1 rRNA -
+[157984, 159463]
+ID=rna-MJ_RS00825 Parent=gene-MJ_RS00825 Dbxref=GeneID:1451003 gbkey=rRNA locus_tag=MJ_RS00825 product=16S ribosomal RNA 
 Matches for [186973, 187066]
 NC_000909.1 gene +
 [186978, 187066]
 ID=gene-MJ_RS00980 Dbxref=GeneID:1451036 Name=MJ_RS00980 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS00980 old_locus_tag=MJ_t06%2CMJt06%2CtRNA-Ser-1 
+NC_000909.1 tRNA +
+[186978, 187066]
+ID=rna-MJ_RS00980 Parent=gene-MJ_RS00980 Dbxref=GeneID:1451036 anticodon=(pos:187013..187015) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS00980 product=tRNA-Ser 
 Matches for [190830, 190906]
 Matches for [211375, 211512]
 Matches for [215199, 215295]
@@ -46,14 +67,23 @@ Matches for [358765, 358941]
 NC_000909.1 gene +
 [358768, 358845]
 ID=gene-MJ_RS02090 Dbxref=GeneID:1451255 Name=MJ_RS02090 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS02090 old_locus_tag=MJ_t11%2CMJt11%2CtRNA-Arg-1 
+NC_000909.1 tRNA +
+[358768, 358845]
+ID=rna-MJ_RS02090 Parent=gene-MJ_RS02090 Dbxref=GeneID:1451255 anticodon=(pos:358803..358805) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS02090 product=tRNA-Arg 
 Matches for [359972, 360049]
 NC_000909.1 gene -
 [359972, 360047]
 ID=gene-MJ_RS02105 Dbxref=GeneID:1451258 Name=MJ_RS02105 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS02105 old_locus_tag=MJ_t13%2CMJt13%2CtRNA-Met-2 
+NC_000909.1 tRNA -
+[359972, 360047]
+ID=rna-MJ_RS02105 Parent=gene-MJ_RS02105 Dbxref=GeneID:1451258 anticodon=(pos:complement(360009..360011)) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS02105 product=tRNA-Met 
 Matches for [402968, 403053]
 NC_000909.1 gene -
 [402968, 403044]
 ID=gene-MJ_RS02370 Dbxref=GeneID:1451310 Name=MJ_RS02370 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS02370 old_locus_tag=MJ_t14%2CMJt14%2CtRNA-Val-2 
+NC_000909.1 tRNA -
+[402968, 403044]
+ID=rna-MJ_RS02370 Parent=gene-MJ_RS02370 Dbxref=GeneID:1451310 anticodon=(pos:complement(403008..403010)) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS02370 product=tRNA-Val 
 Matches for [412581, 412635]
 Matches for [448506, 448559]
 Matches for [537594, 537738]
@@ -62,80 +92,155 @@ Matches for [552538, 552859]
 NC_000909.1 gene +
 [552541, 552856]
 ID=gene-MJ_RS03295 Dbxref=GeneID:27929964 Name=ffs gbkey=Gene gene=ffs gene_biotype=SRP_RNA locus_tag=MJ_RS03295 
+NC_000909.1 SRP_RNA +
+[552541, 552856]
+ID=rna-MJ_RS03295 Parent=gene-MJ_RS03295 Dbxref=RFAM:RF01857,GeneID:27929964 Note=archaeal-type gbkey=ncRNA gene=ffs inference=COORDINATES: profile:INFERNAL:1.1.1 locus_tag=MJ_RS03295 product=signal recognition particle sRNA 
+NC_000909.1 exon +
+[552541, 552856]
+ID=exon-MJ_RS03295-1 Parent=rna-MJ_RS03295 Dbxref=RFAM:RF01857,GeneID:27929964 Note=archaeal-type gbkey=ncRNA gene=ffs inference=COORDINATES: profile:INFERNAL:1.1.1 locus_tag=MJ_RS03295 product=signal recognition particle sRNA 
 Matches for [619160, 619235]
 NC_000909.1 gene -
 [619160, 619234]
 ID=gene-MJ_RS03645 Dbxref=GeneID:1451559 Name=MJ_RS03645 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03645 old_locus_tag=MJ_t15%2CMJt15%2CtRNA-Cys-1 
+NC_000909.1 tRNA -
+[619160, 619234]
+ID=rna-MJ_RS03645 Parent=gene-MJ_RS03645 Dbxref=GeneID:1451559 anticodon=(pos:complement(619200..619202)) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS03645 product=tRNA-Cys 
 Matches for [637578, 637741]
 NC_000909.1 gene +
 [637583, 637659]
 ID=gene-MJ_RS03745 Dbxref=GeneID:1451579 Name=MJ_RS03745 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03745 old_locus_tag=MJ_t16%2CMJt16%2CtRNA-Phe-1 
+NC_000909.1 tRNA +
+[637583, 637659]
+ID=rna-MJ_RS03745 Parent=gene-MJ_RS03745 Dbxref=GeneID:1451579 anticodon=(pos:637617..637619) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS03745 product=tRNA-Phe 
 Matches for [637769, 637944]
 NC_000909.1 gene +
 [637772, 637849]
 ID=gene-MJ_RS03755 Dbxref=GeneID:1451581 Name=MJ_RS03755 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03755 old_locus_tag=MJ_t18%2CMJt18%2CtRNA-Met-3 
+NC_000909.1 tRNA +
+[637772, 637849]
+ID=rna-MJ_RS03755 Parent=gene-MJ_RS03755 Dbxref=GeneID:1451581 anticodon=(pos:637807..637809) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS03755 product=tRNA-Ile 
 NC_000909.1 gene +
 [637868, 637942]
 ID=gene-MJ_RS03760 Dbxref=GeneID:1451582 Name=MJ_RS03760 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03760 old_locus_tag=MJ_t19%2CMJt19%2CtRNA-Glu-2 
+NC_000909.1 tRNA +
+[637868, 637942]
+ID=rna-MJ_RS03760 Parent=gene-MJ_RS03760 Dbxref=GeneID:1451582 anticodon=(pos:637904..637906) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS03760 product=tRNA-Glu 
 Matches for [637980, 638152]
 NC_000909.1 gene +
 [637982, 638069]
 ID=gene-MJ_RS03765 Dbxref=GeneID:1451583 Name=MJ_RS03765 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03765 old_locus_tag=MJ_t20%2CMJt20%2CtRNA-Leu-3 
+NC_000909.1 tRNA +
+[637982, 638069]
+ID=rna-MJ_RS03765 Parent=gene-MJ_RS03765 Dbxref=GeneID:1451583 anticodon=(pos:638018..638020) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS03765 product=tRNA-Leu 
 NC_000909.1 gene +
 [638081, 638152]
 ID=gene-MJ_RS03770 Dbxref=GeneID:1451584 Name=MJ_RS03770 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03770 old_locus_tag=MJ_t21%2CMJt21%2CtRNA-His-1 
+NC_000909.1 tRNA +
+[638081, 638152]
+ID=rna-MJ_RS03770 Parent=gene-MJ_RS03770 Dbxref=GeneID:1451584 anticodon=(pos:638114..638116) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS03770 product=tRNA-His 
 Matches for [638333, 640128]
 NC_000909.1 gene +
 [638448, 639930]
 ID=gene-MJ_RS03775 Dbxref=GeneID:1451585 Name=MJ_RS03775 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS03775 old_locus_tag=MJ_r03%2CMJr03%2CMJrrnB16S 
+NC_000909.1 rRNA +
+[638448, 639930]
+ID=rna-MJ_RS03775 Parent=gene-MJ_RS03775 Dbxref=GeneID:1451585 gbkey=rRNA locus_tag=MJ_RS03775 product=16S ribosomal RNA 
 NC_000909.1 gene +
 [639995, 640067]
 ID=gene-MJ_RS03780 Dbxref=GeneID:1451586 Name=MJ_RS03780 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS03780 old_locus_tag=MJ_t22%2CMJt22%2CtRNA-Ala-3 
+NC_000909.1 tRNA +
+[639995, 640067]
+ID=rna-MJ_RS03780 Parent=gene-MJ_RS03780 Dbxref=GeneID:1451586 anticodon=(pos:640028..640030) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS03780 product=tRNA-Ala 
 Matches for [640215, 643447]
 NC_000909.1 gene +
 [640275, 643254]
 ID=gene-MJ_RS03785 Dbxref=GeneID:1451587 Name=MJ_RS03785 gbkey=Gene gene_biotype=rRNA locus_tag=MJ_RS03785 old_locus_tag=MJ_r04%2CMJr04%2CMJrrnB23S 
+NC_000909.1 rRNA +
+[640275, 643254]
+ID=rna-MJ_RS03785 Parent=gene-MJ_RS03785 Dbxref=GeneID:1451587 gbkey=rRNA locus_tag=MJ_RS03785 product=23S ribosomal RNA 
 NC_000909.1 gene +
 [643333, 643447]
 ID=gene-MJ_RS03790 Dbxref=GeneID:1451588 Name=rrf gbkey=Gene gene=rrf gene_biotype=rRNA locus_tag=MJ_RS03790 old_locus_tag=MJ_r05%2CMJr05%2CMJrrnB5S 
+NC_000909.1 exon +
+[643333, 643447]
+ID=exon-MJ_RS03790-1 Parent=rna-MJ_RS03790 Dbxref=RFAM:RF00001,GeneID:1451588 gbkey=rRNA gene=rrf inference=COORDINATES: profile:INFERNAL:1.1.1 locus_tag=MJ_RS03790 product=5S ribosomal RNA 
+NC_000909.1 rRNA +
+[643333, 643447]
+ID=rna-MJ_RS03790 Parent=gene-MJ_RS03790 Dbxref=RFAM:RF00001,GeneID:1451588 gbkey=rRNA gene=rrf inference=COORDINATES: profile:INFERNAL:1.1.1 locus_tag=MJ_RS03790 product=5S ribosomal RNA 
 Matches for [643499, 643765]
 NC_000909.1 gene +
 [643504, 643761]
 ID=gene-MJ_RS03795 Dbxref=GeneID:27929965 Name=rnpB gbkey=Gene gene=rnpB gene_biotype=RNase_P_RNA locus_tag=MJ_RS03795 
+NC_000909.1 RNase_P_RNA +
+[643504, 643761]
+ID=rna-MJ_RS03795 Parent=gene-MJ_RS03795 Dbxref=RFAM:RF00373,GeneID:27929965 Note=archaeal type gbkey=ncRNA gene=rnpB inference=COORDINATES: profile:INFERNAL:1.1.1 locus_tag=MJ_RS03795 product=RNase P RNA component 
+NC_000909.1 exon +
+[643504, 643761]
+ID=exon-MJ_RS03795-1 Parent=rna-MJ_RS03795 Dbxref=RFAM:RF00373,GeneID:27929965 Note=archaeal type gbkey=ncRNA gene=rnpB inference=COORDINATES: profile:INFERNAL:1.1.1 locus_tag=MJ_RS03795 product=RNase P RNA component 
 Matches for [763766, 763845]
 NC_000909.1 gene -
 [763766, 763842]
 ID=gene-MJ_RS04490 Dbxref=GeneID:1451724 Name=MJ_RS04490 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS04490 old_locus_tag=MJ_t23%2CMJt23%2CtRNA-Thr-1 
+NC_000909.1 tRNA -
+[763766, 763842]
+ID=rna-MJ_RS04490 Parent=gene-MJ_RS04490 Dbxref=GeneID:1451724 anticodon=(pos:complement(763806..763808)) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS04490 product=tRNA-Thr 
 Matches for [764019, 764093]
 Matches for [774708, 774808]
 Matches for [862589, 862661]
 NC_000909.1 gene +
 [862590, 862661]
 ID=gene-MJ_RS04995 Dbxref=GeneID:1451822 Name=MJ_RS04995 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS04995 old_locus_tag=MJ_t25%2CMJt25%2CtRNA-Arg-2 
+NC_000909.1 tRNA +
+[862590, 862661]
+ID=rna-MJ_RS04995 Parent=gene-MJ_RS04995 Dbxref=GeneID:1451822 anticodon=(pos:862623..862625) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS04995 product=tRNA-Arg 
 Matches for [863473, 864018]
 NC_000909.1 gene +
 [863479, 863555]
 ID=gene-MJ_RS05005 Dbxref=GeneID:1451824 Name=MJ_RS05005 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05005 old_locus_tag=MJ_t26%2CMJt26%2CtRNA-Thr-2 
+NC_000909.1 tRNA +
+[863479, 863555]
+ID=rna-MJ_RS05005 Parent=gene-MJ_RS05005 Dbxref=GeneID:1451824 anticodon=(pos:863513..863515) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS05005 product=tRNA-Thr 
 NC_000909.1 gene +
 [863570, 863647]
 ID=gene-MJ_RS05010 Dbxref=GeneID:1451825 Name=MJ_RS05010 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05010 old_locus_tag=MJ_t27%2CMJt27%2CtRNA-Pro-2 
+NC_000909.1 tRNA +
+[863570, 863647]
+ID=rna-MJ_RS05010 Parent=gene-MJ_RS05010 Dbxref=GeneID:1451825 anticodon=(pos:863606..863608) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS05010 product=tRNA-Pro 
 NC_000909.1 gene +
 [863656, 863732]
 ID=gene-MJ_RS05015 Dbxref=GeneID:1451826 Name=MJ_RS05015 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05015 old_locus_tag=MJ_t28%2CMJt28%2CtRNA-Tyr-1 
+NC_000909.1 tRNA +
+[863656, 863732]
+ID=rna-MJ_RS05015 Parent=gene-MJ_RS05015 Dbxref=GeneID:1451826 anticodon=(pos:863690..863692) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS05015 product=tRNA-Tyr 
 NC_000909.1 gene +
 [863816, 863889]
 ID=gene-MJ_RS05020 Dbxref=GeneID:1451827 Name=MJ_RS05020 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05020 old_locus_tag=MJ_t29%2CMJt29%2CtRNA-Lys-1 
+NC_000909.1 tRNA +
+[863816, 863889]
+ID=rna-MJ_RS05020 Parent=gene-MJ_RS05020 Dbxref=GeneID:1451827 anticodon=(pos:863850..863852) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS05020 product=tRNA-Lys 
 NC_000909.1 gene +
 [863903, 864017]
 ID=gene-MJ_RS05025 Dbxref=GeneID:1451828 Name=rrf gbkey=Gene gene=rrf gene_biotype=rRNA locus_tag=MJ_RS05025 old_locus_tag=MJ_r06%2CMJr06%2CMJrrnA5S 
+NC_000909.1 exon +
+[863903, 864017]
+ID=exon-MJ_RS05025-1 Parent=rna-MJ_RS05025 Dbxref=RFAM:RF00001,GeneID:1451828 gbkey=rRNA gene=rrf inference=COORDINATES: profile:INFERNAL:1.1.1 locus_tag=MJ_RS05025 product=5S ribosomal RNA 
+NC_000909.1 rRNA +
+[863903, 864017]
+ID=rna-MJ_RS05025 Parent=gene-MJ_RS05025 Dbxref=RFAM:RF00001,GeneID:1451828 gbkey=rRNA gene=rrf inference=COORDINATES: profile:INFERNAL:1.1.1 locus_tag=MJ_RS05025 product=5S ribosomal RNA 
 Matches for [864058, 864150]
 NC_000909.1 gene +
 [864064, 864141]
 ID=gene-MJ_RS05030 Dbxref=GeneID:1451829 Name=MJ_RS05030 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05030 old_locus_tag=MJ_t30%2CMJt30%2CtRNA-Asp-1 
+NC_000909.1 tRNA +
+[864064, 864141]
+ID=rna-MJ_RS05030 Parent=gene-MJ_RS05030 Dbxref=GeneID:1451829 anticodon=(pos:864100..864102) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS05030 product=tRNA-Asp 
 Matches for [873580, 873773]
 NC_000909.1 gene -
 [873686, 873763]
 ID=gene-MJ_RS05080 Dbxref=GeneID:1451839 Name=MJ_RS05080 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05080 old_locus_tag=MJ_t31%2CMJt31%2CtRNA-Ile-1 
+NC_000909.1 tRNA -
+[873686, 873763]
+ID=rna-MJ_RS05080 Parent=gene-MJ_RS05080 Dbxref=GeneID:1451839 anticodon=(pos:complement(873726..873728)) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS05080 product=tRNA-Ile 
 Matches for [883676, 883753]
 Matches for [897950, 898011]
 Matches for [951852, 951966]
@@ -144,6 +249,9 @@ Matches for [1038543, 1038621]
 NC_000909.1 gene -
 [1038544, 1038620]
 ID=gene-MJ_RS05875 Dbxref=GeneID:1451994 Name=MJ_RS05875 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS05875 old_locus_tag=MJ_t33%2CMJt33%2CtRNA-Arg-3 
+NC_000909.1 tRNA -
+[1038544, 1038620]
+ID=rna-MJ_RS05875 Parent=gene-MJ_RS05875 Dbxref=GeneID:1451994 anticodon=(pos:complement(1038583..1038585)) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS05875 product=tRNA-Arg 
 Matches for [1129123, 1129194]
 Matches for [1131985, 1132080]
 Matches for [1137153, 1137240]
@@ -151,9 +259,15 @@ Matches for [1150137, 1150400]
 NC_000909.1 gene +
 [1150145, 1150220]
 ID=gene-MJ_RS06445 Dbxref=GeneID:1452102 Name=MJ_RS06445 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS06445 old_locus_tag=MJ_t34%2CMJt34%2CtRNA-Gly-1 
+NC_000909.1 tRNA +
+[1150145, 1150220]
+ID=rna-MJ_RS06445 Parent=gene-MJ_RS06445 Dbxref=GeneID:1452102 anticodon=(pos:1150179..1150181) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS06445 product=tRNA-Gly 
 NC_000909.1 gene +
 [1150255, 1150330]
 ID=gene-MJ_RS06450 Dbxref=GeneID:1452103 Name=MJ_RS06450 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS06450 old_locus_tag=MJ_t35%2CMJt35%2CtRNA-Gly-2 
+NC_000909.1 tRNA +
+[1150255, 1150330]
+ID=rna-MJ_RS06450 Parent=gene-MJ_RS06450 Dbxref=GeneID:1452103 anticodon=(pos:1150289..1150291) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS06450 product=tRNA-Gly 
 Matches for [1189941, 1190053]
 Matches for [1204228, 1204280]
 Matches for [1220841, 1221016]
@@ -162,6 +276,9 @@ Matches for [1313164, 1313250]
 NC_000909.1 gene +
 [1313165, 1313249]
 ID=gene-MJ_RS07295 Dbxref=GeneID:1452267 Name=MJ_RS07295 gbkey=Gene gene_biotype=tRNA locus_tag=MJ_RS07295 old_locus_tag=MJ_t37%2CMJt37%2CtRNA-Ser-3 
+NC_000909.1 tRNA +
+[1313165, 1313249]
+ID=rna-MJ_RS07295 Parent=gene-MJ_RS07295 Dbxref=GeneID:1452267 anticodon=(pos:1313199..1313201) gbkey=tRNA inference=COORDINATES: profile:tRNAscan-SE:2.0.4 locus_tag=MJ_RS07295 product=tRNA-Ser 
 Matches for [1368252, 1368368]
 Matches for [1410405, 1410468]
 Matches for [1525022, 1525072]

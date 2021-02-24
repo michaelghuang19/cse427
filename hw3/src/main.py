@@ -18,8 +18,8 @@ import viterbi as v
 """
 get hits from the path (where we have state 2)
 """
-def get_hits(path):
-  print("finding hits")
+def get_hits(path, iteration):
+  print("finding hits for iteration {}".format(iteration))
   result = []
 
   # find 1's in path

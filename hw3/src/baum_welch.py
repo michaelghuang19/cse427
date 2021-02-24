@@ -58,7 +58,7 @@ def baum_welch(sequence, output):
     # b. the log probability of the genomic input given current params
     output.write("final log-prob: " + str(np.amax(prob_list[:, -1])) + "\n")
 
-    hit_list = m.get_hits(path)
+    hit_list = m.get_hits(path, i)
     # c. the total number of "hits" found, where a hit is (contiguous)
     # subsequence assigned to state 2 in the Viterbi path
     output.write("hits: " + str(len(hit_list)) + "\n")

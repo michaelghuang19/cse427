@@ -238,4 +238,4 @@ hits: 64
 [1622881, 1622982] of length 101
 [1659452, 1659520] of length 68
 
-baum-welch completed in 496.68426609039307 seconds
+baum-welch completed in 716.6131780147552 seconds

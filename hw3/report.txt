@@ -34,7 +34,7 @@ Report:
     [215199, 215295] of length 96
 
 
-
+  For extra credit, I also implemented and analyzed the Baum-Welch algorithm.
   First 10 Baum-Welch hits for the 10th iteration:
     [13535, 13665] of length 130
     [37390, 37646] of length 256
