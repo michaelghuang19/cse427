@@ -1,5 +1,5 @@
 
----Viterbi Parameter Estimation: Trial 1---
+---Viterbi Parameter Estimation: Iteration 1---
 emissions
 ----  ----  ----  ----
 0.25  0.25  0.25  0.25
@@ -15,7 +15,7 @@ hits: 2
 [154651, 159579] of length 4928
 [638464, 643447] of length 4983
 
----Viterbi Parameter Estimation: Trial 2---
+---Viterbi Parameter Estimation: Iteration 2---
 emissions
 --------  --------  --------  --------
 0.345353  0.154403  0.157978  0.342266
@@ -34,7 +34,7 @@ hits: 23
 [138345, 138419] of length 74
 [154610, 159591] of length 4981
 
----Viterbi Parameter Estimation: Trial 3---
+---Viterbi Parameter Estimation: Iteration 3---
 emissions
 --------  --------  --------  --------
 0.345743  0.154033  0.157588  0.342635
@@ -53,7 +53,7 @@ hits: 34
 [118079, 118179] of length 100
 [138345, 138419] of length 74
 
----Viterbi Parameter Estimation: Trial 4---
+---Viterbi Parameter Estimation: Iteration 4---
 emissions
 --------  --------  --------  --------
 0.345818  0.153956  0.157513  0.342713
@@ -72,7 +72,7 @@ hits: 35
 [118079, 118179] of length 100
 [138345, 138419] of length 74
 
----Viterbi Parameter Estimation: Trial 5---
+---Viterbi Parameter Estimation: Iteration 5---
 emissions
 --------  --------  --------  --------
 0.345824  0.153951  0.157502  0.342723
@@ -91,7 +91,7 @@ hits: 36
 [118079, 118179] of length 100
 [138345, 138419] of length 74
 
----Viterbi Parameter Estimation: Trial 6---
+---Viterbi Parameter Estimation: Iteration 6---
 emissions
 --------  --------  --------  --------
 0.345829  0.153953  0.15749   0.342728
@@ -110,7 +110,7 @@ hits: 36
 [118079, 118179] of length 100
 [138345, 138419] of length 74
 
----Viterbi Parameter Estimation: Trial 7---
+---Viterbi Parameter Estimation: Iteration 7---
 emissions
 --------  --------  --------  --------
 0.345829  0.153953  0.15749   0.342728
@@ -129,7 +129,7 @@ hits: 36
 [118079, 118179] of length 100
 [138345, 138419] of length 74
 
----Viterbi Parameter Estimation: Trial 8---
+---Viterbi Parameter Estimation: Iteration 8---
 emissions
 --------  --------  --------  --------
 0.345829  0.153953  0.15749   0.342728
@@ -148,7 +148,7 @@ hits: 36
 [118079, 118179] of length 100
 [138345, 138419] of length 74
 
----Viterbi Parameter Estimation: Trial 9---
+---Viterbi Parameter Estimation: Iteration 9---
 emissions
 --------  --------  --------  --------
 0.345829  0.153953  0.15749   0.342728
@@ -167,7 +167,7 @@ hits: 36
 [118079, 118179] of length 100
 [138345, 138419] of length 74
 
----Viterbi Parameter Estimation: Trial 10---
+---Viterbi Parameter Estimation: Iteration 10---
 emissions
 --------  --------  --------  --------
 0.345829  0.153953  0.15749   0.342728
@@ -217,4 +217,4 @@ hits: 36
 [1313165, 1313251] of length 86
 [1659451, 1659520] of length 69
 
-viterbi completed in 432.04278230667114 seconds
+viterbi completed in 354.7718458175659 seconds

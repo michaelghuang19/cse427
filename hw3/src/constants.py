@@ -10,11 +10,11 @@ genome_file = "GCF_000091665.1_ASM9166v1_genomic"
 # when we compare against the database "golden standard"
 
 # This is fast, and only keeps the relevant RNAs
-# eval_filter = r"gene_biotype=.*RNA"
+eval_filter = r"gene_biotype=.*RNA"
 
 # In our standardized test cases, r"NC" should consider everything,
 # since everything relevant has "NC" somewhere in it
-eval_filter = r"gene"
+# eval_filter = r"gene"
 
 init_emissions = np.array([
     # [A, C, G, T]

@@ -1,4 +1,5 @@
----Baum-Welch Parameter Estimation: Trial 1---
+
+---Baum-Welch Parameter Estimation: Iteration 1---
 emissions
 ----  ----  ----  ----
 0.25  0.25  0.25  0.25
@@ -16,7 +17,8 @@ hits: 5
 [552550, 552842] of length 292
 [638437, 640061] of length 1624
 [640253, 643434] of length 3181
----Baum-Welch Parameter Estimation: Trial 2---
+
+---Baum-Welch Parameter Estimation: Iteration 2---
 emissions
 --------  --------  --------  --------
 0.345367  0.154398  0.157955  0.34228
@@ -34,7 +36,8 @@ hits: 36
 [97626, 97743] of length 117
 [111764, 111855] of length 91
 [118078, 118178] of length 100
----Baum-Welch Parameter Estimation: Trial 3---
+
+---Baum-Welch Parameter Estimation: Iteration 3---
 emissions
 --------  --------  --------  --------
 0.345816  0.153961  0.157507  0.342716
@@ -52,7 +55,8 @@ hits: 58
 [97324, 97542] of length 218
 [97626, 97818] of length 192
 [111764, 111855] of length 91
----Baum-Welch Parameter Estimation: Trial 4---
+
+---Baum-Welch Parameter Estimation: Iteration 4---
 emissions
 --------  --------  --------  --------
 0.345953  0.153802  0.157359  0.342887
@@ -70,7 +74,8 @@ hits: 63
 [97324, 97542] of length 218
 [97626, 97820] of length 194
 [111764, 111855] of length 91
----Baum-Welch Parameter Estimation: Trial 5---
+
+---Baum-Welch Parameter Estimation: Iteration 5---
 emissions
 --------  --------  --------  -------
 0.34599   0.153765  0.157324  0.34292
@@ -88,7 +93,8 @@ hits: 64
 [97324, 97542] of length 218
 [97626, 97820] of length 194
 [111763, 111855] of length 92
----Baum-Welch Parameter Estimation: Trial 6---
+
+---Baum-Welch Parameter Estimation: Iteration 6---
 emissions
 --------  --------  --------  --------
 0.345996  0.153759  0.157319  0.342927
@@ -106,7 +112,8 @@ hits: 64
 [97324, 97542] of length 218
 [97626, 97820] of length 194
 [111763, 111855] of length 92
----Baum-Welch Parameter Estimation: Trial 7---
+
+---Baum-Welch Parameter Estimation: Iteration 7---
 emissions
 --------  --------  --------  --------
 0.345998  0.153757  0.157319  0.342927
@@ -124,7 +131,8 @@ hits: 64
 [97324, 97542] of length 218
 [97626, 97820] of length 194
 [111763, 111855] of length 92
----Baum-Welch Parameter Estimation: Trial 8---
+
+---Baum-Welch Parameter Estimation: Iteration 8---
 emissions
 --------  --------  --------  --------
 0.345997  0.153756  0.15732   0.342927
@@ -142,7 +150,8 @@ hits: 64
 [97324, 97542] of length 218
 [97626, 97820] of length 194
 [111763, 111855] of length 92
----Baum-Welch Parameter Estimation: Trial 9---
+
+---Baum-Welch Parameter Estimation: Iteration 9---
 emissions
 --------  --------  --------  --------
 0.345997  0.153756  0.15732   0.342928
@@ -160,7 +169,8 @@ hits: 64
 [97324, 97542] of length 218
 [97626, 97820] of length 194
 [111763, 111855] of length 92
----Baum-Welch Parameter Estimation: Trial 10---
+
+---Baum-Welch Parameter Estimation: Iteration 10---
 emissions
 --------  --------  -------  --------
 0.345997  0.153755  0.15732  0.342928
@@ -238,4 +248,4 @@ hits: 64
 [1622881, 1622982] of length 101
 [1659452, 1659520] of length 68
 
-baum-welch completed in 716.6131780147552 seconds
+baum-welch completed in 671.8671081066132 seconds

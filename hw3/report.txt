@@ -22,28 +22,46 @@ Build instructions:
 Report:
 
   First 10 Viterbi hits for the 10th iteration:
-    [97325, 97540] of length 215
-    [97626, 97822] of length 196
-    [111763, 111855] of length 92
-    [118078, 118178] of length 100
-    [138344, 138418] of length 74
-    [154609, 157696] of length 3087
-    [157781, 159590] of length 1809
-    [186973, 187066] of length 93
-    [190830, 190906] of length 76
-    [215199, 215295] of length 96
+    [97326, 97541] of length 215
+    [97627, 97823] of length 196
+    [111764, 111856] of length 92
+    [118079, 118179] of length 100
+    [138345, 138419] of length 74
+    [154610, 157697] of length 3087
+    [157782, 159591] of length 1809
+    [186974, 187067] of length 93
+    [190831, 190907] of length 76
+    [215200, 215296] of length 96
 
 
   For extra credit, I also implemented and analyzed the Baum-Welch algorithm.
   First 10 Baum-Welch hits for the 10th iteration:
-    [13535, 13665] of length 130
-    [37390, 37646] of length 256
-    [97323, 97541] of length 218
-    [97625, 97819] of length 194
-    [111762, 111854] of length 92
-    [118077, 118177] of length 100
-    [138344, 138418] of length 74
-    [154609, 157697] of length 3088
-    [157784, 159587] of length 1803
-    [186973, 187066] of length 93
+    [13536, 13666] of length 130
+    [37391, 37647] of length 256
+    [97324, 97542] of length 218
+    [97626, 97820] of length 194
+    [111763, 111855] of length 92
+    [118078, 118178] of length 100
+    [138345, 138419] of length 74
+    [154610, 157698] of length 3088
+    [157785, 159588] of length 1803
+    [186974, 187067] of length 93
+
+The most notable difference between the Baum-Welch and Viterbi results is the number
+of hits. By the 2nd iteration of the Baum-Welch algorithm, we had 36 hits, while 
+the Viterbi algorithm reached 36 hits by the 5th iteration. In the end, after 10
+iterations of each respective algorithm, the Viterbi algorithm produced 36 hits,
+while the Baum-Welch algorithm yielded 64. Many of the hits that were not present
+in the Viterbi results but present in the Baum-Welch results tended to be rather short, 
+however, being under 100 base pairs long, so their significance can possibly be debated.
+
+After timing the runtime the Viterbi and Baum-Welch algorithms 10 iterations each for
+several trials, there was a clear trend that the Baum-Welch algorithm took longer,
+as we expected. The average Viterbi runtime was about 414 seconds, or about 6 minutes
+and 54 seconds, while the average Baum-Welch algorithm runtime was about 734 seconds, or
+12 minutes and 14 seconds. Since the times varied quite a bit, likely in response to
+whichever processes were running on my computer at the time, the time difference multiple
+between the two algorithms is likely a bit more informative. On average, I found that the
+Baum-Welch algorithm ran about 1.77 times slower than the Viterbi algorithm.
+
 

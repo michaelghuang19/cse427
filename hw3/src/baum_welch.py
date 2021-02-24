@@ -28,7 +28,7 @@ def baum_welch(sequence, output):
 
   for i in range(c.n):
     output.write(
-        "---Baum-Welch Parameter Estimation: Trial {}---\n".format(i + 1))
+        "\n---Baum-Welch Parameter Estimation: Iteration {}---\n".format(i + 1))
     # a. the HMM emission/transition parameters used for this pass
     # (e.g., from the tables above for pass 1)
     output.write("emissions\n")
@@ -58,7 +58,7 @@ def baum_welch(sequence, output):
     # b. the log probability of the genomic input given current params
     output.write("final log-prob: " + str(np.amax(prob_list[:, -1])) + "\n")
 
-    hit_list = m.get_hits(path, i)
+    hit_list = m.get_hits(path, i + 1)
     # c. the total number of "hits" found, where a hit is (contiguous)
     # subsequence assigned to state 2 in the Viterbi path
     output.write("hits: " + str(len(hit_list)) + "\n")

@@ -29,7 +29,7 @@ def viterbi(sequence, output):
   # TODO: consider refactoring this loop outwards, since it's pretty clunky
   for i in range(c.n):
     output.write(
-        "\n---Viterbi Parameter Estimation: Trial {}---\n".format(i + 1))
+        "\n---Viterbi Parameter Estimation: Iteration {}---\n".format(i + 1))
     # a. the HMM emission/transition parameters used for this pass
     # (e.g., from the tables above for pass 1)
     output.write("emissions\n")
@@ -63,7 +63,7 @@ def viterbi(sequence, output):
     # b. the log probability(natural log, base-e) of the overall Viterbi path
     output.write("final log-prob: " + str(final_prob) + "\n")
 
-    hit_list = m.get_hits(path, i)
+    hit_list = m.get_hits(path, i + 1)
     # c. the total number of "hits" found, where a hit is (contiguous)
     # subsequence assigned to state 2 in the Viterbi path
     output.write("hits: " + str(len(hit_list)) + "\n")
