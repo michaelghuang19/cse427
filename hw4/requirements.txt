@@ -1,0 +1,6 @@
+itertools
+matplotlib
+numpy
+pandas
+sklearn
+tabulate

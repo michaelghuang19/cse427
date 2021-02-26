@@ -1,0 +1,24 @@
+Michael Huang (mhuang19)
+1862567
+
+Build instructions:
+
+  If necessary, ensure that we are using Python 3:
+    alias python=python3
+
+  Install any required packages as necessary:
+    pip install -r requirements.txt 
+
+Writeup:
+
+  1.
+
+  2. 
+
+  3. 
+
+  4.
+
+  5.
+
+  
