@@ -2,6 +2,19 @@
 
 import numpy as np
 
+k = 5
 genome_file = "GCF_000091665.1_ASM9166v1_genomic"
 
+# regex for filtering what we want from the "golden standard" database
+# This is fast, and only keeps the relevant RNAs
+eval_filter = r"gene_biotype=.*RNA"
 
+nucleotides = ["A", "C", "G", "T"]
+nuc_map = {"A":"T", "C":"G", "G":"C", "T":"A"}
+stop_codons = ["TAA", "TAG", "TGA"]
+
+data_folder = "data/"
+results_folder = "results/"
+fna_exten = ".fna"
+gff_exten = ".gff"
+text_exten = ".txt"
