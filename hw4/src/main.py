@@ -25,7 +25,8 @@ def main():
   # AAC-GTG-ACC
 
   orf_struct_list = []
-  refseq_list = []
+  trusted_orf_list = []
+  hyp_orf_list = []
   
   for i in range(3):
     long_orf_output = open(c.results_folder + "long_orf{}".format(i) + c.text_exten, "wt")
@@ -33,22 +34,33 @@ def main():
     long_orf = ds.orf_struct(seq)
     long_orf.find_orf_locs(i)
 
+    long_orf_locs = []
+    short_orf_locs = []
+
     long_orf_list = []
+    short_orf_list = []
+
     for j in range(len(long_orf.orf_locs)):
-      orf = long_orf.orf_list[j]
-      if (len(orf) > c.long_threshold):
-        h.print_1list(long_orf.orf_locs[j], long_orf_output)
-        long_orf_output.write("\t" + str(orf) + "\n")
+      locj = long_orf.orf_locs[j]
+      orfj = long_orf.orf_list[j]
+
+      if (len(orfj) > c.long_threshold):
+        h.print_1list(locj, long_orf_output)
+        long_orf_output.write("\t" + str(orfj) + "\n")
         
-        long_orf_list.append(orf)
+        long_orf_locs.append(locj)
+        long_orf_list.append(orfj)
+      else:
+        short_orf_locs.append(locj)
+        short_orf_list.append(orfj)
 
     orf_struct_list.append(long_orf)
-    long_orf_list.append(long_orf_list)
+    trusted_orf_list.append(ds.orf_struct(seq, long_orf_locs, long_orf_list))
+    hyp_orf_list.append(ds.orf_struct(seq, short_orf_locs, short_orf_list))
 
     long_orf_output.close()
 
   markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
-    # 
     # pseudocounts of 1
   markov_orf_output.close()
 

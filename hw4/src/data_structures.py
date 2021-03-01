@@ -13,14 +13,26 @@ class fasta_info:
     self.sequence = sequence
 
 class orf_struct:
-  def __init__(self, sequence):
-    self.sequence = sequence
-    self.stop_list = np.array([])
+  def __init__(self, *args):
+    if len(args) == 0:
+      self.sequence = ""
+    else:
+      self.sequence = args[0]
+    
+    self.stop_list = []
+
     # be careful! these are formatted as [first nuc, last nuc]
     # i.e. you CAN'T directly use these to find sequence
-    self.orc_locs = []
-    self.orf_list = []
-  
+    if len(args) == 3:
+      self.orf_locs = args[1]
+    else:
+      self.orc_locs = []
+
+    if len(args) == 3:
+      self.orf_list = args[2]
+    else:
+      self.orf_list = []
+
   def find_orf_locs(self, offset):
     print("finding orfs with offset {}".format(offset))
     locs = []
@@ -58,8 +70,6 @@ class orf_struct:
 
       if (codon in c.stop_codons):
         result.append(i)
-        
-    result = np.array(result)
 
     self.stop_list = result
 
