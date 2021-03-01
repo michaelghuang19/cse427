@@ -32,6 +32,8 @@ class orf_struct:
       self.orf_list = args[2]
     else:
       self.orf_list = []
+    
+    self.bg_seqs = []
 
   def find_orf_locs(self, offset):
     print("finding orfs with offset {}".format(offset))
@@ -58,8 +60,22 @@ class orf_struct:
 
     self.orf_locs = locs
     self.orf_list = orfs
-
     return locs, orfs
+
+  def find_bg_seqs(self):
+    result = []
+
+    for orf in self.orf_list:
+      rev_orf = orf[::-1]
+      rev_orf_complements = [""] * len(rev_orf)
+
+      for i, nuc in enumerate(rev_orf):
+        rev_orf_complements[i] = c.nuc_map[nuc]
+      
+      result.append(''.join(rev_orf_complements))
+
+    self.bg_seqs = result
+    return result
 
   def find_stops(self, offset):
     result = []
@@ -72,7 +88,6 @@ class orf_struct:
         result.append(i)
 
     self.stop_list = result
-
     return result
 
 class gene_info:

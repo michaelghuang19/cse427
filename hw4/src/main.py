@@ -13,23 +13,14 @@ import constants as c
 import data_structures as ds
 import helper as h
 
-def main():
-  print("hello world")
-
-  fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
-  seq = fasta_list[0].sequence
-
-  # With the test, we expect the following output:
-  # ATA-ACG, CCC
-  # CGT-GAC
-  # AAC-GTG-ACC
-
+def scan_long_seqs(seq):
   orf_struct_list = []
   trusted_orf_list = []
   hyp_orf_list = []
-  
+
   for i in range(3):
-    long_orf_output = open(c.results_folder + "long_orf{}".format(i) + c.text_exten, "wt")
+    long_orf_output = open(
+        c.results_folder + "long_orf{}".format(i) + c.text_exten, "wt")
 
     long_orf = ds.orf_struct(seq)
     long_orf.find_orf_locs(i)
@@ -47,7 +38,7 @@ def main():
       if (len(orfj) > c.long_threshold):
         h.print_1list(locj, long_orf_output)
         long_orf_output.write("\t" + str(orfj) + "\n")
-        
+
         long_orf_locs.append(locj)
         long_orf_list.append(orfj)
       else:
@@ -59,9 +50,32 @@ def main():
     hyp_orf_list.append(ds.orf_struct(seq, short_orf_locs, short_orf_list))
 
     long_orf_output.close()
+  
+  return orf_struct_list, trusted_orf_list, hyp_orf_list
+
+def perform_counts(orf_list):
+  print("performing counts")
+
+  for orf in orf_list:
+    orf.find_bg_seqs()
+
+def main():
+  print("hello world")
+
+  fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
+  seq = fasta_list[0].sequence
+
+  # With the test, we expect the following output:
+  # ATA-ACG, CCC
+  # CGT-GAC
+  # AAC-GTG-ACC
+
+  orf_struct_list, trusted_orf_list, hyp_orf_list = scan_long_seqs(seq)
+
+  perform_counts(trusted_orf_list)
 
   markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
-    # pseudocounts of 1
+    # remember pseudocounts of 1
   markov_orf_output.close()
 
   # ginfo_list = h.process_gff(c.genome_file, c.gff_exten)
