@@ -1,5 +1,7 @@
 # various helper functions
 
+import numpy as np
+
 import constants as c
 import data_structures as ds
 
@@ -41,6 +43,12 @@ def regulate_sequence(sequence):
       result += "T"
 
   return result
+
+# print list to output as 1-base rather than 0-base
+def print_1list(list0, output):
+  result = np.array(list0)
+  result = list(result + 1)
+  output.write(str(result))
 
 # convert gff data to a list of known genes
 def process_gff(filename, exten):
