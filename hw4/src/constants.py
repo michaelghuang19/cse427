@@ -2,9 +2,11 @@
 
 import numpy as np
 
+# kth-order markov model
 k = 5
+long_threshold = 1400
 genome_file = "GCF_000091665.1_ASM9166v1_genomic"
-genome_file = "test"
+# genome_file = "test"
 
 # regex for filtering what we want from the "golden standard" database
 # This is fast, and only keeps the relevant RNAs

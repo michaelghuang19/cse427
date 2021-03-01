@@ -22,6 +22,7 @@ class orf_struct:
     self.orf_list = []
   
   def find_orf_locs(self, offset):
+    print("finding orfs with offset {}".format(offset))
     locs = []
     orfs = []
 
