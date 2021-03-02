@@ -53,11 +53,19 @@ def scan_long_seqs(seq):
   
   return orf_struct_list, trusted_orf_list, hyp_orf_list
 
-def perform_counts(orf_list):
+def perform_counts(orf_struct_list):
   print("performing counts")
 
-  for orf in orf_list:
+  for orf in orf_struct_list:
     orf.find_bg_seqs()
+
+    kmer_counts = h.count_kmers(2, orf.orf_list)
+    kmer_total = sum(kmer_counts.values())
+
+    print(kmer_counts)
+    print(kmer_total)
+
+    # TODO: count normal and long orfs, and compare respectively
 
 def main():
   print("hello world")

@@ -1,5 +1,6 @@
 # various helper functions
 
+import collections
 import numpy as np
 
 import constants as c
@@ -75,3 +76,25 @@ def process_gff(filename, exten):
   print("Successfully processed {} for ".format(exten) + filename)
 
   return result
+
+# count kmers in a sequence
+def count_kmers(k, seq_list):
+  result = []
+
+  for seq in seq_list:
+    result += [seq[i - k: i] for i in range(k, len(seq) + 1)]
+
+  result = collections.Counter(result)
+
+  return result
+
+def count_starts(k, seq_list):
+  result = []
+
+  for seq in seq_list:
+    result.append(seq[0:k])
+
+  result = collections.Counter(result)
+
+  return result
+
