@@ -53,19 +53,24 @@ def scan_long_seqs(seq):
   
   return orf_struct_list, trusted_orf_list, hyp_orf_list
 
-def perform_counts(orf_struct_list):
+def perform_counts(orf_list):
   print("performing counts")
 
-  for orf in orf_struct_list:
-    orf.find_bg_seqs()
+  kmer_counts = h.count_kmers(c.k, orf_list)
+  kmer_plusone_counts = h.count_kmers(c.k + 1, orf_list)
+  
+  kmer_start_counts = h.count_starts(c.k, orf_list)
 
-    kmer_counts = h.count_kmers(2, orf.orf_list)
-    kmer_total = sum(kmer_counts.values())
+  return [kmer_counts, kmer_plusone_counts, kmer_start_counts]
 
-    print(kmer_counts)
-    print(kmer_total)
+def calculate_probs(trusted_list, bg_list):
+  print("calculating probabilities")
 
-    # TODO: count normal and long orfs, and compare respectively
+  # kmer_total = sum(kmer_counts.values())
+  # kmer_plusone_total = sum(kmer_plusone_counts.values())
+  # kmer_start_total = sum(kmer_start_counts.values())
+
+
 
 def main():
   print("hello world")
@@ -73,14 +78,26 @@ def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
   seq = fasta_list[0].sequence
 
-  # With the test, we expect the following output:
+  # With the test file, we expect the following output:
   # ATA-ACG, CCC
   # CGT-GAC
   # AAC-GTG-ACC
 
   orf_struct_list, trusted_orf_list, hyp_orf_list = scan_long_seqs(seq)
 
-  perform_counts(trusted_orf_list)
+  trusted_seq_list = []
+  bg_seq_list = []
+
+  for orf in trusted_orf_list:
+    orf.find_bg_seqs()
+
+    trusted_seq_list += orf.orf_list
+    bg_seq_list += orf.bg_seqs
+
+  trusted_list = perform_counts(trusted_seq_list)
+  bg_list = perform_counts(bg_seq_list)
+
+  calculate_probs(trusted_list, bg_list)
 
   markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
     # remember pseudocounts of 1
