@@ -1,6 +1,7 @@
 # Michael Huang (mhuang19)
 # 1862567
 
+import collections
 import itertools as it
 import math
 import matplotlib.pyplot as plt
@@ -54,23 +55,44 @@ def scan_long_seqs(seq):
   return orf_struct_list, trusted_orf_list, hyp_orf_list
 
 def perform_counts(orf_list):
-  print("performing counts")
 
   kmer_counts = h.count_kmers(c.k, orf_list)
   kmer_plusone_counts = h.count_kmers(c.k + 1, orf_list)
-  
-  kmer_start_counts = h.count_starts(c.k, orf_list)
+
+  kmer_start_counts = collections.Counter([seq[0:c.k] for seq in orf_list])
 
   return [kmer_counts, kmer_plusone_counts, kmer_start_counts]
 
-def calculate_probs(trusted_list, bg_list):
-  print("calculating probabilities")
+def calculate_score(locs, seq, trusted_list, bg_list):
 
-  # kmer_total = sum(kmer_counts.values())
-  # kmer_plusone_total = sum(kmer_plusone_counts.values())
-  # kmer_start_total = sum(kmer_start_counts.values())
+  p_score = calculate_prob(seq, trusted_list[0], trusted_list[1], trusted_list[2])
+  q_score = calculate_prob(seq, trusted_list[0], trusted_list[1], trusted_list[2])
+  
+  return p_score - q_score
 
+def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
+  kmer_key_num = len(kmer_counts.keys())
+  kmer_start_total = sum(kmer_start_counts.values())
 
+  # initialize using start probabilities
+  result = np.log(c.pseudo_count / (c.pseudo_count * kmer_key_num))
+  if seq[0:c.k] in kmer_start_counts.keys():
+    result = np.log(kmer_start_counts[seq[0:c.k]] + c.pseudo_count) / \
+        (kmer_start_total + c.pseudo_count * kmer_key_num)
+
+  for i in range(c.k + 2, len(seq) + 1):
+    term = seq[i - c.k - 1 : i]
+
+    if term[:-1] not in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
+      result += np.log(c.pseudo_count / (c.pseudo_count * kmer_key_num))
+    elif term[:-1] in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
+      result += np.log(c.pseudo_count /
+                       (kmer_counts[term[:-1]] + (c.pseudo_count * kmer_key_num)))
+    else:
+      result += np.log((kmer_plusone_counts[term] + c.pseudo_count) / (
+          kmer_counts[term[:-1]] + (c.pseudo_count * kmer_key_num)))
+  
+  return result
 
 def main():
   print("hello world")
@@ -83,7 +105,13 @@ def main():
   # CGT-GAC
   # AAC-GTG-ACC
 
+  # scan in sequences
+  print("scanning in sequences")
+
   orf_struct_list, trusted_orf_list, hyp_orf_list = scan_long_seqs(seq)
+
+  # perform necessary k-mer counts
+  print("performing necessary k-mer counts")
 
   trusted_seq_list = []
   bg_seq_list = []
@@ -97,7 +125,18 @@ def main():
   trusted_list = perform_counts(trusted_seq_list)
   bg_list = perform_counts(bg_seq_list)
 
-  calculate_probs(trusted_list, bg_list)
+  # perform probability calculations
+  print("calculating probabilities")
+
+  master_orf_locs = []
+  master_orf_list = []
+
+  for orf in orf_struct_list:
+    master_orf_locs += orf.orf_locs
+    master_orf_list += orf.orf_list
+    
+  for loc, seq in zip(master_orf_locs, master_orf_list):
+    score = calculate_score(loc, seq, trusted_list, bg_list)
 
   markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
     # remember pseudocounts of 1
@@ -105,6 +144,9 @@ def main():
 
   # ginfo_list = h.process_gff(c.genome_file, c.gff_exten)
   # ginfo_list = sorted(ginfo_list, key=lambda ginfo: ginfo.start)
+
+  # evaluation step
+  print("performing evaluation")
 
   print("done")
 

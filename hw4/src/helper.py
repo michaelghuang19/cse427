@@ -88,13 +88,3 @@ def count_kmers(k, seq_list):
 
   return result
 
-def count_starts(k, seq_list):
-  result = []
-
-  for seq in seq_list:
-    result.append(seq[0:k])
-
-  result = collections.Counter(result)
-
-  return result
-

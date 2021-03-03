@@ -8,6 +8,7 @@ long_threshold = 1400
 # long_threshold = 0
 genome_file = "GCF_000091665.1_ASM9166v1_genomic"
 # genome_file = "test"
+pseudo_count = 1
 
 # regex for filtering what we want from the "golden standard" database
 # This is fast, and only keeps the relevant RNAs

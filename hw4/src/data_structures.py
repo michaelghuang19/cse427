@@ -26,7 +26,7 @@ class orf_struct:
     if len(args) == 3:
       self.orf_locs = args[1]
     else:
-      self.orc_locs = []
+      self.orf_locs = []
 
     if len(args) == 3:
       self.orf_list = args[2]
