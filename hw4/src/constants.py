@@ -4,6 +4,7 @@ import numpy as np
 
 # kth-order markov model
 k = 5
+short_threshold = 50
 long_threshold = 1400
 # long_threshold = 0
 genome_file = "GCF_000091665.1_ASM9166v1_genomic"

@@ -36,13 +36,13 @@ def scan_long_seqs(seq):
       locj = long_orf.orf_locs[j]
       orfj = long_orf.orf_list[j]
 
-      if (len(orfj) > c.long_threshold):
+      if len(orfj) > c.long_threshold:
         h.print_1list(locj, long_orf_output)
         long_orf_output.write("\t" + str(orfj) + "\n")
 
         long_orf_locs.append(locj)
         long_orf_list.append(orfj)
-      else:
+      elif len(orfj) < c.short_threshold:
         short_orf_locs.append(locj)
         short_orf_list.append(orfj)
 
@@ -94,6 +94,9 @@ def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
   
   return result
 
+def evaluate(output):
+  output.write()
+
 def main():
   print("hello world")
 
@@ -113,29 +116,33 @@ def main():
   # perform necessary k-mer counts
   print("performing necessary k-mer counts")
 
-  trusted_seq_list = []
-  bg_seq_list = []
+  master_orf_locs = []
+  master_orf_seq_list = []
 
-  for orf in trusted_orf_list:
-    orf.find_bg_seqs()
+  trusted_orf_seq_list = []
+  bg_orf_seq_list = []
 
-    trusted_seq_list += orf.orf_list
-    bg_seq_list += orf.bg_seqs
+  short_orf_locs = []
+  short_orf_seq_list = []
 
-  trusted_list = perform_counts(trusted_seq_list)
-  bg_list = perform_counts(bg_seq_list)
+  for i in range(len(orf_struct_list)):
+    master_orf_locs += orf_struct_list[i].orf_locs
+    master_orf_seq_list += orf_struct_list[i].orf_list
+
+    trusted_orf_list[i].find_bg_seqs()
+    trusted_orf_seq_list += trusted_orf_list[i].orf_list
+    bg_orf_seq_list += trusted_orf_list[i].bg_seqs
+
+    short_orf_locs += hyp_orf_list[i].orf_locs
+    short_orf_seq_list += hyp_orf_list[i].orf_list
+
+  trusted_list = perform_counts(trusted_orf_seq_list)
+  bg_list = perform_counts(bg_orf_seq_list)
 
   # perform probability calculations
   print("calculating probabilities")
-
-  master_orf_locs = []
-  master_orf_list = []
-
-  for orf in orf_struct_list:
-    master_orf_locs += orf.orf_locs
-    master_orf_list += orf.orf_list
     
-  for loc, seq in zip(master_orf_locs, master_orf_list):
+  for loc, seq in zip(master_orf_locs, master_orf_seq_list):
     score = calculate_score(loc, seq, trusted_list, bg_list)
 
   markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
@@ -147,6 +154,18 @@ def main():
 
   # evaluation step
   print("performing evaluation")
+  overall_output = open(c.results_folder + "overall_results" + c.text_exten, "wt")
+  # evaluate(overall_output)
+  overall_output.write("total orfs: " + str(len(master_orf_seq_list)) + "\n")
+  overall_output.write("long orfs: " + str(len(trusted_orf_seq_list)) + "\n")
+  overall_output.write("short orfs: " + str(len(short_orf_seq_list)) + "\n")
+  # for each reading frame: total number, first + length / last + length
+  # total number of CDS strands
+  # shortest orfs, including start/end, length, score, matches
+  # longest orfs, including start/end, length, score, matches
+  # p-count
+  # q-count
+  overall_output.close()
 
   print("done")
 
