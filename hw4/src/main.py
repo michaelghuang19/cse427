@@ -156,10 +156,22 @@ def main():
   print("performing evaluation")
   overall_output = open(c.results_folder + "overall_results" + c.text_exten, "wt")
   # evaluate(overall_output)
-  overall_output.write("total orfs: " + str(len(master_orf_seq_list)) + "\n")
-  overall_output.write("long orfs: " + str(len(trusted_orf_seq_list)) + "\n")
-  overall_output.write("short orfs: " + str(len(short_orf_seq_list)) + "\n")
+  overall_output.write("total orfs: {}\n".format(len(master_orf_seq_list)))
+  overall_output.write("long orfs: {}\n".format(len(trusted_orf_seq_list)))
+  overall_output.write("short orfs: {}\n".format(len(short_orf_seq_list)))
   # for each reading frame: total number, first + length / last + length
+  for i in range(len(orf_struct_list)):
+    overall_output.write("\nreading frame {}\n".format(i))
+    orf_locs = orf_struct_list[i].orf_locs
+    overall_output.write("total orfs: {}\n".format(len(orf_locs)))
+
+    overall_output.write("first orf: {}, length: {}\n".format(
+      list(np.array(orf_locs[0]) + 1),
+      orf_locs[0][1] - orf_locs[0][0] + 1))
+    overall_output.write("last orf: {}, length: {}\n".format(
+      list(np.array(orf_locs[len(orf_locs) - 1]) + 1),
+      orf_locs[len(orf_locs) - 1][1] - orf_locs[len(orf_locs) - 1][0] + 1))
+
   # total number of CDS strands
   # shortest orfs, including start/end, length, score, matches
   # longest orfs, including start/end, length, score, matches
