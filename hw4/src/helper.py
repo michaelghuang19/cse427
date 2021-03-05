@@ -2,6 +2,7 @@
 
 import collections
 import numpy as np
+import pandas as pd
 
 import constants as c
 import data_structures as ds
@@ -88,25 +89,20 @@ def count_kmers(k, seq_list):
 
   return result
 
-def get_counts(kmer_plusone_counts):
+# get AAGxyT counts, given a kmer + 1 count list
+def get_AAGxyT_counts(kmer_plusone_counts):
   result = []
+  result = df = pd.DataFrame(columns=c.nucleotides, index=c.nucleotides)
+
+  for i in c.nucleotides:
+    for j in c.nucleotides:
+      comb = "AAG" + i + j + "T"
+      result[j][i] = kmer_plusone_counts[comb]
 
   return result
 
-# def print_count(self, counts):
+# construct an orf summary data structure for printing
+def construct_orf_summary(ginfo_list, orf_map, scores):
+  print("fuck")
 
-  #       df = pd.DataFrame(columns=nucleotides, index=nucleotides)
-
-  #       for x in nucleotides:
-  #           for y in nucleotides:
-  #               key = "AAG"+x+y+"T"
-  #               df[y][x] = counts[key]
-
-  #       return str(df)
-
-  # def __repr__(self):
-  #     return "ORFs Found: " + str(self.orfs) + "\n\n" + \
-  #         "P count(AAGxyT): " + "\n" + self.print_count(self.kponemer_counts) + "\n" + \
-  #         "Q count(AAGxyT): " + "\n" + self.print_count(self.bg_kponemer_counts)
-  
 

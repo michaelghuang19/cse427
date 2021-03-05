@@ -16,4 +16,13 @@ reading frame at offset 2
 total orfs: 35686
 first orf: [3, 5], length: 3
 last orf: [1664964, 1664969], length: 6
-simple plus strand CDSs: 848
+simple plus strand CDSs: 848p_counts:      A   C    G    T
+A  307  51  223  394
+C  104  15   12  119
+G  211  42   39  218
+T  148  19   68  198
+q_counts:      A   C   G    T
+A   90  26  48   95
+C   87  22  15  119
+G   41  20  26   59
+T  139  39  64  175

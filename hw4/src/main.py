@@ -94,9 +94,6 @@ def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
   
   return result
 
-def evaluate(output):
-  output.write()
-
 def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
   seq = fasta_list[0].sequence
@@ -112,41 +109,63 @@ def main():
   # scan in sequences
   print("scanning in sequences")
 
-  orf_struct_list, trusted_orf_list, hyp_orf_list = scan_long_seqs(seq)
+  orf_struct_list, trusted_orf_list, short_orf_list = scan_long_seqs(seq)
 
   # perform necessary k-mer counts
-  print("performing necessary k-mer counts")
+  print("performing necessary k-mer counts")  
 
   master_orf_locs = []
-  master_orf_seq_list = []
+  master_orf_seqs = []
 
-  trusted_orf_seq_list = []
-  bg_orf_seq_list = []
+  trusted_orf_locs = []
+  trusted_orf_seqs = []
+  bg_orf_seqs = []
 
   short_orf_locs = []
-  short_orf_seq_list = []
+  short_orf_seqs = []
 
   for i in range(len(orf_struct_list)):
+
     master_orf_locs += orf_struct_list[i].orf_locs
-    master_orf_seq_list += orf_struct_list[i].orf_list
+    master_orf_seqs += orf_struct_list[i].orf_list
 
     trusted_orf_list[i].find_bg_seqs()
-    trusted_orf_seq_list += trusted_orf_list[i].orf_list
-    bg_orf_seq_list += trusted_orf_list[i].bg_seqs
+    trusted_orf_locs += trusted_orf_list[i].orf_locs
+    trusted_orf_seqs += trusted_orf_list[i].orf_list
+    bg_orf_seqs += trusted_orf_list[i].bg_seqs
 
-    short_orf_locs += hyp_orf_list[i].orf_locs
-    short_orf_seq_list += hyp_orf_list[i].orf_list
+    short_orf_locs += short_orf_list[i].orf_locs
+    short_orf_seqs += short_orf_list[i].orf_list
+  
+  trusted_orf_seq_map = {key[0] : value for key, value in zip(
+      trusted_orf_locs, trusted_orf_seqs)}
+  short_orf_seq_map = {key[0] : value for key, value in zip(
+      short_orf_locs, short_orf_seqs)}
 
-  trusted_list = perform_counts(trusted_orf_seq_list)
-  bg_list = perform_counts(bg_orf_seq_list)
+  trusted_orf_loc_map = {loc[0]: loc for loc in trusted_orf_locs}
+  short_orf_loc_map = {loc[0]: loc for loc in short_orf_locs}
+
+  trusted_list = perform_counts(trusted_orf_seqs)
+  bg_list = perform_counts(bg_orf_seqs)
 
   # perform probability calculations
   print("calculating probabilities")
   
-  score_list = []
-  for loc, seq in zip(master_orf_locs, master_orf_seq_list):
-    score = calculate_score(loc, seq, trusted_list, bg_list)
-    score_list.append(score)
+  first_long_scores = []
+  first_short_scores = []
+  
+  for long_start, short_start in zip(sorted(trusted_orf_seq_map.keys())[0:c.k],
+      sorted(short_orf_seq_map.keys())[0:c.k]):
+    
+    long_loc = trusted_orf_loc_map[long_start]
+    long_seq = trusted_orf_seq_map[long_start]
+    score = calculate_score(long_loc, long_seq, trusted_list, bg_list)
+    first_long_scores.append(score)
+    
+    short_loc = short_orf_loc_map[short_start]
+    short_seq = short_orf_seq_map[short_start]
+    score = calculate_score(short_loc, short_seq, trusted_list, bg_list)
+    first_short_scores.append(score)
 
   markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
     # remember pseudocounts of 1
@@ -155,10 +174,11 @@ def main():
   # evaluation step
   print("performing evaluation")
   overall_output = open(c.results_folder + "overall_results" + c.text_exten, "wt")
-  # evaluate(overall_output)
-  overall_output.write("total orfs: {}\n".format(len(master_orf_seq_list)))
-  overall_output.write("long orfs: {}\n".format(len(trusted_orf_seq_list)))
-  overall_output.write("short orfs: {}\n".format(len(short_orf_seq_list)))
+
+  overall_output.write("total orfs: {}\n".format(len(master_orf_locs)))
+  overall_output.write("long orfs: {}\n".format(len(trusted_orf_locs)))
+  overall_output.write("short orfs: {}\n".format(len(short_orf_locs)))
+
   # for each reading frame: total number, first + length / last + length
   for i in range(len(orf_struct_list)):
     overall_output.write("\nreading frame at offset {}\n".format(i))
@@ -172,16 +192,24 @@ def main():
       list(np.array(orf_locs[len(orf_locs) - 1]) + 1),
       orf_locs[len(orf_locs) - 1][1] - orf_locs[len(orf_locs) - 1][0] + 1))
 
-  overall_output.write("simple plus strand CDSs: {}".format(len(ginfo_list)))
+  overall_output.write("\nsimple plus strand CDSs: {}\n".format(len(ginfo_list)))
   
   # shortest orfs, including start/end, length, score, matches
   # longest orfs, including start/end, length, score, matches
-  
-  p_counts = h.get_counts(trusted_list[1])
-  q_counts = h.get_counts(bg_list[1])
 
-  overall_output.write("p_counts: " + str(p_counts) + "\n")
-  overall_output.write("q_counts: " + str(q_counts) + "\n")
+  first_short_orfs = h.construct_orf_summary(
+      ginfo_list, trusted_orf_map[0:c.k], first_long_scores)
+  first_long_orfs = h.construct_orf_summary(
+      ginfo_list, short_orf_map[0:c.k], first_short_scores)
+
+  # overall_output.write()
+  # overall_output.write()
+
+  p_counts = h.get_AAGxyT_counts(trusted_list[1])
+  q_counts = h.get_AAGxyT_counts(bg_list[1])
+
+  overall_output.write("\np_counts: \n" + str(p_counts) + "\n")
+  overall_output.write("\nq_counts: \n" + str(q_counts) + "\n")
 
   overall_output.close()
 
