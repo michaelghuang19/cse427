@@ -98,10 +98,11 @@ def evaluate(output):
   output.write()
 
 def main():
-  print("hello world")
-
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
   seq = fasta_list[0].sequence
+
+  ginfo_list = h.process_gff(c.genbank_file, c.gff_exten)
+  ginfo_list = sorted(ginfo_list, key=lambda ginfo: ginfo.start)
 
   # With the test file, we expect the following output:
   # ATA-ACG, CCC
@@ -141,16 +142,15 @@ def main():
 
   # perform probability calculations
   print("calculating probabilities")
-    
+  
+  score_list = []
   for loc, seq in zip(master_orf_locs, master_orf_seq_list):
     score = calculate_score(loc, seq, trusted_list, bg_list)
+    score_list.append(score)
 
   markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
     # remember pseudocounts of 1
   markov_orf_output.close()
-
-  # ginfo_list = h.process_gff(c.genome_file, c.gff_exten)
-  # ginfo_list = sorted(ginfo_list, key=lambda ginfo: ginfo.start)
 
   # evaluation step
   print("performing evaluation")
@@ -161,7 +161,7 @@ def main():
   overall_output.write("short orfs: {}\n".format(len(short_orf_seq_list)))
   # for each reading frame: total number, first + length / last + length
   for i in range(len(orf_struct_list)):
-    overall_output.write("\nreading frame {}\n".format(i))
+    overall_output.write("\nreading frame at offset {}\n".format(i))
     orf_locs = orf_struct_list[i].orf_locs
     overall_output.write("total orfs: {}\n".format(len(orf_locs)))
 
@@ -172,7 +172,7 @@ def main():
       list(np.array(orf_locs[len(orf_locs) - 1]) + 1),
       orf_locs[len(orf_locs) - 1][1] - orf_locs[len(orf_locs) - 1][0] + 1))
 
-  # total number of CDS strands
+  overall_output.write("simple plus strand CDSs: {}".format(len(ginfo_list)))
   # shortest orfs, including start/end, length, score, matches
   # longest orfs, including start/end, length, score, matches
   # p-count

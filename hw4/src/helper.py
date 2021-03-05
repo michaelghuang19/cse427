@@ -8,6 +8,8 @@ import data_structures as ds
 
 # convert fasta data to a list of formatted data structures
 def process_fasta(filename, exten):
+  print("processing {} for ".format(exten) + filename)
+
   fasta_array = []
 
   file = open(c.data_folder + filename + exten, "r")
@@ -30,8 +32,6 @@ def process_fasta(filename, exten):
     fasta_struct = ds.fasta_info(description, sequence)
     fasta_array.append(fasta_struct)
 
-  print("Successfully processed {} for ".format(exten) + filename)
-
   return fasta_array
 
 # change fasta by replacing non-whitespace to T's, and making all caps
@@ -53,6 +53,8 @@ def print_1list(list0, output):
 
 # convert gff data to a list of known genes
 def process_gff(filename, exten):
+  print("processing {} for ".format(exten) + filename)
+  
   result = []
 
   file = open(c.data_folder + filename + exten, "r")
@@ -72,8 +74,6 @@ def process_gff(filename, exten):
         col_vals[0], col_vals[2], col_vals[3], col_vals[4], col_vals[6], col_vals[8])
 
     result.append(info)
-
-  print("Successfully processed {} for ".format(exten) + filename)
 
   return result
 

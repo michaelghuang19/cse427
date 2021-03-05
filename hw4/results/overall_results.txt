@@ -2,17 +2,18 @@ total orfs: 106819
 long orfs: 118
 short orfs: 81738
 
-reading frame 0
+reading frame at offset 0
 total orfs: 35200
 first orf: [1, 36], length: 36
 last orf: [1664968, 1664970], length: 3
 
-reading frame 1
+reading frame at offset 1
 total orfs: 35933
 first orf: [2, 94], length: 93
 last orf: [1664921, 1664968], length: 48
 
-reading frame 2
+reading frame at offset 2
 total orfs: 35686
 first orf: [3, 5], length: 3
 last orf: [1664964, 1664969], length: 6
+simple plus strand CDSs: 848
