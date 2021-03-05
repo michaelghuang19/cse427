@@ -54,7 +54,7 @@ def print_1list(list0, output):
 # convert gff data to a list of known genes
 def process_gff(filename, exten):
   print("processing {} for ".format(exten) + filename)
-  
+
   result = []
 
   file = open(c.data_folder + filename + exten, "r")
@@ -87,4 +87,26 @@ def count_kmers(k, seq_list):
   result = collections.Counter(result)
 
   return result
+
+def get_counts(kmer_plusone_counts):
+  result = []
+
+  return result
+
+# def print_count(self, counts):
+
+  #       df = pd.DataFrame(columns=nucleotides, index=nucleotides)
+
+  #       for x in nucleotides:
+  #           for y in nucleotides:
+  #               key = "AAG"+x+y+"T"
+  #               df[y][x] = counts[key]
+
+  #       return str(df)
+
+  # def __repr__(self):
+  #     return "ORFs Found: " + str(self.orfs) + "\n\n" + \
+  #         "P count(AAGxyT): " + "\n" + self.print_count(self.kponemer_counts) + "\n" + \
+  #         "Q count(AAGxyT): " + "\n" + self.print_count(self.bg_kponemer_counts)
+  
 

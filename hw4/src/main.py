@@ -173,10 +173,16 @@ def main():
       orf_locs[len(orf_locs) - 1][1] - orf_locs[len(orf_locs) - 1][0] + 1))
 
   overall_output.write("simple plus strand CDSs: {}".format(len(ginfo_list)))
+  
   # shortest orfs, including start/end, length, score, matches
   # longest orfs, including start/end, length, score, matches
-  # p-count
-  # q-count
+  
+  p_counts = h.get_counts(trusted_list[1])
+  q_counts = h.get_counts(bg_list[1])
+
+  overall_output.write("p_counts: " + str(p_counts) + "\n")
+  overall_output.write("q_counts: " + str(q_counts) + "\n")
+
   overall_output.close()
 
   print("done")
