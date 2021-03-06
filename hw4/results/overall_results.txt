@@ -1,6 +1,3 @@
-total orfs: 106819
-long orfs: 118
-short orfs: 81738
 
 reading frame at offset 0
 total orfs: 35200
@@ -16,13 +13,35 @@ reading frame at offset 2
 total orfs: 35686
 first orf: [3, 5], length: 3
 last orf: [1664964, 1664969], length: 6
-simple plus strand CDSs: 848p_counts:      A   C    G    T
+
+total orfs: 106819
+long orfs: 118
+short orfs: 81738
+
+simple plus strand CDSs: 848
+
+p_counts: 
+     A   C    G    T
 A  307  51  223  394
 C  104  15   12  119
 G  211  42   39  218
 T  148  19   68  198
-q_counts:      A   C   G    T
+
+q_counts: 
+     A   C   G    T
 A   90  26  48   95
 C   87  22  15  119
 G   41  20  26   59
 T  139  39  64  175
+
+start/end: [17619, 19229]	length: 1611	score: 608.7929883645684	match: True
+start/end: [33626, 35245]	length: 1620	score: 834.8772204853676	match: True
+start/end: [42725, 45109]	length: 2385	score: 942.6197895406949	match: True
+start/end: [74592, 76010]	length: 1419	score: 510.10059504677247	match: True
+start/end: [76820, 78481]	length: 1662	score: 721.1376819628922	match: True
+
+start/end: [1, 36]	length: 36	score: 6.634132730642591	match: True
+start/end: [3, 5]	length: 3	score: 0.0	match: True
+start/end: [9, 20]	length: 12	score: 7.062702776669381	match: True
+start/end: [24, 32]	length: 9	score: -0.45110129175449565	match: True
+start/end: [40, 51]	length: 12	score: 9.094736868910497	match: True

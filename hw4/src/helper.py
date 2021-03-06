@@ -102,7 +102,12 @@ def get_AAGxyT_counts(kmer_plusone_counts):
   return result
 
 # construct an orf summary data structure for printing
-def construct_orf_summary(ginfo_list, orf_map, scores):
-  print("fuck")
+def create_match_list(ginfo_list, key_list, loc_map):
+  result = []
+
+  for key in key_list:
+    result.append(True)
+  
+  return result
 
 

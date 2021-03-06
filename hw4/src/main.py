@@ -66,7 +66,7 @@ def perform_counts(orf_list):
 def calculate_score(locs, seq, trusted_list, bg_list):
 
   p_score = calculate_prob(seq, trusted_list[0], trusted_list[1], trusted_list[2])
-  q_score = calculate_prob(seq, trusted_list[0], trusted_list[1], trusted_list[2])
+  q_score = calculate_prob(seq, bg_list[0], bg_list[1], bg_list[2])
   
   return p_score - q_score
 
@@ -91,7 +91,7 @@ def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
     else:
       result += np.log((kmer_plusone_counts[term] + c.pseudo_count) / (
           kmer_counts[term[:-1]] + (c.pseudo_count * kmer_key_num)))
-  
+
   return result
 
 def main():
@@ -151,8 +151,8 @@ def main():
   # perform probability calculations
   print("calculating probabilities")
   
-  first_long_scores = []
-  first_short_scores = []
+  first_long_score_map = {}
+  first_short_score_map = {}
   
   for long_start, short_start in zip(sorted(trusted_orf_seq_map.keys())[0:c.k],
       sorted(short_orf_seq_map.keys())[0:c.k]):
@@ -160,12 +160,12 @@ def main():
     long_loc = trusted_orf_loc_map[long_start]
     long_seq = trusted_orf_seq_map[long_start]
     score = calculate_score(long_loc, long_seq, trusted_list, bg_list)
-    first_long_scores.append(score)
+    first_long_score_map[long_start] = score
     
     short_loc = short_orf_loc_map[short_start]
     short_seq = short_orf_seq_map[short_start]
     score = calculate_score(short_loc, short_seq, trusted_list, bg_list)
-    first_short_scores.append(score)
+    first_short_score_map[short_start] = score
 
   markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
     # remember pseudocounts of 1
@@ -174,10 +174,6 @@ def main():
   # evaluation step
   print("performing evaluation")
   overall_output = open(c.results_folder + "overall_results" + c.text_exten, "wt")
-
-  overall_output.write("total orfs: {}\n".format(len(master_orf_locs)))
-  overall_output.write("long orfs: {}\n".format(len(trusted_orf_locs)))
-  overall_output.write("short orfs: {}\n".format(len(short_orf_locs)))
 
   # for each reading frame: total number, first + length / last + length
   for i in range(len(orf_struct_list)):
@@ -192,18 +188,11 @@ def main():
       list(np.array(orf_locs[len(orf_locs) - 1]) + 1),
       orf_locs[len(orf_locs) - 1][1] - orf_locs[len(orf_locs) - 1][0] + 1))
 
-  overall_output.write("\nsimple plus strand CDSs: {}\n".format(len(ginfo_list)))
+  overall_output.write("\ntotal orfs: {}\n".format(len(master_orf_locs)))
+  overall_output.write("long orfs: {}\n".format(len(trusted_orf_locs)))
+  overall_output.write("short orfs: {}\n".format(len(short_orf_locs)))
   
-  # shortest orfs, including start/end, length, score, matches
-  # longest orfs, including start/end, length, score, matches
-
-  first_short_orfs = h.construct_orf_summary(
-      ginfo_list, trusted_orf_map[0:c.k], first_long_scores)
-  first_long_orfs = h.construct_orf_summary(
-      ginfo_list, short_orf_map[0:c.k], first_short_scores)
-
-  # overall_output.write()
-  # overall_output.write()
+  overall_output.write("\nsimple plus strand CDSs: {}\n".format(len(ginfo_list)))
 
   p_counts = h.get_AAGxyT_counts(trusted_list[1])
   q_counts = h.get_AAGxyT_counts(bg_list[1])
@@ -211,7 +200,36 @@ def main():
   overall_output.write("\np_counts: \n" + str(p_counts) + "\n")
   overall_output.write("\nq_counts: \n" + str(q_counts) + "\n")
 
+  first_long_matches = h.create_match_list(
+      ginfo_list, first_long_score_map.keys(), short_orf_loc_map)
+  first_short_matches = h.create_match_list(
+      ginfo_list, first_short_score_map.keys(), trusted_orf_loc_map)
+
+  for i, long_start in enumerate(first_long_score_map.keys()):
+    overall_output.write("\nstart/end: {}\tlength: {}".format(
+        list(np.array(trusted_orf_loc_map[long_start]) + 1), 
+        trusted_orf_loc_map[long_start][1] - trusted_orf_loc_map[long_start][0] + 1))
+    overall_output.write("\tscore: {}".format(
+        first_long_score_map[long_start]))
+    overall_output.write("\tmatch: {}".format(first_long_matches[i]))
+
+  overall_output.write("\n")
+
+  for i, short_start in enumerate(first_short_score_map.keys()):
+    overall_output.write("\nstart/end: {}\tlength: {}".format(
+        list(np.array(short_orf_loc_map[short_start]) + 1),
+        short_orf_loc_map[short_start][1] - short_orf_loc_map[short_start][0] + 1))
+    overall_output.write("\tscore: {}".format(
+        first_short_score_map[short_start]))
+    overall_output.write("\tmatch: {}".format(first_short_matches[i]))
+
   overall_output.close()
+
+  # generating report info step
+  print("generating report info")
+  report_output = open(c.results_folder + "report" + c.text_exten, "wt")
+
+  report_output.close()
 
   print("done")
 
