@@ -57,6 +57,7 @@ def process_gff(filename, exten):
   print("processing {} for ".format(exten) + filename)
 
   result = []
+  ends = []
 
   file = open(c.data_folder + filename + exten, "r")
   text = file.read()
@@ -73,10 +74,12 @@ def process_gff(filename, exten):
 
     info = ds.gene_info(
         col_vals[0], col_vals[2], col_vals[3], col_vals[4], col_vals[6], col_vals[8])
+    end = info.end
 
     result.append(info)
+    ends.append(end)
 
-  return result
+  return result, ends
 
 # count kmers in a sequence
 def count_kmers(k, seq_list):
@@ -101,13 +104,6 @@ def get_AAGxyT_counts(kmer_plusone_counts):
 
   return result
 
-# construct an orf summary data structure for printing
-def create_match_list(ginfo_list, key_list, loc_map):
-  result = []
-
-  for key in key_list:
-    result.append(True)
-  
-  return result
-
+def one_format_interval(interval):
+  return list(np.array(interval) + 1)
 

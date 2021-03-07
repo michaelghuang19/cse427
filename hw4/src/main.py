@@ -98,7 +98,7 @@ def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
   seq = fasta_list[0].sequence
 
-  ginfo_list = h.process_gff(c.genbank_file, c.gff_exten)
+  ginfo_list, ginfo_ends = h.process_gff(c.genbank_file, c.gff_exten)
   ginfo_list = sorted(ginfo_list, key=lambda ginfo: ginfo.start)
 
   # With the test file, we expect the following output:
@@ -159,17 +159,13 @@ def main():
     
     long_loc = trusted_orf_loc_map[long_start]
     long_seq = trusted_orf_seq_map[long_start]
-    score = calculate_score(long_loc, long_seq, trusted_list, bg_list)
-    first_long_score_map[long_start] = score
+    first_long_score_map[long_start] = calculate_score(
+        long_loc, long_seq, trusted_list, bg_list)
     
     short_loc = short_orf_loc_map[short_start]
     short_seq = short_orf_seq_map[short_start]
-    score = calculate_score(short_loc, short_seq, trusted_list, bg_list)
-    first_short_score_map[short_start] = score
-
-  markov_orf_output = open(c.results_folder + "markov_orf" + c.text_exten, "wt")
-    # remember pseudocounts of 1
-  markov_orf_output.close()
+    first_short_score_map[short_start] = calculate_score(
+        short_loc, short_seq, trusted_list, bg_list)
 
   # evaluation step
   print("performing evaluation")
@@ -182,11 +178,11 @@ def main():
     overall_output.write("total orfs: {}\n".format(len(orf_locs)))
 
     overall_output.write("first orf: {}, length: {}\n".format(
-      list(np.array(orf_locs[0]) + 1),
-      orf_locs[0][1] - orf_locs[0][0] + 1))
+        h.one_format_interval(orf_locs[0]),
+        orf_locs[0][1] - orf_locs[0][0] + 1))
     overall_output.write("last orf: {}, length: {}\n".format(
-      list(np.array(orf_locs[len(orf_locs) - 1]) + 1),
-      orf_locs[len(orf_locs) - 1][1] - orf_locs[len(orf_locs) - 1][0] + 1))
+        h.one_format_interval(orf_locs[len(orf_locs) - 1]),
+        orf_locs[len(orf_locs) - 1][1] - orf_locs[len(orf_locs) - 1][0] + 1))
 
   overall_output.write("\ntotal orfs: {}\n".format(len(master_orf_locs)))
   overall_output.write("long orfs: {}\n".format(len(trusted_orf_locs)))
@@ -200,14 +196,14 @@ def main():
   overall_output.write("\np_counts: \n" + str(p_counts) + "\n")
   overall_output.write("\nq_counts: \n" + str(q_counts) + "\n")
 
-  first_long_matches = h.create_match_list(
-      ginfo_list, first_long_score_map.keys(), short_orf_loc_map)
-  first_short_matches = h.create_match_list(
-      ginfo_list, first_short_score_map.keys(), trusted_orf_loc_map)
+  first_long_matches = [loc[1] + 4 in ginfo_ends for loc in
+      [trusted_orf_loc_map[key] for key in first_long_score_map.keys()]]
+  first_short_matches = [loc[1] + 4 in ginfo_ends for loc in
+      [short_orf_loc_map[key] for key in first_short_score_map.keys()]]
 
   for i, long_start in enumerate(first_long_score_map.keys()):
     overall_output.write("\nstart/end: {}\tlength: {}".format(
-        list(np.array(trusted_orf_loc_map[long_start]) + 1), 
+        h.one_format_interval(trusted_orf_loc_map[long_start]),
         trusted_orf_loc_map[long_start][1] - trusted_orf_loc_map[long_start][0] + 1))
     overall_output.write("\tscore: {}".format(
         first_long_score_map[long_start]))
@@ -217,7 +213,7 @@ def main():
 
   for i, short_start in enumerate(first_short_score_map.keys()):
     overall_output.write("\nstart/end: {}\tlength: {}".format(
-        list(np.array(short_orf_loc_map[short_start]) + 1),
+        h.one_format_interval(short_orf_loc_map[short_start]),
         short_orf_loc_map[short_start][1] - short_orf_loc_map[short_start][0] + 1))
     overall_output.write("\tscore: {}".format(
         first_short_score_map[short_start]))
@@ -228,8 +224,16 @@ def main():
   # generating report info step
   print("generating report info")
   report_output = open(c.results_folder + "report" + c.text_exten, "wt")
-
   report_output.close()
+
+  master_score_map = {}
+  master_orf_loc_map = {loc[0]: loc for loc in master_orf_locs}
+  master_orf_seq_map = {key[0]: value for key, value in zip(short_orf_locs, short_orf_seqs)}
+
+  for start in sorted(master_orf_seq_map.keys()):
+    loc = master_orf_loc_map[start]
+    seq = master_orf_seq_map[start]
+    master_score_map[start] = calculate_score(loc, seq, trusted_list, bg_list)
 
   print("done")
 
