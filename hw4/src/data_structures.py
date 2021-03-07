@@ -44,9 +44,10 @@ class orf_struct:
 
     start = offset
     for end in self.stop_list:
-      if start < end - 1:
-        locs.append([start, end - 1])
-        orfs.append(self.sequence[start : end])
+      # this includes the 0-length ORFs
+      # if start < end - 1:
+      locs.append([start, end - 1])
+      orfs.append(self.sequence[start : end])
       
       start = end + 3
 
