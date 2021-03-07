@@ -9,6 +9,11 @@ Build instructions:
   Install any required packages as necessary:
     pip install -r requirements.txt 
 
+  # With the test file, we expect the following output:
+  # ATA-ACG, CCC
+  # CGT-GAC
+  # AAC-GTG-ACC
+
 Writeup:
 
   1.

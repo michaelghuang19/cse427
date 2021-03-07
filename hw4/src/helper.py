@@ -92,18 +92,6 @@ def count_kmers(k, seq_list):
 
   return result
 
-# get AAGxyT counts, given a kmer + 1 count list
-def get_AAGxyT_counts(kmer_plusone_counts):
-  result = []
-  result = df = pd.DataFrame(columns=c.nucleotides, index=c.nucleotides)
-
-  for i in c.nucleotides:
-    for j in c.nucleotides:
-      comb = "AAG" + i + j + "T"
-      result[j][i] = kmer_plusone_counts[comb]
-
-  return result
-
 def one_format_interval(interval):
   return list(np.array(interval) + 1)
 

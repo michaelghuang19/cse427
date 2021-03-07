@@ -94,17 +94,27 @@ def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
 
   return result
 
+def get_AAGxyT_counts(count_list):
+  kmer_counts, kmer_plusone_counts, kmer_start_counts = count_list
+
+  result = pd.DataFrame(columns=c.nucleotides, index=c.nucleotides)
+  probs = pd.DataFrame(columns=c.nucleotides, index=c.nucleotides)
+
+  for i in c.nucleotides:
+    for j in c.nucleotides:
+      pre = "AAG" + i + j
+      comb = pre + "T"
+      result[j][i] = kmer_plusone_counts[comb]
+      probs[j][i] = result[j][i] / kmer_counts[pre]
+
+  return result, probs
+
 def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
   seq = fasta_list[0].sequence
 
   ginfo_list, ginfo_ends = h.process_gff(c.genbank_file, c.gff_exten)
   ginfo_list = sorted(ginfo_list, key=lambda ginfo: ginfo.start)
-
-  # With the test file, we expect the following output:
-  # ATA-ACG, CCC
-  # CGT-GAC
-  # AAC-GTG-ACC
 
   # scan in sequences
   print("scanning in sequences")
@@ -190,11 +200,14 @@ def main():
   
   overall_output.write("\nsimple plus strand CDSs: {}\n".format(len(ginfo_list)))
 
-  p_counts = h.get_AAGxyT_counts(trusted_list[1])
-  q_counts = h.get_AAGxyT_counts(bg_list[1])
+  p_counts, p_probs = get_AAGxyT_counts(trusted_list)
+  q_counts, q_probs = get_AAGxyT_counts(bg_list)
 
   overall_output.write("\np_counts: \n" + str(p_counts) + "\n")
   overall_output.write("\nq_counts: \n" + str(q_counts) + "\n")
+
+  overall_output.write("\np_probs: \n" + str(p_probs) + "\n")
+  overall_output.write("\nq_probs: \n" + str(q_probs) + "\n")
 
   first_long_matches = [loc[1] + 4 in ginfo_ends for loc in
       [trusted_orf_loc_map[key] for key in first_long_score_map.keys()]]
@@ -226,14 +239,31 @@ def main():
   report_output = open(c.results_folder + "report" + c.text_exten, "wt")
   report_output.close()
 
-  master_score_map = {}
+  roc_length_map = {}
+  roc_score_map = {}
+  
   master_orf_loc_map = {loc[0]: loc for loc in master_orf_locs}
   master_orf_seq_map = {key[0]: value for key, value in zip(short_orf_locs, short_orf_seqs)}
 
   for start in sorted(master_orf_seq_map.keys()):
     loc = master_orf_loc_map[start]
+    end = loc[1] + 4
+    length = loc[1] - loc[0] + 1
     seq = master_orf_seq_map[start]
-    master_score_map[start] = calculate_score(loc, seq, trusted_list, bg_list)
+    score = calculate_score(loc, seq, trusted_list, bg_list)
+    match = end in ginfo_ends
+
+    roc_length_map[length] = match
+    roc_score_map[score] = match
+
+  length_keys = sorted(roc_length_map)
+  score_keys = sorted(roc_score_map)
+
+  # vary the length threshold
+  # for length in length_keys:
+
+  # vary the markov score threshold
+  # for score in score_keys:
 
   print("done")
 
