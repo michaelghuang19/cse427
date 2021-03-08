@@ -113,55 +113,11 @@ def get_AAGxyT_counts(count_list):
 def plot_roc(key_map, color):
   print("plotting " + color)
 
-  key_map = sorted(key_map)
   df = pd.DataFrame(key_map, columns=["key", "match"])
-  ss_pairs = []
 
   thresholds = set([item[0] for item in key_map])
 
-  start_time = time.time()
   fpr, tpr, thresholds = metrics.roc_curve(df["match"], df["key"])
-  end_time = time.time()
-  print(end_time - start_time)
-
-  # for threshold in thresholds:
-  #   start_time = time.time()
-
-  #   threshold_dict = []
-  #   non_threshold_dict = []
-
-  #   # sort and sequentially divide instead
-  #   metrics.roc_curve()
-
-  #   threshold_dict = [df["key"] >= threshold]
-  #   non_threshold_dict = [df["key"] < threshold]
-
-  #   # for item in key_map:
-  #   #   if item[0] >= threshold:
-  #   #     threshold_dict.append(item[1])
-  #   #   else:
-  #   #     non_threshold_dict.append(item[1])
-
-  #   true_positives = sum(threshold_dict)
-  #   false_positives = len(threshold_dict) - true_positives
-  #   false_negatives = sum(non_threshold_dict)
-  #   true_negatives = len(non_threshold_dict) - false_negatives
-
-  #   if true_positives == 0:
-  #     tpr = 0
-  #     # continue
-  #   else:
-  #     tpr = true_positives / (true_positives + false_negatives)
-    
-  #   if false_positives == 0:
-  #     fpr = 0
-  #     # continue
-  #   else:
-  #     fpr = false_positives / (false_positives + true_negatives)
-
-  #   ss_pairs.append([fpr, tpr])
-  #   end_time = time.time()
-  #   print(end_time - start_time)
 
   print("done calculating")
 
@@ -357,8 +313,8 @@ def main():
   plt.xlabel("False Positive Rate")
   plt.savefig(c.results_folder + "roc" + c.png_exten)
 
-  plt.xlim(-0.20, 0.25)
-  plt.ylim(0.5, 1.00)
+  plt.xlim(-0.10, 0.15)
+  plt.ylim(0.75, 1.10)
   plt.savefig(c.results_folder + "roc_zoom" + c.png_exten)
   plt.close()
 
