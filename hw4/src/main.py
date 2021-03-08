@@ -3,11 +3,10 @@
 
 import collections
 import itertools as it
-import math
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import time as time
+import statistics
 from sklearn import metrics
 from tabulate import tabulate
 
@@ -99,16 +98,14 @@ def get_AAGxyT_counts(count_list):
   kmer_counts, kmer_plusone_counts, kmer_start_counts = count_list
 
   result = pd.DataFrame(columns=c.nucleotides, index=c.nucleotides)
-  probs = pd.DataFrame(columns=c.nucleotides, index=c.nucleotides)
 
   for i in c.nucleotides:
     for j in c.nucleotides:
       pre = "AAG" + i + j
       comb = pre + "T"
-      result[j][i] = kmer_plusone_counts[comb]
-      probs[j][i] = result[j][i] / kmer_counts[pre]
+      result[j][i] = kmer_plusone_counts[comb] / kmer_counts[pre]
 
-  return result, probs
+  return result
 
 def plot_roc(key_map, color):
   print("plotting " + color)
@@ -130,11 +127,24 @@ def plot_roc(key_map, color):
 
   return auc
 
-def plot_flashbulb(roc_flashbulb_list, pos_color, neg_color):
-  df = pd.DataFrame(roc_flashbulb_list, columns=["length", "score", "match"])
-  colors = [pos_color if match else neg_color for match in df["match"]]
+def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, pos_color, neg_color):
+  long_df = pd.DataFrame(long_flashbulb_list, columns=[
+                         "length", "score", "match"])
+  short_df = pd.DataFrame(short_flashbulb_list, columns=[
+                          "length", "score", "match"])
 
-  plt.scatter(df["length"], df["score"], c=colors, s=5)
+  long_colors = [
+      pos_color if match else neg_color for match in long_df["match"]]
+  short_colors = [
+      pos_color if match else neg_color for match in short_df["match"]]
+
+  plt.scatter(long_df["length"], long_df["score"], c=long_colors, s=5)
+  plt.scatter(short_df["length"], short_df["score"], c=short_colors, s=5)
+
+  median_long_length, median_long_score = statistics.median(
+      long_df["length"], long_df["score"])
+  median_short_length, median_short_score = statistics.median(
+      short_df["length"], short_df["score"])
 
 
 def main():
@@ -175,13 +185,12 @@ def main():
     short_orf_locs += short_orf_list[i].orf_locs
     short_orf_seqs += short_orf_list[i].orf_list
 
-  short_total_count = len(short_orf_locs)
-  short_orf_locs = [item for item in short_orf_locs if item[1] - item[0] > 3]
-
   trusted_orf_seq_map = {key[0] : value for key, value in zip(
       trusted_orf_locs, trusted_orf_seqs)}
   short_orf_seq_map = {key[0] : value for key, value in zip(
       short_orf_locs, short_orf_seqs)}
+  master_orf_seq_map = {key[0]: value for key, value in zip(
+      master_orf_locs, master_orf_seqs)}
 
   trusted_orf_loc_map = {loc[0]: loc for loc in trusted_orf_locs}
   short_orf_loc_map = {loc[0]: loc for loc in short_orf_locs}
@@ -227,15 +236,12 @@ def main():
 
   overall_output.write("\ntotal orfs: {}\n".format(len(master_orf_locs)))
   overall_output.write("long orfs: {}\n".format(len(trusted_orf_locs)))
-  overall_output.write("short orfs: {}\n".format(short_total_count))
+  overall_output.write("short orfs: {}\n".format(len(short_orf_locs)))
   
   overall_output.write("\nsimple plus strand CDSs: {}\n".format(len(ginfo_list)))
 
-  p_counts, p_probs = get_AAGxyT_counts(trusted_list)
-  q_counts, q_probs = get_AAGxyT_counts(bg_list)
-
-  overall_output.write("\np_counts: \n" + str(p_counts) + "\n")
-  overall_output.write("\nq_counts: \n" + str(q_counts) + "\n")
+  p_probs = get_AAGxyT_counts(trusted_list)
+  q_probs = get_AAGxyT_counts(bg_list)
 
   overall_output.write("\np_probs: \n" + str(p_probs) + "\n")
   overall_output.write("\nq_probs: \n" + str(q_probs) + "\n")
@@ -270,40 +276,71 @@ def main():
 
   roc_length_map = []
   roc_score_map = []
-  roc_flashbulb_list = []
+
+  long_flashbulb_list = []
+  short_flashbulb_list = []
 
   trusted_keys = trusted_orf_seq_map.keys()
   short_keys = short_orf_seq_map.keys()
 
-  for start in sorted(trusted_orf_seq_map.keys()):
+  for start in trusted_keys:
     loc = trusted_orf_loc_map[start]
-    end = loc[1] + 4
     length = loc[1] - loc[0] + 1
     seq = trusted_orf_seq_map[start]
     score = calculate_score(loc, seq, trusted_list, bg_list)
+    end = loc[1] + 4
     match = end in ginfo_ends
 
     roc_length_map.append([length, match])
     roc_score_map.append([score, match])
-    roc_flashbulb_list.append([length, score, match])
+    long_flashbulb_list.append([length, score, match])
 
-  for start in sorted(short_orf_seq_map.keys()):
+  for start in short_keys:
     loc = short_orf_loc_map[start]
-    end = loc[1] + 4
     length = loc[1] - loc[0] + 1
+    if length < 4:
+      continue
     seq = short_orf_seq_map[start]
     score = calculate_score(loc, seq, trusted_list, bg_list)
+    end = loc[1] + 4
     match = end in ginfo_ends
 
     roc_length_map.append([length, match])
     roc_score_map.append([score, match])
-    roc_flashbulb_list.append([length, score, match])
+    short_flashbulb_list.append([length, score, match])
+
+  print("plotting flashbulb")
+
+  master_length_map = []
+  master_score_map = []
+  master_flashbulb_list = []
+
+  for loc in master_orf_locs:
+    length = loc[1] - loc[0] + 1
+    if length < 4:
+      continue
+    seq = master_orf_seqs[start]
+    score = calculate_score(loc, seq, trusted_list, bg_list)
+    end = loc[1] + 4
+    match = end in ginfo_ends
+
+    master_length_map.append([length, match])
+    master_score_map.append([score, match])
+    master_flashbulb_list.append([length, score, match])
+
+  plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, "orange", "blue")
+  plt.ylabel("Markov Score")
+  plt.xlabel("ORF Length")
+  plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
+  plt.close()
 
   length_auc = plot_roc(roc_length_map, "red")
   score_auc = plot_roc(roc_score_map, "green")
+  # flashbulb_auc = plot_roc(master_map, "blue")
 
   overall_output.write("\nlength_auc: {}\n".format(length_auc))
   overall_output.write("\nscore_auc: {}\n".format(score_auc))
+  # overall_output.write("\nflashbulb_auc: {}\n".format(flashbulb_auc))
   overall_output.close()
 
   plt.ylabel("True Positive Rate")
@@ -314,13 +351,6 @@ def main():
   plt.xlim(-0.10, 0.10)
   plt.ylim(0.85, 1.05)
   plt.savefig(c.results_folder + "roc_zoom" + c.png_exten)
-  plt.close()
-
-  print("plotting flashbulb")
-  plot_flashbulb(roc_flashbulb_list, "green", "red")
-  plt.ylabel("Markov Score")
-  plt.xlabel("ORF Length")
-  plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
   plt.close()
 
   print("done")

@@ -20,20 +20,6 @@ short orfs: 90119
 
 simple plus strand CDSs: 848
 
-p_counts: 
-     A   C    G    T
-A  307  51  223  394
-C  104  15   12  119
-G  211  42   39  218
-T  148  19   68  198
-
-q_counts: 
-     A   C   G    T
-A   90  26  48   95
-C   87  22  15  119
-G   41  20  26   59
-T  139  39  64  175
-
 p_probs: 
           A          C         G         T
 A  0.209843   0.183453  0.202176  0.353047
@@ -55,11 +41,7 @@ start/end: [74592, 76010]	length: 1419	score: 510.10059504677247	match: True
 start/end: [76820, 78481]	length: 1662	score: 721.1376819628922	match: True
 
 start/end: [1, 36]	length: 36	score: 6.634132730642591	match: False
-start/end: [9, 20]	length: 12	score: 15.15922303976042	match: False
-start/end: [24, 32]	length: 9	score: 7.419619961824628	match: False
+start/end: [3, 5]	length: 3	score: 0.0	match: False
+start/end: [9, 20]	length: 12	score: 7.062702776669381	match: False
+start/end: [24, 32]	length: 9	score: -0.45110129175449565	match: False
 start/end: [40, 51]	length: 12	score: 9.094736868910497	match: False
-start/end: [55, 72]	length: 18	score: -5.04359661082092	match: False
-
-length_auc: 0.9995406712089181
-
-score_auc: 0.999962213336631
