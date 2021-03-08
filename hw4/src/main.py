@@ -147,21 +147,23 @@ def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_l
       short_df["length"]), statistics.median(short_df["score"])
 
   plt.scatter(m_short_len, m_short_score,
-           marker="x", s=15, label="A: {}".format(m_short_len, m_short_score))
+           marker="x", s=50, label="A: ({},{})".format(m_short_len, m_short_score))
   plt.scatter(m_long_len, m_long_score,
-              marker="x", s=15, label="B: {}".format(m_long_len, m_long_score))
+              marker="x", s=50, label="B: ({},{})".format(m_long_len, m_long_score))
   
   m_slope = (m_long_score - m_short_score) / (m_long_len - m_short_len)
   m_intercept = m_long_score - (m_slope * m_long_len)
 
   p_x = m_short_len + (threshold * (m_long_len - m_short_len))
   p_y = (m_slope * p_x) + m_intercept
-  p_slope = -1 / m_slope
-  p_intercept = p_y + (p_slope * p_x)
+  p_intercept = p_y - (1 / m_slope * p_x)
+
+  plt.scatter(p_x, p_y,
+              marker="x", s=50, label="20%: ({},{})".format(p_x, p_y))
 
   x = np.linspace(-500, 9500, 1000)
-  plt.plot(x, (m_slope * x) + m_intercept, 'r')
-  plt.plot(x, (p_slope * x) + p_intercept, 'r')
+  plt.plot(x, (m_slope * x) + m_intercept)
+  plt.plot(x, (-1 / m_slope * x) - p_intercept)
 
 def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
@@ -347,6 +349,8 @@ def main():
   plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, 0.20, "orange", "blue")
   plt.ylabel("Markov Score")
   plt.xlabel("ORF Length")
+  plt.xlim(-1000, 9000)
+  plt.ylim(-1000, 2500)
   plt.legend()
   plt.tight_layout()
   plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
