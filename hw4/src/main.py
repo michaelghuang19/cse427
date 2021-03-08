@@ -7,6 +7,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import time as time
 from sklearn import metrics
 from tabulate import tabulate
 
@@ -116,7 +117,6 @@ def plot_roc(key_map, color):
   ss_pairs = []
 
   thresholds = set([item[0] for item in key_map])
-  print(len(thresholds))
 
   for threshold in thresholds:
     threshold_dict = []
@@ -158,6 +158,13 @@ def plot_roc(key_map, color):
   plt.plot(x_values, y_values, color=color)
 
   return auc
+
+def plot_flashbulb(roc_flashbulb_list, pos_color, neg_color):
+  df = pd.DataFrame(roc_flashbulb_list, columns=["length", "score", "match"])
+  colors = [pos_color if match else neg_color for match in df["match"]]
+
+  plt.scatter(df["length"], df["score"], c=colors, s=5)
+
 
 def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
@@ -282,38 +289,68 @@ def main():
         first_short_score_map[short_start]))
     overall_output.write("\tmatch: {}".format(first_short_matches[i]))
 
-  overall_output.close()
-
   # generating report info step
   print("generating rocs")
 
   roc_length_map = []
   roc_score_map = []
-  
-  master_orf_loc_map = {loc[0]: loc for loc in master_orf_locs}
-  master_orf_seq_map = {key[0]: value for key, value in zip(short_orf_locs, short_orf_seqs)}
+  roc_flashbulb_list = []
 
-  for start in sorted(master_orf_seq_map.keys()):
-    loc = master_orf_loc_map[start]
+  trusted_keys = trusted_orf_seq_map.keys()
+  short_keys = short_orf_seq_map.keys()
+
+  start_time = time.time()
+
+  for start in sorted(trusted_orf_seq_map.keys()):
+    loc = trusted_orf_loc_map[start]
     end = loc[1] + 4
     length = loc[1] - loc[0] + 1
-    seq = master_orf_seq_map[start]
+    seq = trusted_orf_seq_map[start]
     score = calculate_score(loc, seq, trusted_list, bg_list)
     match = end in ginfo_ends
 
     roc_length_map.append([length, match])
     roc_score_map.append([score, match])
+    roc_flashbulb_list.append([length, score, match])
 
-  plt.plot([0, 1], [0, 1], linestyle=":")
-  
-  plot_roc(roc_length_map, "red")
-  plot_roc(roc_score_map, "green")
+  for start in sorted(short_orf_seq_map.keys()):
+    loc = short_orf_loc_map[start]
+    end = loc[1] + 4
+    length = loc[1] - loc[0] + 1
+    seq = short_orf_seq_map[start]
+    score = calculate_score(loc, seq, trusted_list, bg_list)
+    match = end in ginfo_ends
 
-  plt.ylabel("True Positive Rate")
-  plt.xlabel("False Positive Rate")
-  print("saving plot to output")
-  plt.savefig(c.results_folder + "roc" + c.png_exten)
-  # plt.savefig(c.results_folder + "roc" + c.png_exten, dpi = 200)
+    roc_length_map.append([length, match])
+    roc_score_map.append([score, match])
+    roc_flashbulb_list.append([length, score, match])
+
+  end_time = time.time()
+  print(end_time - start_time)
+
+  # plt.plot([0, 1], [0, 1], linestyle=":")
+  # length_auc = plot_roc(roc_length_map, "red")
+  # score_auc = plot_roc(roc_score_map, "green")
+
+  # overall_output.write("length_auc: {}".format(length_auc))
+  # overall_output.write("score_auc: {}".format(score_auc))
+  # overall_output.close()
+
+  # print("saving plot to output")
+  # plt.ylabel("True Positive Rate")
+  # plt.xlabel("False Positive Rate")
+  # plt.savefig(c.results_folder + "roc" + c.png_exten)
+
+  # plt.xlim(0.00, 0.15)
+  # plt.ylim(0.85, 1.00)
+  # plt.savefig(c.results_folder + "roc" + c.png_exten)
+  # plt.close()
+
+  print("creating flashbulb")
+  plot_flashbulb(roc_flashbulb_list, "blue", "orange")
+  plt.ylabel("Markov Score")
+  plt.xlabel("ORF Length")
+  plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
   plt.close()
 
   print("done")
