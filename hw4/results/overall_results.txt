@@ -55,8 +55,11 @@ start/end: [74592, 76010]	length: 1419	score: 510.10059504677247	match: True
 start/end: [76820, 78481]	length: 1662	score: 721.1376819628922	match: True
 
 start/end: [1, 36]	length: 36	score: 6.634132730642591	match: False
-start/end: [3, 5]	length: 3	score: 0.0	match: False
-start/end: [9, 20]	length: 12	score: 7.062702776669381	match: False
-start/end: [24, 32]	length: 9	score: -0.45110129175449565	match: False
+start/end: [9, 20]	length: 12	score: 15.15922303976042	match: False
+start/end: [24, 32]	length: 9	score: 7.419619961824628	match: False
 start/end: [40, 51]	length: 12	score: 9.094736868910497	match: False
-score_auc: 0.9999643352486626
+start/end: [55, 72]	length: 18	score: -5.04359661082092	match: False
+
+length_auc: 0.9995406712089181
+
+score_auc: 0.999962213336631

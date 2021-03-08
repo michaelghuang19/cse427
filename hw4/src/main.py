@@ -115,20 +115,18 @@ def plot_roc(key_map, color):
 
   df = pd.DataFrame(key_map, columns=["key", "match"])
 
-  thresholds = set([item[0] for item in key_map])
-
   fpr, tpr, thresholds = metrics.roc_curve(df["match"], df["key"])
 
-  print("done calculating")
+  acc_list = []
+  for threshold in thresholds:
+    acc_list.append(metrics.accuracy_score(df["key"] > threshold, df["match"]))
+  threshold_index = (np.abs(np.asarray(acc_list) - 0.8)).argmin()
 
-  # ss_pairs = sorted(ss_pairs, key=lambda pair: [pair[0], pair[1]])
-  # x_values = [point[0] for point in ss_pairs]
-  # y_values = [point[1] for point in ss_pairs]
-  # auc = metrics.auc(x_values, y_values)
   auc = metrics.roc_auc_score(df["match"], df["key"])
 
-  # plt.plot(x_values, y_values, color=color)
-  plt.plot(fpr, tpr, color=color)
+  plt.plot(fpr, tpr, color=color, label="auc = {}".format(auc))
+  plt.plot(fpr[threshold_index], tpr[threshold_index], "x", color=color,
+           label="threshold at {}".format(thresholds[threshold_index]))
 
   return auc
 
@@ -176,7 +174,10 @@ def main():
 
     short_orf_locs += short_orf_list[i].orf_locs
     short_orf_seqs += short_orf_list[i].orf_list
-  
+
+  short_total_count = len(short_orf_locs)
+  short_orf_locs = [item for item in short_orf_locs if item[1] - item[0] > 3]
+
   trusted_orf_seq_map = {key[0] : value for key, value in zip(
       trusted_orf_locs, trusted_orf_seqs)}
   short_orf_seq_map = {key[0] : value for key, value in zip(
@@ -226,7 +227,7 @@ def main():
 
   overall_output.write("\ntotal orfs: {}\n".format(len(master_orf_locs)))
   overall_output.write("long orfs: {}\n".format(len(trusted_orf_locs)))
-  overall_output.write("short orfs: {}\n".format(len(short_orf_locs)))
+  overall_output.write("short orfs: {}\n".format(short_total_count))
   
   overall_output.write("\nsimple plus strand CDSs: {}\n".format(len(ginfo_list)))
 
@@ -262,6 +263,8 @@ def main():
         first_short_score_map[short_start]))
     overall_output.write("\tmatch: {}".format(first_short_matches[i]))
 
+  overall_output.write("\n")
+
   # generating report info step
   print("generating rocs")
 
@@ -271,8 +274,6 @@ def main():
 
   trusted_keys = trusted_orf_seq_map.keys()
   short_keys = short_orf_seq_map.keys()
-
-  start_time = time.time()
 
   for start in sorted(trusted_orf_seq_map.keys()):
     loc = trusted_orf_loc_map[start]
@@ -298,9 +299,6 @@ def main():
     roc_score_map.append([score, match])
     roc_flashbulb_list.append([length, score, match])
 
-  end_time = time.time()
-  print(end_time - start_time)
-
   length_auc = plot_roc(roc_length_map, "red")
   score_auc = plot_roc(roc_score_map, "green")
 
@@ -308,17 +306,17 @@ def main():
   overall_output.write("\nscore_auc: {}\n".format(score_auc))
   overall_output.close()
 
-  print("saving plot to output")
   plt.ylabel("True Positive Rate")
   plt.xlabel("False Positive Rate")
+  plt.legend()
   plt.savefig(c.results_folder + "roc" + c.png_exten)
 
-  plt.xlim(-0.10, 0.15)
-  plt.ylim(0.75, 1.10)
+  plt.xlim(-0.10, 0.10)
+  plt.ylim(0.85, 1.05)
   plt.savefig(c.results_folder + "roc_zoom" + c.png_exten)
   plt.close()
 
-  print("creating flashbulb")
+  print("plotting flashbulb")
   plot_flashbulb(roc_flashbulb_list, "green", "red")
   plt.ylabel("Markov Score")
   plt.xlabel("ORF Length")
