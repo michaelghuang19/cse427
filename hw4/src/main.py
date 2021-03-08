@@ -113,49 +113,66 @@ def get_AAGxyT_counts(count_list):
 def plot_roc(key_map, color):
   print("plotting " + color)
 
-  key_map = sorted(key_map, )
+  key_map = sorted(key_map)
+  df = pd.DataFrame(key_map, columns=["key", "match"])
   ss_pairs = []
 
   thresholds = set([item[0] for item in key_map])
 
-  for threshold in thresholds:
-    threshold_dict = []
-    non_threshold_dict = []
+  start_time = time.time()
+  fpr, tpr, thresholds = metrics.roc_curve(df["match"], df["key"])
+  end_time = time.time()
+  print(end_time - start_time)
 
-    # sort and sequentially divide instead
-    for item in key_map:
-      if item[0] >= threshold:
-        threshold_dict.append(item[1])
-      else:
-        non_threshold_dict.append(item[1])
+  # for threshold in thresholds:
+  #   start_time = time.time()
 
-    true_positives = sum(threshold_dict)
-    false_positives = len(threshold_dict) - true_positives
-    false_negatives = sum(non_threshold_dict)
-    true_negatives = len(non_threshold_dict) - false_negatives
+  #   threshold_dict = []
+  #   non_threshold_dict = []
 
-    if true_positives == 0:
-      tpr = 0
-      # continue
-    else:
-      tpr = true_positives / (true_positives + false_negatives)
+  #   # sort and sequentially divide instead
+  #   metrics.roc_curve()
+
+  #   threshold_dict = [df["key"] >= threshold]
+  #   non_threshold_dict = [df["key"] < threshold]
+
+  #   # for item in key_map:
+  #   #   if item[0] >= threshold:
+  #   #     threshold_dict.append(item[1])
+  #   #   else:
+  #   #     non_threshold_dict.append(item[1])
+
+  #   true_positives = sum(threshold_dict)
+  #   false_positives = len(threshold_dict) - true_positives
+  #   false_negatives = sum(non_threshold_dict)
+  #   true_negatives = len(non_threshold_dict) - false_negatives
+
+  #   if true_positives == 0:
+  #     tpr = 0
+  #     # continue
+  #   else:
+  #     tpr = true_positives / (true_positives + false_negatives)
     
-    if false_positives == 0:
-      fpr = 0
-      # continue
-    else:
-      fpr = false_positives / (false_positives + true_negatives)
+  #   if false_positives == 0:
+  #     fpr = 0
+  #     # continue
+  #   else:
+  #     fpr = false_positives / (false_positives + true_negatives)
 
-    ss_pairs.append([fpr, tpr])
+  #   ss_pairs.append([fpr, tpr])
+  #   end_time = time.time()
+  #   print(end_time - start_time)
 
   print("done calculating")
 
-  ss_pairs = sorted(ss_pairs, key=lambda pair: [pair[0], pair[1]])
-  x_values = [point[0] for point in ss_pairs]
-  y_values = [point[1] for point in ss_pairs]
-  auc = metrics.auc(x_values, y_values)
+  # ss_pairs = sorted(ss_pairs, key=lambda pair: [pair[0], pair[1]])
+  # x_values = [point[0] for point in ss_pairs]
+  # y_values = [point[1] for point in ss_pairs]
+  # auc = metrics.auc(x_values, y_values)
+  auc = metrics.roc_auc_score(df["match"], df["key"])
 
-  plt.plot(x_values, y_values, color=color)
+  # plt.plot(x_values, y_values, color=color)
+  plt.plot(fpr, tpr, color=color)
 
   return auc
 
@@ -328,26 +345,25 @@ def main():
   end_time = time.time()
   print(end_time - start_time)
 
-  # plt.plot([0, 1], [0, 1], linestyle=":")
-  # length_auc = plot_roc(roc_length_map, "red")
-  # score_auc = plot_roc(roc_score_map, "green")
+  length_auc = plot_roc(roc_length_map, "red")
+  score_auc = plot_roc(roc_score_map, "green")
 
-  # overall_output.write("length_auc: {}".format(length_auc))
-  # overall_output.write("score_auc: {}".format(score_auc))
-  # overall_output.close()
+  overall_output.write("\nlength_auc: {}\n".format(length_auc))
+  overall_output.write("\nscore_auc: {}\n".format(score_auc))
+  overall_output.close()
 
-  # print("saving plot to output")
-  # plt.ylabel("True Positive Rate")
-  # plt.xlabel("False Positive Rate")
-  # plt.savefig(c.results_folder + "roc" + c.png_exten)
+  print("saving plot to output")
+  plt.ylabel("True Positive Rate")
+  plt.xlabel("False Positive Rate")
+  plt.savefig(c.results_folder + "roc" + c.png_exten)
 
-  # plt.xlim(0.00, 0.15)
-  # plt.ylim(0.85, 1.00)
-  # plt.savefig(c.results_folder + "roc" + c.png_exten)
-  # plt.close()
+  plt.xlim(-0.20, 0.25)
+  plt.ylim(0.5, 1.00)
+  plt.savefig(c.results_folder + "roc_zoom" + c.png_exten)
+  plt.close()
 
   print("creating flashbulb")
-  plot_flashbulb(roc_flashbulb_list, "blue", "orange")
+  plot_flashbulb(roc_flashbulb_list, "green", "red")
   plt.ylabel("Markov Score")
   plt.xlabel("ORF Length")
   plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
