@@ -95,3 +95,18 @@ def count_kmers(k, seq_list):
 def one_format_interval(interval):
   return list(np.array(interval) + 1)
 
+def get_positives(key_map, threshold):
+
+  threshold_dict = []
+  non_threshold_dict = []
+
+  for item in key_map:
+    if item[0] >= threshold:
+      threshold_dict.append(item[1])
+    else:
+      non_threshold_dict.append(item[1])
+
+  true_positives = sum(threshold_dict)
+  false_positives = len(threshold_dict) - true_positives
+
+  return true_positives, false_positives

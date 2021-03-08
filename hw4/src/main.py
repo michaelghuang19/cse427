@@ -124,8 +124,10 @@ def plot_roc(key_map, color):
   plt.plot(fpr, tpr, color=color, label="auc = {}".format(auc))
   plt.plot(fpr[threshold_index], tpr[threshold_index], "x", color=color,
            label="threshold at {}".format(thresholds[threshold_index]))
+  
+  tt_pos, tf_pos = h.get_positives(key_map, thresholds[threshold_index])
 
-  return auc
+  return auc, tt_pos, tf_pos
 
 def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, threshold, pos_color, neg_color):
   long_df = pd.DataFrame(long_flashbulb_list, columns=[
@@ -147,9 +149,9 @@ def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_l
       short_df["length"]), statistics.median(short_df["score"])
 
   plt.scatter(m_short_len, m_short_score,
-           marker="x", s=50, label="A: ({},{})".format(m_short_len, m_short_score))
+              marker="x", color="red", s=50, label="A: ({},{})".format(m_short_len, m_short_score))
   plt.scatter(m_long_len, m_long_score,
-              marker="x", s=50, label="B: ({},{})".format(m_long_len, m_long_score))
+              marker="x", color="red", s=50, label="B: ({},{})".format(m_long_len, m_long_score))
   
   m_slope = (m_long_score - m_short_score) / (m_long_len - m_short_len)
   m_intercept = m_long_score - (m_slope * m_long_len)
@@ -158,12 +160,56 @@ def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_l
   p_y = (m_slope * p_x) + m_intercept
   p_intercept = p_y - (1 / m_slope * p_x)
 
-  plt.scatter(p_x, p_y,
-              marker="x", s=50, label="20%: ({},{})".format(p_x, p_y))
-
-  x = np.linspace(-500, 9500, 1000)
+  x = np.linspace(-1000, 9000, 1000)
   plt.plot(x, (m_slope * x) + m_intercept)
   plt.plot(x, (-1 / m_slope * x) - p_intercept)
+
+  plt.ylabel("Markov Score")
+  plt.xlabel("ORF Length")
+  plt.xlim(-1000, 9000)
+  plt.ylim(-1000, 2500)
+  plt.legend()
+  plt.tight_layout()
+  plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
+  plt.close()
+
+  # plot the full dataset now
+  master_df = pd.DataFrame(master_flashbulb_list, columns=[
+                           "length", "score", "match"])
+  
+  master_colors = [
+      pos_color if match else neg_color for match in master_df["match"]]
+  
+  plt.scatter(master_df["length"], master_df["score"], c=master_colors, s=15)
+
+  plt.axvline(x=c.short_threshold, color='b', linestyle=":")
+  plt.axvline(x=c.long_threshold, color='b', linestyle=":")
+  plt.plot(x, (m_slope * x) + m_intercept)
+  plt.plot(x, (-1 / m_slope * x) - p_intercept)
+
+  plt.ylabel("Markov Score")
+  plt.xlabel("ORF Length")
+  plt.xlim(-1000, 9000)
+  plt.ylim(-1000, 2500)
+  plt.tight_layout()
+  plt.savefig(c.results_folder + "master_flashbulb" + c.png_exten)
+  plt.close()
+
+  return m_slope, p_intercept
+
+
+def get_combined_score(master_flashbulb_list, slope, intercept):
+  result = []
+  df = pd.DataFrame(master_flashbulb_list, columns=[
+      "length", "score", "match"])
+  
+  for row in df.iterrows():
+    x = row[1]["length"]
+
+    y = ((-1 / slope) * x) - intercept
+    result.append([row[1]["score"] - y, row[1]["match"]])
+
+  return result
 
 def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
@@ -276,7 +322,6 @@ def main():
     overall_output.write("\tscore: {}".format(
         first_long_score_map[long_start]))
     overall_output.write("\tmatch: {}".format(first_long_matches[i]))
-
   overall_output.write("\n")
 
   for i, short_start in enumerate(first_short_score_map.keys()):
@@ -286,7 +331,6 @@ def main():
     overall_output.write("\tscore: {}".format(
         first_short_score_map[short_start]))
     overall_output.write("\tmatch: {}".format(first_short_matches[i]))
-
   overall_output.write("\n")
 
   # generating report info step
@@ -298,10 +342,7 @@ def main():
   long_flashbulb_list = []
   short_flashbulb_list = []
 
-  trusted_keys = trusted_orf_seq_map.keys()
-  short_keys = short_orf_seq_map.keys()
-
-  for start in trusted_keys:
+  for start in trusted_orf_seq_map.keys():
     loc = trusted_orf_loc_map[start]
     length = loc[1] - loc[0] + 1
     seq = trusted_orf_seq_map[start]
@@ -313,7 +354,7 @@ def main():
     roc_score_map.append([score, match])
     long_flashbulb_list.append([length, score, match])
 
-  for start in short_keys:
+  for start in short_orf_seq_map.keys():
     loc = short_orf_loc_map[start]
     length = loc[1] - loc[0] + 1
     if length < 4:
@@ -346,23 +387,22 @@ def main():
     master_score_map.append([score, match])
     master_flashbulb_list.append([length, score, match])
 
-  plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, 0.20, "orange", "blue")
-  plt.ylabel("Markov Score")
-  plt.xlabel("ORF Length")
-  plt.xlim(-1000, 9000)
-  plt.ylim(-1000, 2500)
-  plt.legend()
-  plt.tight_layout()
-  plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
-  plt.close()
+  slope, intercept = plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, 0.20, "orange", "blue")
 
-  length_auc = plot_roc(roc_length_map, "red")
-  score_auc = plot_roc(roc_score_map, "green")
-  # flashbulb_auc = plot_roc(master_map, "blue")
+  combined_map = get_combined_score(master_flashbulb_list, slope, intercept)
+  length_auc, length_t, length_f = plot_roc(roc_length_map, "red")
+  score_auc, score_t, score_f = plot_roc(roc_score_map, "green")
+  combined_auc, combined_t, combined_f = plot_roc(combined_map, "blue")
 
-  overall_output.write("\nlength_auc: {}\n".format(length_auc))
-  overall_output.write("\nscore_auc: {}\n".format(score_auc))
-  # overall_output.write("\nflashbulb_auc: {}\n".format(flashbulb_auc))
+  overall_output.write("\nlength auc: {}\n".format(length_auc))
+  overall_output.write(
+      "\nlength true, false positives: {}, {}\n".format(length_t, length_f))
+  overall_output.write("\nscore auc: {}\n".format(score_auc))
+  overall_output.write(
+      "\nscore true, false positives: {}, {}\n".format(score_t, score_f))
+  overall_output.write("\ncombined auc: {}\n".format(combined_auc))
+  overall_output.write(
+      "\ncombined true, false positives: {}, {}\n".format(combined_t, combined_f))
   overall_output.close()
 
   plt.ylabel("True Positive Rate")

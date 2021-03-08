@@ -46,6 +46,14 @@ start/end: [9, 20]	length: 12	score: 7.062702776669381	match: False
 start/end: [24, 32]	length: 9	score: -0.45110129175449565	match: False
 start/end: [40, 51]	length: 12	score: 9.094736868910497	match: False
 
-length_auc: 0.9995406712089181
+length auc: 0.9995406712089181
 
-score_auc: 0.9999558337700882
+length true, false positives: 112, 16377
+
+score auc: 0.9999558337700882
+
+score true, false positives: 112, 14653
+
+combined auc: 0.9988721318491789
+
+combined true, false positives: 842, 19874
