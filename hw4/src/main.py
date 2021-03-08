@@ -127,7 +127,7 @@ def plot_roc(key_map, color):
 
   return auc
 
-def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, pos_color, neg_color):
+def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, threshold, pos_color, neg_color):
   long_df = pd.DataFrame(long_flashbulb_list, columns=[
                          "length", "score", "match"])
   short_df = pd.DataFrame(short_flashbulb_list, columns=[
@@ -138,14 +138,30 @@ def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_l
   short_colors = [
       pos_color if match else neg_color for match in short_df["match"]]
 
-  plt.scatter(long_df["length"], long_df["score"], c=long_colors, s=5)
-  plt.scatter(short_df["length"], short_df["score"], c=short_colors, s=5)
+  plt.scatter(long_df["length"], long_df["score"], c=long_colors, s=15)
+  plt.scatter(short_df["length"], short_df["score"], c=short_colors, s=15)
 
-  median_long_length, median_long_score = statistics.median(
-      long_df["length"], long_df["score"])
-  median_short_length, median_short_score = statistics.median(
-      short_df["length"], short_df["score"])
+  m_long_len, m_long_score = statistics.median(
+      long_df["length"]), statistics.median(long_df["score"])
+  m_short_len, m_short_score = statistics.median(
+      short_df["length"]), statistics.median(short_df["score"])
 
+  plt.scatter(m_short_len, m_short_score,
+           marker="x", s=15, label="A: {}".format(m_short_len, m_short_score))
+  plt.scatter(m_long_len, m_long_score,
+              marker="x", s=15, label="B: {}".format(m_long_len, m_long_score))
+  
+  m_slope = (m_long_score - m_short_score) / (m_long_len - m_short_len)
+  m_intercept = m_long_score - (m_slope * m_long_len)
+
+  p_x = m_short_len + (threshold * (m_long_len - m_short_len))
+  p_y = (m_slope * p_x) + m_intercept
+  p_slope = -1 / m_slope
+  p_intercept = p_y + (p_slope * p_x)
+
+  x = np.linspace(-500, 9500, 1000)
+  plt.plot(x, (m_slope * x) + m_intercept, 'r')
+  plt.plot(x, (p_slope * x) + p_intercept, 'r')
 
 def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
@@ -319,7 +335,7 @@ def main():
     length = loc[1] - loc[0] + 1
     if length < 4:
       continue
-    seq = master_orf_seqs[start]
+    seq = master_orf_seq_map[loc[0]]
     score = calculate_score(loc, seq, trusted_list, bg_list)
     end = loc[1] + 4
     match = end in ginfo_ends
@@ -328,9 +344,11 @@ def main():
     master_score_map.append([score, match])
     master_flashbulb_list.append([length, score, match])
 
-  plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, "orange", "blue")
+  plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, 0.20, "orange", "blue")
   plt.ylabel("Markov Score")
   plt.xlabel("ORF Length")
+  plt.legend()
+  plt.tight_layout()
   plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
   plt.close()
 
@@ -346,6 +364,7 @@ def main():
   plt.ylabel("True Positive Rate")
   plt.xlabel("False Positive Rate")
   plt.legend()
+  plt.tight_layout()
   plt.savefig(c.results_folder + "roc" + c.png_exten)
 
   plt.xlim(-0.10, 0.10)
