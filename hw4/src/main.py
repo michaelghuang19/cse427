@@ -109,6 +109,56 @@ def get_AAGxyT_counts(count_list):
 
   return result, probs
 
+def plot_roc(key_map, color):
+  print("plotting " + color)
+
+  key_map = sorted(key_map, )
+  ss_pairs = []
+
+  thresholds = set([item[0] for item in key_map])
+  print(len(thresholds))
+
+  for threshold in thresholds:
+    threshold_dict = []
+    non_threshold_dict = []
+
+    # sort and sequentially divide instead
+    for item in key_map:
+      if item[0] >= threshold:
+        threshold_dict.append(item[1])
+      else:
+        non_threshold_dict.append(item[1])
+
+    true_positives = sum(threshold_dict)
+    false_positives = len(threshold_dict) - true_positives
+    false_negatives = sum(non_threshold_dict)
+    true_negatives = len(non_threshold_dict) - false_negatives
+
+    if true_positives == 0:
+      tpr = 0
+      # continue
+    else:
+      tpr = true_positives / (true_positives + false_negatives)
+    
+    if false_positives == 0:
+      fpr = 0
+      # continue
+    else:
+      fpr = false_positives / (false_positives + true_negatives)
+
+    ss_pairs.append([fpr, tpr])
+
+  print("done calculating")
+
+  ss_pairs = sorted(ss_pairs, key=lambda pair: [pair[0], pair[1]])
+  x_values = [point[0] for point in ss_pairs]
+  y_values = [point[1] for point in ss_pairs]
+  auc = metrics.auc(x_values, y_values)
+
+  plt.plot(x_values, y_values, color=color)
+
+  return auc
+
 def main():
   fasta_list = h.process_fasta(c.genome_file, c.fna_exten)
   seq = fasta_list[0].sequence
@@ -235,12 +285,10 @@ def main():
   overall_output.close()
 
   # generating report info step
-  print("generating report info")
-  report_output = open(c.results_folder + "report" + c.text_exten, "wt")
-  report_output.close()
+  print("generating rocs")
 
-  roc_length_map = {}
-  roc_score_map = {}
+  roc_length_map = []
+  roc_score_map = []
   
   master_orf_loc_map = {loc[0]: loc for loc in master_orf_locs}
   master_orf_seq_map = {key[0]: value for key, value in zip(short_orf_locs, short_orf_seqs)}
@@ -253,17 +301,20 @@ def main():
     score = calculate_score(loc, seq, trusted_list, bg_list)
     match = end in ginfo_ends
 
-    roc_length_map[length] = match
-    roc_score_map[score] = match
+    roc_length_map.append([length, match])
+    roc_score_map.append([score, match])
 
-  length_keys = sorted(roc_length_map)
-  score_keys = sorted(roc_score_map)
+  plt.plot([0, 1], [0, 1], linestyle=":")
+  
+  plot_roc(roc_length_map, "red")
+  plot_roc(roc_score_map, "green")
 
-  # vary the length threshold
-  # for length in length_keys:
-
-  # vary the markov score threshold
-  # for score in score_keys:
+  plt.ylabel("True Positive Rate")
+  plt.xlabel("False Positive Rate")
+  print("saving plot to output")
+  plt.savefig(c.results_folder + "roc" + c.png_exten)
+  # plt.savefig(c.results_folder + "roc" + c.png_exten, dpi = 200)
+  plt.close()
 
   print("done")
 
