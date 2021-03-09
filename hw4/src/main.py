@@ -77,8 +77,8 @@ def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
   start = seq[0:c.k]
 
   # initialize using start probabilities
-  if start in kmer_start_counts.keys():
-    result = np.log(kmer_start_counts[start] + c.pseudo_count) / \
+  if start in kmer_counts.keys():
+    result = np.log(kmer_counts[start] + c.pseudo_count) / \
         (kmer_count_total + (c.pseudo_count * kmer_key_num))
   else:
     result = np.log(c.pseudo_count / (kmer_count_total + (c.pseudo_count * kmer_key_num)))
@@ -120,7 +120,6 @@ def plot_roc(key_map, color):
 
   acc_list = []
   for threshold in thresholds:
-    # print(threshold)
     acc_list.append(metrics.accuracy_score(df["key"] > threshold, df["match"]))
   threshold_index = (np.abs(np.asarray(acc_list) - 0.8)).argmin()
 
@@ -337,8 +336,6 @@ def main():
         first_short_score_map[short_start]))
     overall_output.write("\tmatch: {}".format(first_short_matches[i]))
   overall_output.write("\n")
-
-  print("kill me" + 69)
 
   # generating report info step
   print("generating rocs")

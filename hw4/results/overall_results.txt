@@ -34,14 +34,26 @@ C  0.450777   0.13253       0.5   0.32964
 G  0.280822  0.194175  0.419355  0.375796
 T  0.486014   0.19403  0.496124  0.362319
 
-start/end: [17619, 19229]	length: 1611	score: 608.7933439443404	match: True
-start/end: [33626, 35245]	length: 1620	score: 834.8762570379595	match: True
-start/end: [42725, 45109]	length: 2385	score: 948.1016216611542	match: True
-start/end: [74592, 76010]	length: 1419	score: 515.5824271672309	match: True
-start/end: [76820, 78481]	length: 1662	score: 726.6189062157155	match: True
+start/end: [17619, 19229]	length: 1611	score: 608.7933377495474	match: True
+start/end: [33626, 35245]	length: 1620	score: 834.876255841637	match: True
+start/end: [42725, 45109]	length: 2385	score: 935.6945664284931	match: True
+start/end: [74592, 76010]	length: 1419	score: 503.17537405536586	match: True
+start/end: [76820, 78481]	length: 1662	score: 714.2118520920549	match: True
 
-start/end: [1, 36]	length: 36	score: 6.634132730642591	match: False
+start/end: [1, 36]	length: 36	score: 6.6341316540236335	match: False
 start/end: [3, 5]	length: 3	score: 0.0	match: False
-start/end: [9, 20]	length: 12	score: 12.54453489712767	match: False
-start/end: [24, 32]	length: 9	score: -0.4511012917544903	match: False
-start/end: [40, 51]	length: 12	score: 14.576568989368788	match: False
+start/end: [9, 20]	length: 12	score: 0.13747737873796773	match: False
+start/end: [24, 32]	length: 9	score: -0.45109776556640835	match: False
+start/end: [40, 51]	length: 12	score: 2.1695216235007813	match: False
+
+length auc: 0.9995406712089181
+
+length true, false positives: 112, 16377
+
+score auc: 0.9999611091808833
+
+score true, false positives: 112, 14486
+
+combined auc: 0.9988755475168342
+
+combined true, false positives: 842, 19536
