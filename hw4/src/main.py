@@ -67,22 +67,24 @@ def calculate_score(locs, seq, trusted_list, bg_list):
 
   p_score = calculate_prob(seq, trusted_list[0], trusted_list[1], trusted_list[2])
   q_score = calculate_prob(seq, bg_list[0], bg_list[1], bg_list[2])
-  
+
   return p_score - q_score
 
 def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
   kmer_key_num = len(kmer_counts.keys())
-  kmer_start_total = sum(kmer_start_counts.values())
+  # kmer_key_num = len(c.nucleotides)
+  kmer_count_total = sum(kmer_counts.values())
+  start = seq[0:c.k]
 
   # initialize using start probabilities
-  if seq[0:c.k] in kmer_start_counts.keys():
-    result = np.log(kmer_start_counts[seq[0:c.k]] + c.pseudo_count) / \
-        (kmer_start_total + (c.pseudo_count * kmer_key_num))
+  if start in kmer_start_counts.keys():
+    result = np.log(kmer_start_counts[start] + c.pseudo_count) / \
+        (kmer_count_total + (c.pseudo_count * kmer_key_num))
   else:
-    result = np.log(c.pseudo_count / (c.pseudo_count * kmer_key_num))
+    result = np.log(c.pseudo_count / (kmer_count_total + (c.pseudo_count * kmer_key_num)))
 
-  for i in range(1, len(seq) - c.k):
-    term = seq[i: i + c.k + 1]
+  for i in range(c.k + 2, len(seq) + 1):
+    term = seq[i - c.k - 1: i]
     pre_term = term[0:c.k]
 
     if pre_term not in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
@@ -91,8 +93,8 @@ def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
       result += np.log(c.pseudo_count /
                        (kmer_counts[pre_term] + (c.pseudo_count * kmer_key_num)))
     else:
-      result += np.log((kmer_plusone_counts[term] + c.pseudo_count) / (
-          kmer_counts[pre_term] + (c.pseudo_count * kmer_key_num)))
+      result += np.log((kmer_plusone_counts[term] + c.pseudo_count) / 
+          (kmer_counts[pre_term] + (c.pseudo_count * kmer_key_num)))
 
   return result
 
@@ -335,6 +337,8 @@ def main():
         first_short_score_map[short_start]))
     overall_output.write("\tmatch: {}".format(first_short_matches[i]))
   overall_output.write("\n")
+
+  print("kill me" + 69)
 
   # generating report info step
   print("generating rocs")
