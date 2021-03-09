@@ -63,7 +63,7 @@ def perform_counts(orf_list):
 
   return [kmer_counts, kmer_plusone_counts, kmer_start_counts]
 
-def calculate_score(locs, seq, trusted_list, bg_list):
+def calculate_score(seq, trusted_list, bg_list):
 
   p_score = calculate_prob(seq, trusted_list[0], trusted_list[1], trusted_list[2])
   q_score = calculate_prob(seq, bg_list[0], bg_list[1], bg_list[2])
@@ -71,9 +71,6 @@ def calculate_score(locs, seq, trusted_list, bg_list):
   return p_score - q_score
 
 def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
-  # i cant figure out what this should be based on maths
-  # kmer_key_num = len(kmer_counts.keys())
-  kmer_key_num = len(c.nucleotides)
 
   kmer_count_total = sum(kmer_counts.values())
   start = seq[0:c.k]
@@ -81,22 +78,23 @@ def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
   # initialize using start probabilities
   if start in kmer_counts.keys():
     result = np.log(kmer_counts[start] + c.pseudo_count) / \
-        (kmer_count_total + (c.pseudo_count * kmer_key_num))
+        (kmer_count_total + (c.pseudo_count * len(c.nucleotides)))
   else:
-    result = np.log(c.pseudo_count / (kmer_count_total + (c.pseudo_count * kmer_key_num)))
+    result = np.log(c.pseudo_count / 
+                    (kmer_count_total + (c.pseudo_count * len(c.nucleotides))))
 
   for i in range(c.k + 2, len(seq) + 1):
     term = seq[i - c.k - 1: i]
     pre_term = term[0:c.k]
 
     if pre_term not in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
-      result += np.log(c.pseudo_count / (c.pseudo_count * kmer_key_num))
+      result += np.log(c.pseudo_count / (c.pseudo_count * len(c.nucleotides)))
     elif pre_term in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
       result += np.log(c.pseudo_count /
-                       (kmer_counts[pre_term] + (c.pseudo_count * kmer_key_num)))
+                       (kmer_counts[pre_term] + (c.pseudo_count * len(c.nucleotides))))
     else:
       result += np.log((kmer_plusone_counts[term] + c.pseudo_count) / 
-          (kmer_counts[pre_term] + (c.pseudo_count * kmer_key_num)))
+          (kmer_counts[pre_term] + (c.pseudo_count * len(c.nucleotides))))
 
   return result
 
@@ -203,7 +201,6 @@ def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_l
 
   return m_slope, p_intercept
 
-
 def get_combined_score(master_flashbulb_list, slope, intercept):
   result = []
   df = pd.DataFrame(master_flashbulb_list, columns=[
@@ -212,6 +209,7 @@ def get_combined_score(master_flashbulb_list, slope, intercept):
   for row in df.iterrows():
     x = row[1]["length"]
 
+    # use distance here
     y = ((-1 / slope) * x) - intercept
     result.append([row[1]["score"] - y, row[1]["match"]])
 
@@ -277,15 +275,13 @@ def main():
   for long_start, short_start in zip(sorted(trusted_orf_seq_map.keys())[0:c.k],
       sorted(short_orf_seq_map.keys())[0:c.k]):
     
-    long_loc = trusted_orf_loc_map[long_start]
     long_seq = trusted_orf_seq_map[long_start]
     first_long_score_map[long_start] = calculate_score(
-        long_loc, long_seq, trusted_list, bg_list)
+        long_seq, trusted_list, bg_list)
     
-    short_loc = short_orf_loc_map[short_start]
     short_seq = short_orf_seq_map[short_start]
     first_short_score_map[short_start] = calculate_score(
-        short_loc, short_seq, trusted_list, bg_list)
+        short_seq, trusted_list, bg_list)
 
   # evaluation step
   print("performing evaluation")
@@ -352,7 +348,7 @@ def main():
     loc = trusted_orf_loc_map[start]
     length = loc[1] - loc[0] + 1
     seq = trusted_orf_seq_map[start]
-    score = calculate_score(loc, seq, trusted_list, bg_list)
+    score = calculate_score(seq, trusted_list, bg_list)
     end = loc[1] + 4
     match = end in ginfo_ends
 
@@ -366,7 +362,7 @@ def main():
     if length < 4:
       continue
     seq = short_orf_seq_map[start]
-    score = calculate_score(loc, seq, trusted_list, bg_list)
+    score = calculate_score(seq, trusted_list, bg_list)
     end = loc[1] + 4
     match = end in ginfo_ends
 
@@ -385,7 +381,7 @@ def main():
     if length < 4:
       continue
     seq = master_orf_seq_map[loc[0]]
-    score = calculate_score(loc, seq, trusted_list, bg_list)
+    score = calculate_score(seq, trusted_list, bg_list)
     end = loc[1] + 4
     match = end in ginfo_ends
 
