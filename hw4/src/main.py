@@ -71,8 +71,10 @@ def calculate_score(locs, seq, trusted_list, bg_list):
   return p_score - q_score
 
 def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
-  kmer_key_num = len(kmer_counts.keys())
-  # kmer_key_num = len(c.nucleotides)
+  # i cant figure out what this should be based on maths
+  # kmer_key_num = len(kmer_counts.keys())
+  kmer_key_num = len(c.nucleotides)
+
   kmer_count_total = sum(kmer_counts.values())
   start = seq[0:c.k]
 
