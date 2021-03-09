@@ -75,22 +75,24 @@ def calculate_prob(seq, kmer_counts, kmer_plusone_counts, kmer_start_counts):
   kmer_start_total = sum(kmer_start_counts.values())
 
   # initialize using start probabilities
-  result = np.log(c.pseudo_count / (c.pseudo_count * kmer_key_num))
   if seq[0:c.k] in kmer_start_counts.keys():
     result = np.log(kmer_start_counts[seq[0:c.k]] + c.pseudo_count) / \
-        (kmer_start_total + c.pseudo_count * kmer_key_num)
+        (kmer_start_total + (c.pseudo_count * kmer_key_num))
+  else:
+    result = np.log(c.pseudo_count / (c.pseudo_count * kmer_key_num))
 
-  for i in range(c.k + 2, len(seq) + 1):
-    term = seq[i - c.k - 1 : i]
+  for i in range(1, len(seq) - c.k):
+    term = seq[i: i + c.k + 1]
+    pre_term = term[0:c.k]
 
-    if term[:-1] not in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
+    if pre_term not in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
       result += np.log(c.pseudo_count / (c.pseudo_count * kmer_key_num))
-    elif term[:-1] in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
+    elif pre_term in kmer_counts.keys() and term not in kmer_plusone_counts.keys():
       result += np.log(c.pseudo_count /
-                       (kmer_counts[term[:-1]] + (c.pseudo_count * kmer_key_num)))
+                       (kmer_counts[pre_term] + (c.pseudo_count * kmer_key_num)))
     else:
       result += np.log((kmer_plusone_counts[term] + c.pseudo_count) / (
-          kmer_counts[term[:-1]] + (c.pseudo_count * kmer_key_num)))
+          kmer_counts[pre_term] + (c.pseudo_count * kmer_key_num)))
 
   return result
 
@@ -116,6 +118,7 @@ def plot_roc(key_map, color):
 
   acc_list = []
   for threshold in thresholds:
+    # print(threshold)
     acc_list.append(metrics.accuracy_score(df["key"] > threshold, df["match"]))
   threshold_index = (np.abs(np.asarray(acc_list) - 0.8)).argmin()
 
