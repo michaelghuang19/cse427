@@ -1,6 +1,7 @@
 # various helper functions
 
 import collections
+import math
 import numpy as np
 import pandas as pd
 
@@ -108,21 +109,5 @@ def get_positives(key_map, threshold):
 
   true_positives = sum(threshold_dict)
   false_positives = len(threshold_dict) - true_positives
-  false_negatives = sum(non_threshold_dict)
-  true_negatives = len(non_threshold_dict) - false_negatives
-
-  # true_positives = np.sum(motif_section)
-  # false_positives = np.sum(nonmotif_section)
-  # false_negatives = np.sum(~motif_section)
-  # true_negatives = np.sum(~nonmotif_section)
-
-  # tpr = true_positives / (true_positives + false_negatives)
-  # fpr = false_positives / (false_positives + true_negatives)
-
-  positives = sum(key[1] for key in key_map)
-  negatives = len(key_map) - positives
-
-  print("tpr: " + str(true_positives / positives) + " or " + str(true_positives / (true_positives + false_negatives)))
-  print("fnr: " + str(true_negatives / negatives) + " or " + str(true_negatives / (true_negatives + false_positives)))
 
   return true_positives, false_positives

@@ -3,6 +3,7 @@
 
 import collections
 import itertools as it
+import math
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -117,16 +118,13 @@ def plot_roc(key_map, color):
   df = pd.DataFrame(key_map, columns=["key", "match"])
 
   fpr, tpr, thresholds = metrics.roc_curve(df["match"], df["key"])
-  print(fpr[1], tpr[1], thresholds[1])
-  # acc_list = []
+
   max_threshold = [0, 0]
   for i in range(len(thresholds)):
-    # acc_list.append(metrics.accuracy_score(df["match"], df["key"] > threshold))
     if (tpr[i] >= 0.8 and thresholds[i] > max_threshold[1]):
       max_threshold[0] = i
       max_threshold[1] = thresholds[i]
 
-  # threshold_index = (np.abs(np.asarray(acc_list) - 0.8)).argmin()
   threshold_index = max_threshold[0]
 
   auc = metrics.roc_auc_score(df["match"], df["key"])
@@ -168,16 +166,19 @@ def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_l
 
   p_x = m_short_len + (threshold * (m_long_len - m_short_len))
   p_y = (m_slope * p_x) + m_intercept
-  p_intercept = p_y - (1 / m_slope * p_x)
+  p_intercept = -(p_y - (1 / m_slope * p_x))
 
-  x = np.linspace(-1000, 9000, 1000)
+  plt.scatter(p_x, p_y,
+              marker="x", color="red", s=50, label="C: ({},{})".format(p_x, p_y))
+
+  x = np.linspace(-500, 9000, 900)
   plt.plot(x, (m_slope * x) + m_intercept)
-  plt.plot(x, (-1 / m_slope * x) - p_intercept)
+  plt.plot(x, (-1 / m_slope * x) + p_intercept)
 
   plt.ylabel("Markov Score")
   plt.xlabel("ORF Length")
-  plt.xlim(-1000, 9000)
-  plt.ylim(-1000, 2500)
+  plt.xlim(-500, 9000)
+  plt.ylim(-500, 1000)
   plt.legend()
   plt.tight_layout()
   plt.savefig(c.results_folder + "flashbulb" + c.png_exten)
@@ -195,29 +196,40 @@ def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_l
   plt.axvline(x=c.short_threshold, color='b', linestyle=":")
   plt.axvline(x=c.long_threshold, color='b', linestyle=":")
   plt.plot(x, (m_slope * x) + m_intercept)
-  plt.plot(x, (-1 / m_slope * x) - p_intercept)
+  plt.plot(x, (-1 / m_slope * x) + p_intercept)
 
   plt.ylabel("Markov Score")
   plt.xlabel("ORF Length")
-  plt.xlim(-1000, 9000)
-  plt.ylim(-1000, 2500)
+  plt.xlim(-500, 9000)
+  plt.ylim(-500, 1000)
   plt.tight_layout()
   plt.savefig(c.results_folder + "master_flashbulb" + c.png_exten)
   plt.close()
 
   return m_slope, p_intercept
 
-def get_combined_score(master_flashbulb_list, slope, intercept):
+def get_combined_score(master_flashbulb_list, trend_slope, perp_intercept):
   result = []
   df = pd.DataFrame(master_flashbulb_list, columns=[
       "length", "score", "match"])
   
   for row in df.iterrows():
     x = row[1]["length"]
+    y = row[1]["score"]
+    trend_intercept = y - (trend_slope * x)
+
+    perp_slope = (-1 / trend_slope)
+    perp_x = (trend_intercept - perp_intercept / (perp_slope - trend_slope))
+    perp_y = (perp_slope * perp_x) + perp_intercept
+    
+    perp_x = x
+    perp_y = perp_slope * x
 
     # use distance here
-    y = ((-1 / slope) * x) - intercept
-    result.append([row[1]["score"] - y, row[1]["match"]])
+    if (perp_y <= y):
+      result.append([math.hypot(x - perp_x, y - perp_y), row[1]["match"]])
+    else:
+      result.append([-math.hypot(x - perp_x, y - perp_y), row[1]["match"]])
 
   return result
 
@@ -395,9 +407,12 @@ def main():
     master_score_map.append([score, match])
     master_flashbulb_list.append([length, score, match])
 
-  slope, intercept = plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, 0.20, "orange", "blue")
+  trend_slope, perp_intercept = plot_flashbulb(
+      master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, 0.20, "orange", "blue")
 
-  combined_map = get_combined_score(master_flashbulb_list, slope, intercept)
+  combined_map = get_combined_score(
+      master_flashbulb_list, trend_slope, perp_intercept)
+
   length_auc, length_t, length_f = plot_roc(roc_length_map, "red")
   score_auc, score_t, score_f = plot_roc(roc_score_map, "green")
   combined_auc, combined_t, combined_f = plot_roc(combined_map, "blue")
@@ -419,8 +434,8 @@ def main():
   plt.tight_layout()
   plt.savefig(c.results_folder + "roc" + c.png_exten)
 
-  plt.xlim(-0.10, 0.10)
-  plt.ylim(0.85, 1.05)
+  plt.xlim(-0.05, 0.10)
+  plt.ylim(0.95, 1.05)
   plt.tight_layout()
   plt.savefig(c.results_folder + "roc_zoom" + c.png_exten)
   plt.close()
