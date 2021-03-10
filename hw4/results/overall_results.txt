@@ -48,12 +48,12 @@ start/end: [40, 51]	length: 12	score: 0.17035089325903918	match: False
 
 length auc: 0.9995406712089181
 
-length true, false positives: 112, 16377
+length true, false positives: 92, 7
 
 score auc: 0.9999525213028448
 
-score true, false positives: 112, 14599
+score true, false positives: 90, 3
 
 combined auc: 0.9979608096821814
 
-combined true, false positives: 841, 19603
+combined true, false positives: 675, 99

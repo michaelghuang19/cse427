@@ -117,11 +117,17 @@ def plot_roc(key_map, color):
   df = pd.DataFrame(key_map, columns=["key", "match"])
 
   fpr, tpr, thresholds = metrics.roc_curve(df["match"], df["key"])
+  print(fpr[1], tpr[1], thresholds[1])
+  # acc_list = []
+  max_threshold = [0, 0]
+  for i in range(len(thresholds)):
+    # acc_list.append(metrics.accuracy_score(df["match"], df["key"] > threshold))
+    if (tpr[i] >= 0.8 and thresholds[i] > max_threshold[1]):
+      max_threshold[0] = i
+      max_threshold[1] = thresholds[i]
 
-  acc_list = []
-  for threshold in thresholds:
-    acc_list.append(metrics.accuracy_score(df["key"] > threshold, df["match"]))
-  threshold_index = (np.abs(np.asarray(acc_list) - 0.8)).argmin()
+  # threshold_index = (np.abs(np.asarray(acc_list) - 0.8)).argmin()
+  threshold_index = max_threshold[0]
 
   auc = metrics.roc_auc_score(df["match"], df["key"])
 
@@ -415,6 +421,7 @@ def main():
 
   plt.xlim(-0.10, 0.10)
   plt.ylim(0.85, 1.05)
+  plt.tight_layout()
   plt.savefig(c.results_folder + "roc_zoom" + c.png_exten)
   plt.close()
 
