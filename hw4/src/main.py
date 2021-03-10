@@ -135,7 +135,7 @@ def plot_roc(key_map, color):
   
   tt_pos, tf_pos = h.get_positives(key_map, thresholds[threshold_index])
 
-  return auc, tt_pos, tf_pos
+  return auc, tt_pos, tf_pos, thresholds[threshold_index]
 
 def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, threshold, pos_color, neg_color):
   long_df = pd.DataFrame(long_flashbulb_list, columns=[
@@ -203,7 +203,7 @@ def plot_flashbulb(master_flashbulb_list, long_flashbulb_list, short_flashbulb_l
   plt.xlim(-500, 9000)
   plt.ylim(-500, 1000)
   plt.tight_layout()
-  plt.savefig(c.results_folder + "master_flashbulb" + c.png_exten)
+  plt.savefig(c.results_folder + "flashbulb_master" + c.png_exten)
   plt.close()
 
   return m_slope, p_intercept
@@ -218,15 +218,15 @@ def get_combined_score(master_flashbulb_list, trend_slope, perp_intercept):
     y = row[1]["score"]
     trend_intercept = y - (trend_slope * x)
 
+    # quick maths to get the closest point on perpendicular line
     perp_slope = (-1 / trend_slope)
     perp_x = (trend_intercept - perp_intercept / (perp_slope - trend_slope))
     perp_y = (perp_slope * perp_x) + perp_intercept
     
-    perp_x = x
-    perp_y = perp_slope * x
+    above_line = (perp_slope * x + perp_intercept) <= y
 
     # use distance here
-    if (perp_y <= y):
+    if above_line:
       result.append([math.hypot(x - perp_x, y - perp_y), row[1]["match"]])
     else:
       result.append([-math.hypot(x - perp_x, y - perp_y), row[1]["match"]])
@@ -410,35 +410,67 @@ def main():
   trend_slope, perp_intercept = plot_flashbulb(
       master_flashbulb_list, long_flashbulb_list, short_flashbulb_list, 0.20, "orange", "blue")
 
-  combined_map = get_combined_score(
+  master_combined_map = get_combined_score(
       master_flashbulb_list, trend_slope, perp_intercept)
 
-  length_auc, length_t, length_f = plot_roc(roc_length_map, "red")
-  score_auc, score_t, score_f = plot_roc(roc_score_map, "green")
-  combined_auc, combined_t, combined_f = plot_roc(combined_map, "blue")
+  # do rocs for training (short + long orfs) data
 
-  overall_output.write("\nlength auc: {}\n".format(length_auc))
-  overall_output.write(
-      "\nlength true, false positives: {}, {}\n".format(length_t, length_f))
-  overall_output.write("\nscore auc: {}\n".format(score_auc))
-  overall_output.write(
-      "\nscore true, false positives: {}, {}\n".format(score_t, score_f))
-  overall_output.write("\ncombined auc: {}\n".format(combined_auc))
-  overall_output.write(
-      "\ncombined true, false positives: {}, {}\n".format(combined_t, combined_f))
-  overall_output.close()
+  length_auc, length_t, length_f, length_thresh = plot_roc(roc_length_map, "red")
+  score_auc, score_t, score_f, score_thresh = plot_roc(roc_score_map, "green")
 
+  overall_output.write("\ntraining length auc: {}".format(length_auc))
+  overall_output.write(
+      "\nnumber of length true, false positives: {}, {}\nthreshold:{}\n".format(length_t, length_f, length_thresh))
+  overall_output.write("\ntraining score auc: {}".format(score_auc))
+  overall_output.write(
+      "\nnumber of score true, false positives: {}, {}\nthreshold:{}\n".format(score_t, score_f, score_thresh))
+  
+  plt.title("ROCs for Training (Short + Long) ORFs")
   plt.ylabel("True Positive Rate")
   plt.xlabel("False Positive Rate")
   plt.legend()
   plt.tight_layout()
-  plt.savefig(c.results_folder + "roc" + c.png_exten)
+  plt.savefig(c.results_folder + "training_rocs" + c.png_exten)
 
   plt.xlim(-0.05, 0.10)
   plt.ylim(0.95, 1.05)
   plt.tight_layout()
-  plt.savefig(c.results_folder + "roc_zoom" + c.png_exten)
+  plt.savefig(c.results_folder + "training_rocs_zoom" + c.png_exten)
   plt.close()
+
+  # now do it for full orf data
+
+  master_length_auc, master_length_t, master_length_f, master_length_thresh = plot_roc(
+      master_length_map, "red")
+  master_score_auc, master_score_t, master_score_f, master_score_thresh = plot_roc(
+      master_score_map, "green")
+  master_combined_auc, master_combined_t, master_combined_f, master_combined_thresh = plot_roc(
+      master_combined_map, "blue")
+
+  overall_output.write("\nfull length auc: {}".format(master_length_auc))
+  overall_output.write("\nnumber of score true, false positives: {}, {}\nthreshold:{}\n".format(
+      master_length_t, master_length_f, master_length_thresh))
+  overall_output.write("\nfull score auc: {}".format(master_score_auc))
+  overall_output.write("\nnumber of length true, false positives: {}, {}\nthreshold:{}\n".format(
+      master_score_t, master_score_f, master_score_thresh))
+  overall_output.write("\nfull combined auc: {}".format(master_combined_auc))
+  overall_output.write("\nnumber of combined true, false positives: {}, {}\nthreshold:{}\n".format(
+      master_combined_t, master_combined_f, master_combined_thresh))
+
+  plt.title("ROCs for Full ORFs")
+  plt.ylabel("True Positive Rate")
+  plt.xlabel("False Positive Rate")
+  plt.legend()
+  plt.tight_layout()
+  plt.savefig(c.results_folder + "full_roc" + c.png_exten)
+
+  plt.xlim(-0.05, 0.10)
+  plt.ylim(0.95, 1.05)
+  plt.tight_layout()
+  plt.savefig(c.results_folder + "full_rocs_zoom" + c.png_exten)
+  plt.close()
+  
+  overall_output.close()
 
   print("done")
 

@@ -46,14 +46,22 @@ start/end: [9, 20]	length: 12	score: -0.2738213968101899	match: False
 start/end: [24, 32]	length: 9	score: 0.20221010254690786	match: False
 start/end: [40, 51]	length: 12	score: 0.17035089325903918	match: False
 
-length auc: 0.9995406712089181
+training length auc: 0.9995406712089181
+number of length true, false positives: 92, 7
+threshold:1485
 
-length true, false positives: 92, 7
+training score auc: 0.9999525213028448
+number of score true, false positives: 90, 3
+threshold:150.04821798127318
 
-score auc: 0.9999525213028448
+full length auc: 0.9978549668337447
+number of score true, false positives: 675, 102
+threshold:432
 
-score true, false positives: 90, 3
+full score auc: 0.9861959770535692
+number of length true, false positives: 678, 35
+threshold:35.3970045734701
 
-combined auc: 0.9979608096821814
-
-combined true, false positives: 675, 99
+full combined auc: 0.995189564657854
+number of combined true, false positives: 716, 188
+threshold:66.1490252967228
