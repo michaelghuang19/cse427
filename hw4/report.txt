@@ -9,21 +9,64 @@ Build instructions:
   Install any required packages as necessary:
     pip install -r requirements.txt 
 
-  # With the test file, we expect the following output:
-  # ATA-ACG, CCC
-  # CGT-GAC
-  # AAC-GTG-ACC
+  Check the constants in src/constants.py and adjust our parameters as
+  necessary, before finally running the program itself:
+    python src/main.py
+
+  All output texts and visuals will be placed into the results/ folder.
 
 Writeup:
 
-  1.
+  1. See overall_results.txt.
 
-  2. 
+  2. See overall_results.txt and the results/ folder.
 
-  3. 
+  3. See overall_results.txt and the results/ folder.
 
-  4.
+  4. See overall_results.txt and the results/ folder.
 
-  5.
+  5. See overall_results and the results/ folder.
+      The process for the assignment was actually pretty engaging overall. The ideas
+      for criteria to find relatively interesting ORFs using lengths, and then
+      conditional/unconditional probabilities for the Markov Model, and then a
+      combination of both ended up being pretty intuitive and provided comparable data.
+      
+      It seemed like the flashbulb 20% threshold was a bit low, and I thought that 
+      something higher would be able to more effectively decipher the data since the 
+      plotted perpendicular line on flashbulb.png felt pretty close to the short ORF
+      group. When these lines were overlaid on the full ORF data set, as in
+      flashbulb_master.png, it sort of reaffirmed this idea, with the perpendicular 
+      line being a bit to steep (which correspondingly meant that the median-based 
+      trend line wasn't steep enough) and therefore somewhat cutting off a lot of 
+      ORFs that were not present in the Genbank annotations, but ended up being
+      false positives and still hypothesized to be matches according to the combined
+      flashbulb distance model. 
 
-  
+      In terms of the ROCs, I thought it made sense that the training ROCs almost
+      immediately jumped to approximately 1 with the graph being shaped like a
+      capital Gamma letter, as a result of the distinct clusters of short ORFs
+      nearly all being absent in the Genbank annotations and severely smaller than
+      the longer ORFs, and vice versa. I was a little surprised to see that with
+      the full data set, all of the different models (length, Markov score, and
+      combined flashbulb distance) seemed to still exhibit this same highly 
+      optimized behavior. I assumed that this was because of many factors such as a
+      relatively large and consistent dataset compared to our training set that also
+      included the very ORFs that we used as training data, which could have further
+      encouraged this kind of trend. In both training and full datasets, the AUC
+      was higher for the Markov-score based criteria than the length-based criteria
+      by a small amount, which made sense to me since I thought that the Markov scores
+      were a more detailed and sensitive measure than raw length. 
+
+      At the most general level, there seems to be a trend of longer ORFs having
+      a higher likelihood to be matched to a real gene than shorter ORFs. With the 
+      vertical lines splitting up the ORFs by our defined length criteria, we see
+      that nearly all short ORFs are not present in the Genbank annotations, and
+      nearly all long ORFs are indeed present in the Genbank annotations.
+      I was more interested in the anomalies that existed, especially those with 
+      larger lengths that ended up not being in the Genbank annotations, which 
+      initially seemed to just be a mathematical outlier that could be chalked up
+      to random chance, as a result of random sequences as well as our approximated 
+      model of finding ORFs that didn't take proper background sequencing and start
+      codons into account.
+
+
