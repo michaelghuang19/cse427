@@ -52,10 +52,19 @@ Writeup:
       optimized behavior. I assumed that this was because of many factors such as a
       relatively large and consistent dataset compared to our training set that also
       included the very ORFs that we used as training data, which could have further
-      encouraged this kind of trend. In both training and full datasets, the AUC
-      was higher for the Markov-score based criteria than the length-based criteria
-      by a small amount, which made sense to me since I thought that the Markov scores
-      were a more detailed and sensitive measure than raw length. 
+      encouraged this kind of trend.
+      
+      In both training and full datasets, the AUC was higher for the Markov-score
+      based criteria than the length-based criteria by a small amount (~4e-4), which
+      made sense to me since I thought that the Markov scores were a more detailed and
+      sensitive measure than raw length.
+      In the full dataset, I expected the combined measure to outperform the others,
+      and it did in mostly the left-hand corner of the graph, with higher TPR than
+      the length and Markov score criteria with the same FPR. However, the combined
+      measure's AUC ended up being very slightly worse than that of the Markov score
+      (~2e-3), but better than that of the length-based criteria (by ~0.01). I was
+      intrigued that the combined criteria could do (relatively) significantly better
+      than the other measures but still have a lower AUC.
 
       At the most general level, there seems to be a trend of longer ORFs having
       a higher likelihood to be matched to a real gene than shorter ORFs. With the 

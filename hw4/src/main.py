@@ -465,7 +465,7 @@ def main():
   plt.savefig(c.results_folder + "full_roc" + c.png_exten)
 
   plt.xlim(-0.05, 0.10)
-  plt.ylim(0.95, 1.05)
+  plt.ylim(0.80, 1.05)
   plt.tight_layout()
   plt.savefig(c.results_folder + "full_rocs_zoom" + c.png_exten)
   plt.close()
