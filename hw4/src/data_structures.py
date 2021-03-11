@@ -1,3 +1,6 @@
+# Michael Huang (mhuang19)
+# 1862567
+
 # describes any custom data structures that we might need
 
 import numpy as np
@@ -18,7 +21,7 @@ class orf_struct:
       self.sequence = ""
     else:
       self.sequence = args[0]
-    
+
     self.stop_list = []
 
     # be careful! these are formatted as [first nuc, last nuc]
@@ -32,7 +35,7 @@ class orf_struct:
       self.orf_list = args[2]
     else:
       self.orf_list = []
-    
+
     self.bg_seqs = []
 
   def find_orf_locs(self, offset):
@@ -48,7 +51,7 @@ class orf_struct:
       # if start < end - 1:
       locs.append([start, end - 1])
       orfs.append(self.sequence[start : end])
-      
+
       start = end + 3
 
     # see if there is a sequence left to process at the end
@@ -72,7 +75,7 @@ class orf_struct:
 
       for i, nuc in enumerate(rev_orf):
         rev_orf_complements[i] = c.nuc_map[nuc]
-      
+
       result.append(''.join(rev_orf_complements))
 
     self.bg_seqs = result

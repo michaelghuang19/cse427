@@ -1,3 +1,6 @@
+# Michael Huang (mhuang19)
+# 1862567
+
 # various helper functions
 
 import collections

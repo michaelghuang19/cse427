@@ -1,3 +1,6 @@
+# Michael Huang (mhuang19)
+# 1862567
+
 # describes any global constants or magic numbers we might need
 
 import numpy as np
